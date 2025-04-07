@@ -1,7 +1,7 @@
 import logging
 
-from .client import Client
 from .base_object import BaseObject, Creator, assert_auth
+from .client import Client
 from .resource import Resource, ResourceCreator
 from .retry import simple_connection_retry
 
