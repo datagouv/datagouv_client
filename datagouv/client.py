@@ -19,7 +19,7 @@ class Client:
             self.session.headers.update({"X-API-KEY": api_key})
 
     def resource(self, id: str | None = None, **kwargs):
-        from .dataset import Resource, ResourceCreator
+        from .resource import Resource, ResourceCreator
 
         if id:
             return Resource(id, _client=self, **kwargs)
