@@ -2,8 +2,8 @@ import logging
 
 from .client import Client
 from .base_object import BaseObject, Creator, assert_auth
-from .retry import simple_connection_retry
 from .resource import Resource, ResourceCreator
+from .retry import simple_connection_retry
 
 
 class Dataset(BaseObject, ResourceCreator):

@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import patch
 
+from conftest import DATASET_ID, dataset_metadata
 from datagouv.base_object import BaseObject
 from datagouv.client import Client
 from datagouv.dataset import Dataset, DatasetCreator
 from datagouv.resource import Resource, ResourceCreator
-from conftest import DATASET_ID, dataset_metadata
 
 
 def test_dataset_instance(dataset_api_call):
