@@ -49,13 +49,19 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: Check virtual environment activation
+          command: |
+            source venv/bin/activate
+            which python
+            python -m pip list
+      - run:
           name: Lint and format code and sort imports
           # ruff check --select I . : check linting and imports sorting without fixing (to fix, use --fix)
           # ruff format --check . : check code formatting without fixing (to fix, remove --check)
           command: |
             source venv/bin/activate
             ruff check --select I .
-            run ruff format --check .
+            ruff format --check .
 
   tests:
     docker:
