@@ -1,7 +1,7 @@
 # **datagouv_client**
 This package is a python wrapper for the data.gouv.fr API. It allows you to interact easily with datasets and resources, on all three platforms (production aka `www`, `demo` and `dev`). You can install it through `pypi`:
 ```bash
-pip install datagouv_client
+pip install datagouv-client
 ```
 in an environment that runs on `python>=3.10`.
 
@@ -12,7 +12,7 @@ If you only want to retrieve existing objects (aka you don't want to modify them
 ```python
 from datagouv import Dataset, Resource
 
-dataset = Dataset("5d13a8b6634f41070a43dff3")  # you can find the ID of a dataset on the `Informations` tab of its landing page
+dataset = Dataset("5d13a8b6634f41070a43dff3")  # you can find a dataset's id in the `Informations` tab of its landing page
 
 # you can now access a bunch of info of the dataset
 print(dataset.title)
@@ -29,10 +29,10 @@ for res in dataset.resource:
     print(res)  # this displays all the attributes of the resource as a dict
 
 # if you are only interested in a specific resource
-resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")
+resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")  # you can find a resource's id in its `Métadonnées` tab
 print(resource)
 # you can also access a dataset from one of its resources
-resource.dataset()  # NB: this is a method, and returns an instance of Dataset
+d = resource.dataset()  # NB: this is a method, and returns an instance of Dataset
 ```
 
 ### Interacting with objects online
@@ -71,7 +71,13 @@ for idx, res in enumerate(dataset.resources):
 
 With an authenticated client, you are also allowed to create datasets and resources on the environment you specified:
 ```python
-dataset = client.dataset().create({"title": "New dataset", "description": "A description is a required"})  # this creates a dataset with the values you specified, and instantiates a Dataset
+dataset = client.dataset().create(
+    {
+        "title": "New dataset", 
+        "description": "A description is a required",
+        "organization": "646b7187b50b2a93b1ae3d45",  # the organization that will own the dataset
+    },
+)  # this creates a dataset with the values you specified, and instantiates a Dataset
 dataset.update({"tags": ["environment", "water"]})
 ```
 There are two types of resources on datagouv:
@@ -86,13 +92,13 @@ resource = client.resource().create_static(
     file_to_upload="path/to/your/file.txt",
     payload={"title": "New static resource"},
     dataset_id="5d13a8b6634f41070a43dff3",
-)  # this creates a resource with the values you specified, and instantiates a Resource
+)  # this creates a static resource with the values you specified, and instantiates a Resource
 
 # to create a remote resource from an url
 resource = client.resource().create_remote(
     payload={"url": "http://example.com/file.txt", "title": "New remote resource"},
     dataset_id="5d13a8b6634f41070a43dff3",
-)  # this creates a resource with the values you specified, and instantiates a Resource
+)  # this creates a remote resource with the values you specified, and instantiates a Resource
 ```
 - from the dataset you want to include it into (you must have the rights on the dataset), in which case you don't have to specify the `dataset_id`:
 ```python
@@ -101,12 +107,12 @@ dataset = client.dataset("5d13a8b6634f41070a43dff3")
 resource = dataset.create_static(
     file_to_upload="path/to/your/file.txt",
     payload={"title": "New static resource"},
-)  # this creates a resource with the values you specified, and instantiates a Resource
+)  # this creates a static resource with the values you specified, and instantiates a Resource
 
 # to create a remote resource from an url
 resource = dataset.create_remote(
     payload={"url": "http://example.com/file.txt", "title": "New remote resource"},
-)  # this creates a resource with the values you specified, and instantiates a Resource
+)  # this creates a remote resource with the values you specified, and instantiates a Resource
 ```
 
 ### Advanced features
