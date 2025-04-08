@@ -10,7 +10,10 @@ class Dataset(BaseObject, ResourceCreator):
     _attributes = [
         "created_at",
         "description",
+        "harvest",
+        "internal",
         "last_modified",
+        "metrics",
         "title",
         "extras",
     ]

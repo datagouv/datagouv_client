@@ -9,8 +9,13 @@ class Resource(BaseObject):
     _attributes = [
         "created_at",
         "description",
+        "filetype",
+        "filesize",
+        "internal",
         "last_modified",
+        "schema",
         "title",
+        "type",
         "url",
         "extras",
     ]
