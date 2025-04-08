@@ -38,9 +38,9 @@ def test_client_types(args):
 @pytest.mark.parametrize(
     "args",
     [
-        ("https://www.data.gouv.fr/api/1/datasets/", None, None),
+        ("api/1/datasets/", None, None),
         (
-            "https://www.data.gouv.fr/api/1/datasets/",
+            "api/1/datasets/",
             "data{id,title,created_at}",
             ["id", "title", "created_at"],
         ),
