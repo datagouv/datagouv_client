@@ -18,7 +18,7 @@ class BaseObject:
         self.id = id
         self._client = _client
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.__dict__)
 
     @simple_connection_retry

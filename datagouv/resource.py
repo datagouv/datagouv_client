@@ -53,7 +53,7 @@ class Resource(BaseObject):
 
         return Dataset(self.dataset_id, _client=self._client)
 
-    def get_api2_metadata(self):
+    def get_api2_metadata(self) -> dict:
         r = self._client.session.get(
             f"{self._client.base_url}/api/2/datasets/resources/{self.id}/"
         )
