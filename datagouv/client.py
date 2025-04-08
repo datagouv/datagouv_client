@@ -2,8 +2,6 @@ from typing import Iterator
 
 import requests
 
-from .retry import simple_connection_retry
-
 
 class Client:
     _envs = ["www", "demo", "dev"]
@@ -32,14 +30,6 @@ class Client:
             return Dataset(id, _client=self)
         return DatasetCreator(_client=self)
 
-    @simple_connection_retry
-    def get_dataset_id(self, resource_id: str) -> str | None:
-        # communautary resources return None
-        url = f"{self.base_url}/api/2/datasets/resources/{resource_id}/"
-        r = requests.get(url)
-        r.raise_for_status()
-        return r.json()["dataset_id"]
-
     def get_all_from_api_query(
         self,
         base_query: str,
@@ -58,7 +48,7 @@ class Client:
         headers = {}
         if mask is not None:
             headers["X-fields"] = mask + f",{next_page}"
-        r = self.session.get(base_query, headers=headers)
+        r = self.session.get(f"{self.base_url}/{base_query}", headers=headers)
         if not ignore_errors:
             r.raise_for_status()
         for elem in r.json()["data"]:

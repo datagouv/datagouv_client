@@ -47,7 +47,7 @@ class Resource(BaseObject):
     def dataset(self):
         # we cannot instanciate the dataset in the init, because it would infinitely loop
         # between the dataset and its resources (each one creating the other)
-        # it makes more sense that a dataset has its resources instanciated at init
+        # it makes more sense that a dataset has its resources instantiated at init
         # so resources must have dataset as a separate method
         from .dataset import Dataset
 

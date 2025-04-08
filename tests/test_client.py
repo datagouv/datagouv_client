@@ -29,7 +29,6 @@ def test_client_types(args):
                 "base_url",
                 "dataset",
                 "get_all_from_api_query",
-                "get_dataset_id",
                 "resource",
                 "session",
             ]
