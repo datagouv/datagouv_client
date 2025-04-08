@@ -20,9 +20,9 @@ setup(
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
-    description="Detect CSV column content",
+    description="Wrapper for the data.gouv.fr API",
     long_description_content_type="text/markdown",
-    keywords="CSV data processing encoding guess parser tabular",
+    keywords="api wrapper datagouv",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
     url="https://github.com/datagouv/datagouv_client",
     data_files=[
