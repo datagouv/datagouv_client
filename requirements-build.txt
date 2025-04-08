@@ -1,4 +1,4 @@
-bumpx>=0.3.10
+bumpx==0.3.10
 setuptools
 wheel
 twine
