@@ -34,7 +34,7 @@ class BaseObject:
         return metadata
 
     @simple_connection_retry
-    def update_metadata(self, payload: dict) -> requests.Response:
+    def update(self, payload: dict) -> requests.Response:
         assert_auth(self._client)
         logging.info(f"🔁 Putting {self.uri} with {payload}")
         r = self._client.session.put(self.uri, json=payload)

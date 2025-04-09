@@ -44,6 +44,22 @@ class Resource(BaseObject):
         )
         self.refresh(_from_response=_from_response)
 
+    def update(self, payload: dict, file_to_upload: str | None = None):
+        assert_auth(self._client)
+        if file_to_upload:
+            if self.filetype != "file":
+                raise ValueError(
+                    "This resource is not static, you can't upload a file. "
+                    "To modify the URL it points to, please use the `url` field in the payload."
+                )
+            logging.info(f"⬆️ Posting file {file_to_upload} into {self.uri}")
+            r = self._client.session.post(
+                f"{self.uri}upload/",
+                files={"file": open(file_to_upload, "rb")},
+            )
+            r.raise_for_status()
+        return super().update(payload)
+
     def dataset(self):
         # we cannot instanciate the dataset in the init, because it would infinitely loop
         # between the dataset and its resources (each one creating the other)
@@ -105,7 +121,7 @@ class ResourceCreator(Creator):
             payload["dataset"] = {"class": "Dataset", "id": dataset_id}
         else:
             url = f"{self._client.base_url}/api/1/datasets/{dataset_id}/resources/"
-        logging.info(f"Creating '{payload['title']}' at {url}")
+        logging.info(f"🆕 Creating '{payload['title']}' for {url}")
         if "filetype" not in payload:
             payload.update({"filetype": "remote"})
         if "type" not in payload:
@@ -136,11 +152,11 @@ class ResourceCreator(Creator):
         url = f"{self._client.base_url}/api/1/datasets/{dataset_id}/upload/"
         if is_communautary:
             url += "community/"
+        logging.info(f"🆕 Creating '{payload['title']}' for {file_to_upload}")
         r = self._client.session.post(url, files={"file": open(file_to_upload, "rb")})
         r.raise_for_status()
         metadata = r.json()
         resource_id = metadata["id"]
-        logging.info(f"Resource was given this id: {resource_id}")
         r = Resource(
             id=resource_id,
             dataset_id=dataset_id,
@@ -150,5 +166,5 @@ class ResourceCreator(Creator):
         )
         if "type" not in payload:
             payload.update({"type": "main"})
-        r.update_metadata(payload=payload)
+        r.update(payload=payload)
         return r
