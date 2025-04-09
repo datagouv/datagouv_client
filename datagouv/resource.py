@@ -150,5 +150,5 @@ class ResourceCreator(Creator):
         )
         if "type" not in payload:
             payload.update({"type": "main"})
-        r.update_metadata(payload=payload)
+        r.update(payload=payload)
         return r

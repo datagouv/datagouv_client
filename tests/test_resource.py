@@ -53,7 +53,7 @@ def test_authentification_assertion():
     )
     with pytest.raises(PermissionError):
         r_from_response.delete()
-    for method in ["update_metadata", "update_extras", "delete_extras"]:
+    for method in ["update", "update_extras", "delete_extras"]:
         with pytest.raises(PermissionError):
             getattr(r_from_response, method)({})
 
