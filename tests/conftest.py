@@ -25,7 +25,7 @@ def dataset_api_call():
 
 
 @pytest.fixture
-def resource_api1_call():
+def static_resource_api1_call():
     with requests_mock.Mocker() as m:
         m.get(
             f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/resources/{RESOURCE_ID}/",
@@ -35,10 +35,36 @@ def resource_api1_call():
 
 
 @pytest.fixture
-def resource_api2_call():
+def remote_resource_api1_call():
+    remote_metadata = resource_metadata_api1
+    remote_metadata["filetype"] = "remote"
+    remote_metadata["url"] = "https://example.com/file.csv"
+    with requests_mock.Mocker() as m:
+        m.get(
+            f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/resources/{RESOURCE_ID}/",
+            json=remote_metadata,
+        )
+        yield m
+
+
+@pytest.fixture
+def static_resource_api2_call():
     with requests_mock.Mocker() as m:
         m.get(
             f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/",
             json=resource_metadata_api2,
+        )
+        yield m
+
+
+@pytest.fixture
+def remote_resource_api2_call():
+    remote_metadata = resource_metadata_api2
+    remote_metadata["resource"]["filetype"] = "remote"
+    remote_metadata["resource"]["url"] = "https://example.com/file.csv"
+    with requests_mock.Mocker() as m:
+        m.get(
+            f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/",
+            json=remote_metadata,
         )
         yield m
