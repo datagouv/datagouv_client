@@ -8,16 +8,24 @@ from datagouv.dataset import Dataset
 from datagouv.resource import Resource, ResourceCreator
 
 
-def test_resource_instance(resource_api2_call):
+def test_resource_instance(static_resource_api2_call):
     assert isinstance(Client().resource(), ResourceCreator)
     assert isinstance(Client().resource(RESOURCE_ID), Resource)
 
 
-def test_resource_instance_with_dataset_id(resource_api1_call):
-    assert isinstance(Client().resource(RESOURCE_ID, dataset_id=DATASET_ID), Resource)
+def test_static_resource_instance_with_dataset_id(static_resource_api1_call):
+    r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
+    assert isinstance(r, Resource)
+    assert r.filetype == "file"
 
 
-def test_resource_attributes_and_methods(resource_api2_call):
+def test_remote_resource_instance_with_dataset_id(remote_resource_api1_call):
+    r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
+    assert isinstance(r, Resource)
+    assert r.filetype == "remote"
+
+
+def test_resource_attributes_and_methods(static_resource_api2_call):
     client = Client()
     r = client.resource(RESOURCE_ID)
     with patch("requests.Session.get") as mock_func:
@@ -63,3 +71,11 @@ def test_dataset(dataset_api_call):
         RESOURCE_ID, dataset_id=DATASET_ID, _from_response=resource_metadata_api1
     )
     assert isinstance(r_from_response.dataset(), Dataset)
+
+
+def test_upload_file_into_remote(remote_resource_api2_call):
+    client = Client(api_key="SUPER_SECRET")
+    res = client.resource(RESOURCE_ID)
+    assert res.filetype == "remote"
+    with pytest.raises(ValueError):
+        res.update({}, "path/to/file.csv")
