@@ -113,6 +113,9 @@ resource = dataset.create_static(
 resource = dataset.create_remote(
     payload={"url": "http://example.com/file.txt", "title": "New remote resource"},
 )  # this creates a remote resource with the values you specified, and instantiates a Resource
+
+# to update the file of a static resource
+resource.update({"title": "New title"}, file_to_upload="path/to/your/new_file.txt")
 ```
 
 ### Advanced features
