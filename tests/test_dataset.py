@@ -71,3 +71,10 @@ def test_resources():
         assert all(isinstance(r, Resource) for r in d_from_response.resources)
         # not calling the API when building the resources
         mock_func.assert_not_called()
+
+
+def test_datatset_no_fetch():
+    with patch("requests.Session.get") as mock_func:
+        d = Dataset(DATASET_ID, fetch=False)
+        mock_func.assert_not_called()
+    assert all(getattr(d, a, None) is None for a in Dataset._attributes)

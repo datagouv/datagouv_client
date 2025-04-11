@@ -79,3 +79,11 @@ def test_upload_file_into_remote(remote_resource_api2_call):
     assert res.filetype == "remote"
     with pytest.raises(ValueError):
         res.update({}, "path/to/file.csv")
+
+
+def test_resource_no_fetch():
+    # no fetch only if the dataset_id is given, otherwise we ping api/2
+    with patch("requests.Session.get") as mock_func:
+        r = Resource(RESOURCE_ID, DATASET_ID, fetch=False)
+        mock_func.assert_not_called()
+    assert all(getattr(r, a, None) is None for a in Resource._attributes)
