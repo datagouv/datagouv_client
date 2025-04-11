@@ -87,3 +87,4 @@ def test_resource_no_fetch():
         r = Resource(RESOURCE_ID, DATASET_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(r, a, None) is None for a in Resource._attributes)
+    assert r.uri

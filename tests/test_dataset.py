@@ -78,3 +78,4 @@ def test_datatset_no_fetch():
         d = Dataset(DATASET_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(d, a, None) is None for a in Dataset._attributes)
+    assert d.uri
