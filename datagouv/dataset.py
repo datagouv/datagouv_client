@@ -21,13 +21,15 @@ class Dataset(BaseObject, ResourceCreator):
     def __init__(
         self,
         id: str | None = None,
+        fetch: bool = True,
         _client: Client = Client(),
         _from_response: dict | None = None,
     ):
         BaseObject.__init__(self, id, _client)
         self.uri = f"{_client.base_url}/api/1/datasets/{id}/"
         self.front_url = self.uri.replace("api/1", "fr")
-        self.refresh(_from_response=_from_response)
+        if fetch or _from_response:
+            self.refresh(_from_response=_from_response)
 
     def refresh(self, _from_response: dict | None = None):
         BaseObject.refresh(self, _from_response)

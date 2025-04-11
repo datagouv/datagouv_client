@@ -25,6 +25,7 @@ class Resource(BaseObject):
         id: str,
         dataset_id: str | None = None,
         is_communautary: bool = False,
+        fetch: bool = True,
         _from_response: dict | None = None,
         _client: Client = Client(),
     ):
@@ -42,7 +43,8 @@ class Resource(BaseObject):
         self.front_url = self.uri.replace("api/1", "fr").replace(
             "/resources", "/#/resources"
         )
-        self.refresh(_from_response=_from_response)
+        if fetch or _from_response:
+            self.refresh(_from_response=_from_response)
 
     def update(self, payload: dict, file_to_upload: str | None = None):
         assert_auth(self._client)
