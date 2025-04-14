@@ -19,11 +19,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Check Python installation
-          command: |
-            python --version
-            which python
-      - run:
           name: Get the base reference branch
           command: export BASE_BRANCH=$(base_branch)
       - restore_cache:
@@ -34,6 +29,8 @@ jobs:
       - run:
           name: Install python dependencies
           command: |
+            python --version
+            which python
             python -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
