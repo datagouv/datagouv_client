@@ -113,6 +113,17 @@ resource = dataset.create_static(
 resource = dataset.create_remote(
     payload={"url": "http://example.com/file.txt", "title": "New remote resource"},
 )  # this creates a remote resource with the values you specified, and instantiates a Resource
+
+# to update the file of a static resource
+resource.update({"title": "New title"}, file_to_upload="path/to/your/new_file.txt")
+```
+> NB: If you are not planning to use an object's attributes, you may prevent the initial API call using `fetch=False`, in order not to unnecessarily ping the API.
+```python
+dataset = client.dataset("5d13a8b6634f41070a43dff3", fetch=False)
+print(dataset.title)  # -> this will fail because the attributes are not set from the initial call
+# but you can update the object as usual
+dataset.update({"title": "New title"})
+print(dataset.title)  # -> "New title"   because the attributes are set from the response
 ```
 
 ### Advanced features

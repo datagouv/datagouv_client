@@ -23,11 +23,11 @@ class Client:
             return Resource(id, _client=self, **kwargs)
         return ResourceCreator(_client=self)
 
-    def dataset(self, id: str | None = None):
+    def dataset(self, id: str | None = None, fetch: bool = True):
         from .dataset import Dataset, DatasetCreator
 
         if id:
-            return Dataset(id, _client=self)
+            return Dataset(id, _client=self, fetch=fetch)
         return DatasetCreator(_client=self)
 
     def get_all_from_api_query(

@@ -23,18 +23,16 @@ jobs:
           command: export BASE_BRANCH=$(base_branch)
       - restore_cache:
           keys:
-            - << pipeline.parameters.cache-prefix >>-{{ arch }}-{{ checksum "requirements.txt" }}
-            - << pipeline.parameters.cache-prefix >>-{{ arch }}-{{ .Branch }}
-            - << pipeline.parameters.cache-prefix >>-{{ arch }}-{{ .Environment.BASE_BRANCH }}
+            - << pipeline.parameters.cache-prefix >>-v1-{{ arch }}-{{ checksum "requirements.txt" }}
       - run:
           name: Install python dependencies
           command: |
-            virtualenv venv
-            source venv/bin/activate
+            python -m venv venv
+            . venv/bin/activate
             pip install -r requirements.txt
             pip install -e .
       - save_cache:
-          key: << pipeline.parameters.cache-prefix >>-{{ arch }}-{{ checksum "requirements.txt" }}
+          key: << pipeline.parameters.cache-prefix >>-v1-{{ arch }}-{{ checksum "requirements.txt" }}
           paths:
             - venv
       - persist_to_workspace:
@@ -53,7 +51,7 @@ jobs:
           # ruff check . : check linting and imports sorting without fixing (to fix, use --fix)
           # ruff format --check . : check code formatting without fixing (to fix, remove --check)
           command: |
-            source venv/bin/activate
+            . venv/bin/activate
             ruff check .
             ruff format --check .
 
@@ -66,7 +64,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            source venv/bin/activate
+            . venv/bin/activate
             pytest -s tests/ --junitxml=reports/python/tests.xml -p no:sugar --color=yes
       - store_test_results:
           path: reports/python
@@ -80,7 +78,7 @@ jobs:
       - run:
           name: Build a distributable package
           command: |
-            source venv/bin/activate
+            . venv/bin/activate
             pip install --upgrade -r requirements-build.txt
             # Build a wheel release
             if [[ $CIRCLE_TAG ]]; then
@@ -107,7 +105,7 @@ jobs:
       - deploy:
           name: Publish on PyPI
           command: |
-            source venv/bin/activate
+            . venv/bin/activate
             pip install twine
             twine upload --username "${PYPI_USERNAME}" --password "${PYPI_PASSWORD}" dist/*.whl
 
