@@ -2,6 +2,7 @@
 
 ## Current (in progress)
 
+- Allow to download a dataset's resources [#8](https://github.com/datagouv/datagouv_client/pull/8)
 - Allow to download a resource [#7](https://github.com/datagouv/datagouv_client/pull/7)
 - Allow to prevent fetch on object creation [#6](https://github.com/datagouv/datagouv_client/pull/6)
 - Allow to update static resources' files [#4](https://github.com/datagouv/datagouv_client/pull/4)

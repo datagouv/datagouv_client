@@ -31,10 +31,18 @@ for res in dataset.resources:
 # if you are only interested in a specific resource
 resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")  # you can find a resource's id in its `Métadonnées` tab
 print(resource)
+
 # you can also access a dataset from one of its resources
 d = resource.dataset()  # NB: this is a method, and returns an instance of Dataset
+
 # you can also download a resource locally (NB: make sure to create the parent folders upstream)
 resource.download("./file.csv")  # this saves the resource in your working directory as "file.csv"
+
+# and a subset or all resources of a dataset (NB: make sure to create the parent folders upstream)
+d.download_resources(
+    folder="data",  # if not specified, saves them into your working directory
+    resources_types=["main", "documentation"],  # default is only main resources
+)
 ```
 
 ### Interacting with objects online
