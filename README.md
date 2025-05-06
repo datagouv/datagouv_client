@@ -34,7 +34,7 @@ print(resource)
 # you can also access a dataset from one of its resources
 d = resource.dataset()  # NB: this is a method, and returns an instance of Dataset
 # you can also download a resource locally (NB: make sure to create the parent folders upstream)
-resource.download("file.csv")  # this saves the resource in your working directory as "file.csv"
+resource.download("./file.csv")  # this saves the resource in your working directory as "file.csv"
 ```
 
 ### Interacting with objects online
