@@ -1,5 +1,8 @@
+import os
 import pytest
 from unittest.mock import patch
+
+import requests_mock
 
 from conftest import DATASET_ID, RESOURCE_ID, resource_metadata_api1
 from datagouv.base_object import BaseObject
@@ -88,3 +91,16 @@ def test_resource_no_fetch():
         mock_func.assert_not_called()
     assert all(getattr(r, a, None) is None for a in Resource._attributes)
     assert r.uri
+
+
+def test_resource_download(remote_resource_api1_call):
+    r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
+    with requests_mock.Mocker() as m:
+        m.get(r.url, content=b"a,b,c\n1,2,3")
+        file_name = "my_file.csv"
+        r.download(file_name)
+        with open(file_name, "r") as f:
+            rows = f.readlines()
+        assert rows[0] == "a,b,c\n"
+        assert rows[1] == "1,2,3"
+    os.remove(file_name)

@@ -21,7 +21,7 @@ print(dataset.created_at)
 print(dataset)  # this displays all the attributes of the dataset as a dict
 
 # and of course its resources, which are all Resource instances
-for res in dataset.resource:
+for res in dataset.resources:
     print(res.title)
     print(res.url)  # this is the download URL of the resource
     print(res.id)  # the id of the resource itself
@@ -33,6 +33,8 @@ resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")  # you can find a re
 print(resource)
 # you can also access a dataset from one of its resources
 d = resource.dataset()  # NB: this is a method, and returns an instance of Dataset
+# you can also download a resource locally (NB: make sure to create the parent folders upstream)
+resource.download("file.csv")  # this saves the resource in your working directory as "file.csv"
 ```
 
 ### Interacting with objects online

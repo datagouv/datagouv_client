@@ -1,5 +1,7 @@
 import logging
 
+import requests
+
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
 from .retry import simple_connection_retry
@@ -70,6 +72,13 @@ class Resource(BaseObject):
         from .dataset import Dataset
 
         return Dataset(self.dataset_id, _client=self._client)
+
+    def download(self, path: str, chunk_size: int = 8192, **kwargs):
+        with requests.get(self.url, stream=True, **kwargs) as r:
+            r.raise_for_status()
+            with open(path, "wb") as f:
+                for chunk in r.iter_content(chunk_size=chunk_size):
+                    f.write(chunk)
 
     def get_api2_metadata(self) -> dict:
         r = self._client.session.get(
