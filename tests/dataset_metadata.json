@@ -468,7 +468,7 @@
         "preview_url": "https://explore.data.gouv.fr/fr/resources/1ac234c7-1da4-49cf-a122-646b21d64b43",
         "schema": null,
         "title": "export-tag-20250407-061529.csv",
-        "type": "main",
+        "type": "documentation",
         "url": "https://static.data.gouv.fr/resources/catalogue-des-donnees-de-data-gouv-fr/20250407-061529/export-tag-20250407-061529.csv"
       }
     ],
