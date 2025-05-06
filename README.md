@@ -21,7 +21,7 @@ print(dataset.created_at)
 print(dataset)  # this displays all the attributes of the dataset as a dict
 
 # and of course its resources, which are all Resource instances
-for res in dataset.resource:
+for res in dataset.resources:
     print(res.title)
     print(res.url)  # this is the download URL of the resource
     print(res.id)  # the id of the resource itself
