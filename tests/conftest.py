@@ -3,7 +3,7 @@ import pytest
 
 import requests_mock
 
-DATASET_ID = "0123456789abcdefghijklmn"
+DATASET_ID = "0123456789abcdef01234567"
 RESOURCE_ID = "aaaaaaaa-1111-bbbb-2222-cccccccccccc"
 DATAGOUV_URL = "https://www.data.gouv.fr/"
 
