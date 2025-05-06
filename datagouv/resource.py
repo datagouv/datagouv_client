@@ -73,7 +73,9 @@ class Resource(BaseObject):
 
         return Dataset(self.dataset_id, _client=self._client)
 
-    def download(self, path: str, chunk_size: int = 8192, **kwargs):
+    def download(self, path: str | None = None, chunk_size: int = 8192, **kwargs):
+        if path is None:
+            path = self.url.split("/")[-1]
         with requests.get(self.url, stream=True, **kwargs) as r:
             r.raise_for_status()
             with open(path, "wb") as f:
