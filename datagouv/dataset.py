@@ -45,14 +45,15 @@ class Dataset(BaseObject, ResourceCreator):
             for r in resources
         ]
 
-    def download_resources(self, folder: str | None = None, resources_types: list = ["main"]):
+    def download_resources(
+        self, folder: str | None = None, resources_types: list = ["main"]
+    ):
         for res in self.resources:
             if res.type in resources_types:
                 logging.info(f"Downloading {res.url}")
                 res.download(
                     path=(
-                        os.path.join(folder, res.url.split("/")[-1])
-                        if folder else None
+                        os.path.join(folder, res.url.split("/")[-1]) if folder else None
                     ),
                 )
 
