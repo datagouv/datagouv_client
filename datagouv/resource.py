@@ -13,6 +13,7 @@ class Resource(BaseObject):
         "description",
         "filetype",
         "filesize",
+        "format",
         "internal",
         "last_modified",
         "schema",
@@ -75,7 +76,7 @@ class Resource(BaseObject):
 
     def download(self, path: str | None = None, chunk_size: int = 8192, **kwargs):
         if path is None:
-            path = self.url.split("/")[-1]
+            path = f"{self.id}.{self.format}"
         with requests.get(self.url, stream=True, **kwargs) as r:
             r.raise_for_status()
             with open(path, "wb") as f:
