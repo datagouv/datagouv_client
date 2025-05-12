@@ -53,7 +53,9 @@ class Dataset(BaseObject, ResourceCreator):
                 logging.info(f"Downloading {res.url}")
                 res.download(
                     path=(
-                        os.path.join(folder, f"{res.id}.{res.format}") if folder else None
+                        os.path.join(folder, f"{res.id}.{res.format}")
+                        if folder
+                        else None
                     ),
                 )
 
