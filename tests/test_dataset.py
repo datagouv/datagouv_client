@@ -1,5 +1,9 @@
+import os
 import pytest
+import shutil
 from unittest.mock import patch
+
+import requests_mock
 
 from conftest import DATASET_ID, dataset_metadata
 from datagouv.base_object import BaseObject
@@ -73,9 +77,21 @@ def test_resources():
         mock_func.assert_not_called()
 
 
-def test_datatset_no_fetch():
+def test_dataset_no_fetch():
     with patch("requests.Session.get") as mock_func:
         d = Dataset(DATASET_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(d, a, None) is None for a in Dataset._attributes)
     assert d.uri
+
+
+def test_download_dataset_resources(dataset_api_call):
+    d = Dataset(DATASET_ID)
+    folder = "data_test"
+    os.mkdir(folder)
+    with requests_mock.Mocker() as m:
+        for res in d.resources:
+            m.get(res.url, content=b"a,b,c\n1,2,3")
+        d.download_resources(folder=folder, resources_types=["main"])
+    assert len(os.listdir(folder)) == len([r for r in d.resources if r.type == "main"])
+    shutil.rmtree(folder)

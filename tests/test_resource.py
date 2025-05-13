@@ -93,14 +93,21 @@ def test_resource_no_fetch():
     assert r.uri
 
 
-def test_resource_download(remote_resource_api1_call):
+@pytest.mark.parametrize(
+    "file_name",
+    [
+        "my_file.csv",
+        None,
+    ],
+)
+def test_resource_download(remote_resource_api1_call, file_name):
     r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
     with requests_mock.Mocker() as m:
         m.get(r.url, content=b"a,b,c\n1,2,3")
-        file_name = "my_file.csv"
         r.download(file_name)
-        with open(file_name, "r") as f:
+        local_name = file_name or f"{r.id}.{r.format}"
+        with open(local_name, "r") as f:
             rows = f.readlines()
         assert rows[0] == "a,b,c\n"
         assert rows[1] == "1,2,3"
-    os.remove(file_name)
+    os.remove(local_name)
