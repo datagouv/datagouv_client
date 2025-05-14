@@ -1,6 +1,6 @@
 # Changelog
 
-## Current (in progress)
+## 0.1.0 (2025-05-14)
 
 - Allow to download a dataset's resources [#8](https://github.com/datagouv/datagouv_client/pull/8)
 - Allow to download a resource [#7](https://github.com/datagouv/datagouv_client/pull/7)
