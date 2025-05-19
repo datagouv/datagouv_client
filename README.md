@@ -1,4 +1,4 @@
-# **datagouv_client**
+# **datagouv-client**
 This package is a python wrapper for the data.gouv.fr API. It allows you to interact easily with datasets and resources, on all three platforms (production aka `www`, `demo` and `dev`). You can install it through `pypi`:
 ```bash
 pip install datagouv-client
@@ -44,6 +44,13 @@ d.download_resources(
     folder="data",  # if not specified, saves them into your working directory
     resources_types=["main", "documentation"],  # default is only main resources
 )
+```
+
+> NB: If you want to get objects from demo or dev, you must use a client:
+```python
+from datagouv import Client, Dataset, Resource
+
+dataset = Dataset("5d13a8b6634f41070a43dff3", _client=Client("demo"))
 ```
 
 ### Interacting with objects online
