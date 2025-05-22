@@ -2,6 +2,13 @@
 
 from setuptools import find_packages, setup
 
+with open('datagouv/__init__.py') as f:
+    lines = f.readlines()
+    for line in lines:
+        if line.startswith("__version__"):
+            _, _, version = line.replace("'", "").replace('"', "").split()
+            break
+
 
 def pip(filename):
     """Parse pip reqs file and transform it to setuptools requirements."""
@@ -10,7 +17,7 @@ def pip(filename):
 
 setup(
     name="datagouv_client",
-    version=__import__("datagouv").__version__,
+    version=version,
     author="Etalab",
     author_email="opendatateam@data.gouv.fr",
     classifiers=[
