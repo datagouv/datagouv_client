@@ -34,6 +34,10 @@ setup(
         ],
     },
     include_package_data=True,  # Will read MANIFEST.in
+    setup_requires=pip("requirements-build.txt"),
     install_requires=pip("requirements.txt"),
+    extras_require={
+        "dev": pip("requirements-dev.txt"),
+    },
     packages=find_packages(),
 )
