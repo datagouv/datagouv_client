@@ -23,7 +23,7 @@ setup(
     description="Wrapper for the data.gouv.fr API",
     long_description_content_type="text/markdown",
     keywords="api wrapper datagouv",
-    license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
+    license="https://spdx.org/licenses/MIT.html#licenseText",
     url="https://github.com/datagouv/datagouv_client",
     data_files=[
         ("share/datagouv_client", ["CHANGELOG.md", "LICENSE.AGPL.txt", "README.md"]),
