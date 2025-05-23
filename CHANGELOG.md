@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Remove dev dependencies from the package and add build metadata [#10](https://github.com/datagouv/datagouv_client/pull/9)
 
 ## 0.1.0 (2025-05-14)
 
