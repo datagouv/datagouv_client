@@ -3,3 +3,6 @@ datagouv_client.egg-info/
 *__pycache__*
 dist
 build
+.venv
+mise.local.toml
+pyproject.toml
