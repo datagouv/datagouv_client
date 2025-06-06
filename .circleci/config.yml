@@ -23,7 +23,7 @@ jobs:
           command: export BASE_BRANCH=$(base_branch)
       - restore_cache:
           keys:
-            - << pipeline.parameters.cache-prefix >>-v1-{{ arch }}-{{ checksum "requirements.txt" }}
+            - << pipeline.parameters.cache-prefix >>-v1-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
       - run:
           name: Install python dependencies
           command: |
@@ -32,7 +32,7 @@ jobs:
             pip install -r requirements.txt
             pip install -e .[dev]
       - save_cache:
-          key: << pipeline.parameters.cache-prefix >>-v1-{{ arch }}-{{ checksum "requirements.txt" }}
+          key: << pipeline.parameters.cache-prefix >>-v1-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
           paths:
             - venv
       - persist_to_workspace:
