@@ -1,6 +1,6 @@
 # Changelog
 
-## Current (in progress)
+## 0.1.1 (2025-06-06)
 
 - Remove dev dependencies from the package and add build metadata [#10](https://github.com/datagouv/datagouv_client/pull/9)
 
