@@ -2,11 +2,11 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Switch to pyproject [#11](https://github.com/datagouv/csv-detective/pull/11)
 
 ## 0.1.1 (2025-06-06)
 
-- Remove dev dependencies from the package and add build metadata [#10](https://github.com/datagouv/datagouv_client/pull/9)
+- Remove dev dependencies from the package and add build metadata [#9](https://github.com/datagouv/datagouv_client/pull/9)
 
 ## 0.1.0 (2025-05-14)
 
