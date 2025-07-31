@@ -1,10 +1,10 @@
 import os
-import pytest
 from unittest.mock import patch
 
+import pytest
 import requests_mock
-
 from conftest import DATASET_ID, RESOURCE_ID, resource_metadata_api1
+
 from datagouv.base_object import BaseObject
 from datagouv.client import Client
 from datagouv.dataset import Dataset
@@ -54,9 +54,7 @@ def test_resource_attributes_and_methods(static_resource_api2_call):
 def test_authentification_assertion():
     client = Client()
     with pytest.raises(PermissionError):
-        client.resource().create_static(
-            {"path": "path"}, {"title": "Titre"}, DATASET_ID
-        )
+        client.resource().create_static({"path": "path"}, {"title": "Titre"}, DATASET_ID)
     with pytest.raises(PermissionError):
         client.resource().create_remote({"url": "url", "title": "Titre"}, DATASET_ID)
     r_from_response = Resource(

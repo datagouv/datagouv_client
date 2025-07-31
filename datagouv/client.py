@@ -54,9 +54,7 @@ class Client:
         for elem in r.json()["data"]:
             yield elem
         while get_link_next_page(r.json(), next_page):
-            r = self.session.get(
-                get_link_next_page(r.json(), next_page), headers=headers
-            )
+            r = self.session.get(get_link_next_page(r.json(), next_page), headers=headers)
             if not ignore_errors:
                 r.raise_for_status()
             for data in r.json()["data"]:

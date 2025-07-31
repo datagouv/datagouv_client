@@ -54,9 +54,7 @@ class BaseObject:
     def update_extras(self, payload: dict) -> requests.Response:
         assert_auth(self._client)
         logging.info(f"🔁 Putting {self.uri} with extras {payload}")
-        r = self._client.session.put(
-            self.uri.replace("api/1", "api/2") + "extras/", json=payload
-        )
+        r = self._client.session.put(self.uri.replace("api/1", "api/2") + "extras/", json=payload)
         r.raise_for_status()
         self.refresh()
         return r

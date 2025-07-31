@@ -43,9 +43,7 @@ class Resource(BaseObject):
             if not is_communautary and self.dataset_id is not None
             else f"{_client.base_url}/api/1/datasets/community_resources/{self.id}"
         )
-        self.front_url = self.uri.replace("api/1", "fr").replace(
-            "/resources", "/#/resources"
-        )
+        self.front_url = self.uri.replace("api/1", "fr").replace("/resources", "/#/resources")
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
 
@@ -84,9 +82,7 @@ class Resource(BaseObject):
                     f.write(chunk)
 
     def get_api2_metadata(self) -> dict:
-        r = self._client.session.get(
-            f"{self._client.base_url}/api/2/datasets/resources/{self.id}/"
-        )
+        r = self._client.session.get(f"{self._client.base_url}/api/2/datasets/resources/{self.id}/")
         r.raise_for_status()
         return r.json()
 
@@ -107,9 +103,7 @@ class Resource(BaseObject):
             f"{self._client.base_url}/api/2/datasets/resources/{self.id}/",
             headers={"X-fields": "resource{internal{last_modified_internal}}"},
         ).json()["resource"]["internal"]["last_modified_internal"]
-        return any(
-            r["internal"]["last_modified_internal"] > latest_update for r in resources
-        )
+        return any(r["internal"]["last_modified_internal"] > latest_update for r in resources)
 
 
 class ResourceCreator(Creator):

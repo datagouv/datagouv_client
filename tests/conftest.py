@@ -1,6 +1,6 @@
 import json
-import pytest
 
+import pytest
 import requests_mock
 
 DATASET_ID = "0123456789abcdef01234567"

@@ -1,11 +1,11 @@
 import os
-import pytest
 import shutil
 from unittest.mock import patch
 
+import pytest
 import requests_mock
-
 from conftest import DATASET_ID, dataset_metadata
+
 from datagouv.base_object import BaseObject
 from datagouv.client import Client
 from datagouv.dataset import Dataset, DatasetCreator
@@ -21,9 +21,7 @@ def test_dataset_attributes_and_methods(dataset_api_call):
     client = Client()
     d = client.dataset(DATASET_ID)
     with patch("requests.Session.get") as mock_func:
-        d_from_response = Dataset(
-            dataset_metadata["id"], _from_response=dataset_metadata
-        )
+        d_from_response = Dataset(dataset_metadata["id"], _from_response=dataset_metadata)
         # when instanciating from a response, we don't call the API another time
         mock_func.assert_not_called()
     for attribute in (
@@ -61,9 +59,7 @@ def test_authentification_assertion():
 
     # can't create a resource from a dataset and specify a dataset_id
     with pytest.raises(ValueError):
-        d_from_response.create_static(
-            {"path": "path"}, {"title": "Titre"}, dataset_id="aaa"
-        )
+        d_from_response.create_static({"path": "path"}, {"title": "Titre"}, dataset_id="aaa")
     with pytest.raises(ValueError):
         d_from_response.create_remote({"title": "Titre"}, dataset_id="aaa")
 
