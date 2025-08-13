@@ -1,20 +1,39 @@
 # **datagouv-client**
-This package is a python wrapper for the data.gouv.fr API. It allows you to interact easily with datasets and resources, on all three platforms (production aka `www`, `demo` and `dev`). You can install it through `pypi`:
+
+[![CircleCI](https://circleci.com/gh/datagouv/datagouv_client.svg?style=svg)](https://circleci.com/gh/datagouv/datagouv_client)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A Python wrapper for the data.gouv.fr API that allows you to interact easily with datasets and resources across all three platforms (production `www`, `demo`, and `dev`). Install it through [PyPI](https://pypi.org/project/datagouv-client/):
 ```bash
 pip install datagouv-client
 ```
-in an environment that runs on `python>=3.10`.
 
-## Use
+**Requirements:** Python >= 3.10
 
-### Getting existing datasets and resources
+## 🚀 Use
+
+### 📥 Quick Start
+```python
+from datagouv import Dataset, Resource
+
+# Get a dataset and its resources
+dataset = Dataset("5d13a8b6634f41070a43dff3")
+print(f"Dataset: {dataset.title}")
+print(f"Resources: {len(dataset.resources)}")
+
+# Download a resource
+resource = dataset.resources[0]
+resource.download("my_file.csv")
+```
+
+### 📊 Getting existing datasets and resources
 If you only want to retrieve existing objects (aka you don't want to modify them on datagouv), here is what a workflow could look like:
 ```python
 from datagouv import Dataset, Resource
 
 dataset = Dataset("5d13a8b6634f41070a43dff3")  # you can find a dataset's id in the `Informations` tab of its landing page
 
-# you can now access a bunch of info of the dataset
+# you can now access a bunch of info about the dataset
 print(dataset.title)
 print(dataset.description)
 print(dataset.created_at)
@@ -33,12 +52,12 @@ resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")  # you can find a re
 print(resource)
 
 # you can also access a dataset from one of its resources
-d = resource.dataset()  # NB: this is a method, and returns an instance of Dataset
+d = resource.dataset()  # **Note:** this is a method, and returns an instance of Dataset
 
-# you can also download a resource locally (NB: make sure to create the parent folders upstream)
+# you can also download a resource locally (**Note:** make sure to create the parent folders upstream)
 resource.download("./file.csv")  # this saves the resource in your working directory as "file.csv"
 
-# and a subset or all resources of a dataset (NB: make sure to create the parent folders upstream)
+# and a subset or all resources of a dataset (**Note:** make sure to create the parent folders upstream)
 # the files are named `resource_id.format` (for instance f868cca6-8da1-4369-a78d-47463f19a9a3.csv)
 d.download_resources(
     folder="data",  # if not specified, saves them into your working directory
@@ -46,14 +65,17 @@ d.download_resources(
 )
 ```
 
-> NB: If you want to get objects from demo or dev, you must use a client:
+> **Note:** If you encounter errors during API calls, the client will raise appropriate exceptions (e.g., `PermissionError` for authentication issues, `requests.exceptions.HTTPError` for API errors).
+```
+
+> **Note:** If you want to get objects from demo or dev, you must use a client:
 ```python
 from datagouv import Client, Dataset, Resource
 
 dataset = Dataset("5d13a8b6634f41070a43dff3", _client=Client("demo"))
 ```
 
-### Interacting with objects online
+### 🛠️ Interacting with objects online
 If you want to modify objects on the datagouv platforms, you will need to create an authenticated client:
 ```python
 from datagouv import Client
@@ -63,7 +85,7 @@ client = Client(
     api_key="MY_SECRET_API_KEY",  # your API key, that grants your rights on the platform
 )
 ```
-> NB: you can find your API key on https://www.data.gouv.fr/fr/admin/me/ (don't forget to change the prefix to get the key from the right environment).
+> **Note:** You can find your API key on https://www.data.gouv.fr/fr/admin/me/ (don't forget to change the prefix to get the key from the right environment).
 
 Once your client is set up, you can instantiate datasets and resources from it. Of course, **you will only be allowed to modify objects according to your rights** (so objects created by you or an organization you are part of):
 ```python
@@ -92,7 +114,7 @@ With an authenticated client, you are also allowed to create datasets and resour
 dataset = client.dataset().create(
     {
         "title": "New dataset", 
-        "description": "A description is a required",
+        "description": "A description is required",
         "organization": "646b7187b50b2a93b1ae3d45",  # the organization that will own the dataset
     },
 )  # this creates a dataset with the values you specified, and instantiates a Dataset
@@ -135,7 +157,7 @@ resource = dataset.create_remote(
 # to update the file of a static resource
 resource.update({"title": "New title"}, file_to_upload="path/to/your/new_file.txt")
 ```
-> NB: If you are not planning to use an object's attributes, you may prevent the initial API call using `fetch=False`, in order not to unnecessarily ping the API.
+> **Note:** If you are not planning to use an object's attributes, you may prevent the initial API call using `fetch=False`, in order not to unnecessarily ping the API.
 ```python
 dataset = client.dataset("5d13a8b6634f41070a43dff3", fetch=False)
 print(dataset.title)  # -> this will fail because the attributes are not set from the initial call
@@ -144,7 +166,7 @@ dataset.update({"title": "New title"})
 print(dataset.title)  # -> "New title"   because the attributes are set from the response
 ```
 
-### Advanced features
+### ⚡ Advanced features
 Many datagouv endpoints are paginated, which can make it tedious to retrieve all objects. An instance of `Client` has a method to create an iterator from any endpoint that returns paginated data:
 ```python
 for obj in client.get_all_from_api_query(
@@ -154,7 +176,14 @@ for obj in client.get_all_from_api_query(
     print(f"Dataset {obj['title']} has {len(obj['resources'])} resources")
 ```
 
-## Contribution
+You can also check if resources have been updated more recently than others:
+```python
+# Check if any resource in a dataset has been updated more recently than a specific resource
+resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")
+has_newer_updates = resource.check_if_more_recent_update("5d13a8b6634f41070a43dff3")
+```
+
+## 🤝 Contribution
 Contributions and feedback are welcome! Main guidelines:
 - as few API calls as possible (use responses to create/update objects)
 - build on the existing
@@ -166,5 +195,5 @@ ruff check --fix .
 ruff format .
 ```
 
-## Release
+## 📦 Release
 The release process uses [bump'X](https://github.com/datagouv/bumpx).
