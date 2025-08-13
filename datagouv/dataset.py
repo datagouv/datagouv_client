@@ -9,12 +9,20 @@ from .retry import simple_connection_retry
 
 class Dataset(BaseObject, ResourceCreator):
     _attributes = [
+        "archived",
+        "badges",
+        "contact_points",
         "created_at",
+        "deleted",
         "description",
         "harvest",
         "internal",
         "last_modified",
+        "last_update",
         "metrics",
+        "organization",
+        "owner",
+        "tags",
         "title",
         "extras",
     ]

@@ -4,6 +4,7 @@
 
 - Switch to pyproject [#11](https://github.com/datagouv/csv-detective/pull/11)
 - Upgrade requests for security reasons [#12](https://github.com/datagouv/csv-detective/pull/12)
+- Add more attributes to dataset and resource objects [#13](https://github.com/datagouv/csv-detective/pull/13)
 
 ## 0.1.1 (2025-06-06)
 

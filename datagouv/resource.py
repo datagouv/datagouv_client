@@ -9,13 +9,16 @@ from .retry import simple_connection_retry
 
 class Resource(BaseObject):
     _attributes = [
+        "checksum",
         "created_at",
         "description",
-        "filetype",
         "filesize",
+        "filetype",
         "format",
+        "harvest",
         "internal",
         "last_modified",
+        "mime",
         "schema",
         "title",
         "type",

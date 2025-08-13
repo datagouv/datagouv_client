@@ -28,7 +28,7 @@ def _simple_connection_retry(
         stop=stop_after_attempt(attempts),  # Stop after X attempts
         wait=wait,  # Exponential backoff
         before_sleep=func,  # Call this function before each retry
-        reraise=reraise,  # Reraise the exception after all retries are exhausted,
+        reraise=reraise,  # Reraise the exception after all retries are exhausted
         **kwargs,
     )
 
