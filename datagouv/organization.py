@@ -44,7 +44,7 @@ class Organization(BaseObject):
             if payload.get(key):
                 raise ValueError(
                     f"It is not possible to specify the {key} when creating a dataset "
-                    "from an organization, it will be attributed to it."
+                    "from an organization, it will be attached to it."
                 )
         return DatasetCreator(_client=self._client).create(
             payload=payload | {"organization": self.id}
