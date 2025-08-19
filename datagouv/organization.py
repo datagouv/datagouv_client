@@ -10,7 +10,7 @@ from .retry import simple_connection_retry
 class Organization(BaseObject):
     _attributes = [
         "badges",
-        "business_number_id"
+        "business_number_id",
         "created_at",
         "deleted",
         "description",
@@ -35,9 +35,7 @@ class Organization(BaseObject):
             self.refresh(_from_response=_from_response)
 
     def datasets(self) -> Iterator[Dataset]:
-        for item in self._client.get_all_from_api_query(
-            f"api/1/organizations/{self.id}/datasets/"
-        ):
+        for item in self._client.get_all_from_api_query(f"api/1/organizations/{self.id}/datasets/"):
             yield Dataset(item["id"], _from_response=item)
 
     def create_dataset(self, payload: dict) -> Dataset:
@@ -48,7 +46,9 @@ class Organization(BaseObject):
                     f"It is not possible to specify the {key} when creating a dataset "
                     "from an organization, it will be attributed to it."
                 )
-        return DatasetCreator(_client=self._client).create(payload=payload | {"organization": self.id})
+        return DatasetCreator(_client=self._client).create(
+            payload=payload | {"organization": self.id}
+        )
 
 
 class OrganizationCreator(Creator):
