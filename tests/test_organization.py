@@ -25,7 +25,9 @@ def test_organization_attributes_and_methods(organization_api_call):
     client = Client()
     o = client.organization(ORGANIZATION_ID)
     with patch("requests.Session.get") as mock_func:
-        o_from_response = Organization(organization_metadata["id"], _from_response=organization_metadata)
+        o_from_response = Organization(
+            organization_metadata["id"], _from_response=organization_metadata
+        )
         # when instanciating from a response, we don't call the API another time
         mock_func.assert_not_called()
     for attribute in (
@@ -47,7 +49,9 @@ def test_authentification_assertion():
     client = Client()
     with pytest.raises(PermissionError):
         client.organization().create({"name": "Nom"})
-    o_from_response = Organization(organization_metadata["id"], _from_response=organization_metadata)
+    o_from_response = Organization(
+        organization_metadata["id"], _from_response=organization_metadata
+    )
     with pytest.raises(PermissionError):
         o_from_response.delete()
     for method in [

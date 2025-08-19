@@ -41,6 +41,7 @@ class Dataset(BaseObject, ResourceCreator):
 
     def refresh(self, _from_response: dict | None = None):
         from .organization import Organization
+
         BaseObject.refresh(self, _from_response)
         if _from_response:
             resources = _from_response["resources"]
