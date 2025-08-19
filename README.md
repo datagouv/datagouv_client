@@ -50,7 +50,7 @@ d.download_resources(
 organization = Organization("646b7187b50b2a93b1ae3d45")  # you can find an organization's id in the `Informations` tab of its landing page, in "Informations techniques"
 # you can loop through the organization's datasets
 for dat in organization.datasets():
-    print(f"{dat.title} has {len(dat.resource)} resources")
+    print(f"{dat.title} has {len(dat.resources)} resources")
 ```
 
 > NB: If you want to get objects from demo or dev, you must use a client:
