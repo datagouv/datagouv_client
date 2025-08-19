@@ -30,6 +30,13 @@ class Client:
             return Dataset(id, _client=self, fetch=fetch)
         return DatasetCreator(_client=self)
 
+    def organization(self, id: str | None = None, fetch: bool = True):
+        from .organization import Organization, OrganizationCreator
+
+        if id:
+            return Organization(id, _client=self, fetch=fetch)
+        return OrganizationCreator(_client=self)
+
     def get_all_from_api_query(
         self,
         base_query: str,
