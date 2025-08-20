@@ -1,3 +1,5 @@
+![datagouv-client](docs/banner.png)
+
 # **datagouv-client**
 
 [![CircleCI](https://circleci.com/gh/datagouv/datagouv_client.svg?style=svg)](https://circleci.com/gh/datagouv/datagouv_client)
