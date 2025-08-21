@@ -28,7 +28,7 @@ resource = dataset.resources[0]
 resource.download("my_file.csv")
 ```
 
-### 📊 Getting existing datasets and resources
+### 📊 Getting existing objects
 If you only want to retrieve existing objects (aka you don't want to modify them on datagouv), here is what a workflow could look like:
 ```python
 from datagouv import Dataset, Resource, Organization
