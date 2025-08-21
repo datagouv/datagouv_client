@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Add `preview_url` field to resources' attributes [#18](https://github.com/datagouv/csv-detective/pull/18)
 
 ## 0.1.3 (2025-08-21)
 

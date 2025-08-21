@@ -19,6 +19,7 @@ class Resource(BaseObject):
         "internal",
         "last_modified",
         "mime",
+        "preview_url",
         "schema",
         "title",
         "type",
