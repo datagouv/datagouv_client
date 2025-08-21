@@ -35,7 +35,7 @@ class Dataset(BaseObject, ResourceCreator):
     ):
         BaseObject.__init__(self, id, _client)
         self.uri = f"{_client.base_url}/api/1/datasets/{id}/"
-        self.front_url = self.uri.replace("api/1", "fr")
+        self.front_url = self.uri.replace("/api/1", "")
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
 
