@@ -18,7 +18,7 @@ dataset = Dataset("5d13a8b6634f41070a43dff3")  # you can find a dataset's id in 
 print(dataset.title)
 print(dataset.description)
 print(dataset.created_at)
-dataset.organization  # this is an instance of Organization
+print(dataset.organization)  # this is an instance of Organization
 print(dataset)  # this displays all the attributes of the dataset as a dict
 
 # and of course its resources, which are all Resource instances
