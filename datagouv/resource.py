@@ -46,7 +46,7 @@ class Resource(BaseObject):
             if not is_communautary and self.dataset_id is not None
             else f"{_client.base_url}/api/1/datasets/community_resources/{self.id}"
         )
-        self.front_url = self.uri.replace("api/1", "fr").replace("/resources", "/#/resources")
+        self.front_url = self.uri.replace("/api/1", "").replace("/resources", "/#/resources")
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
 
