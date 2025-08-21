@@ -1,0 +1,140 @@
+{
+  "acronym": null,
+  "badges": [
+    {
+      "kind": "public-service"
+    },
+    {
+      "kind": "certified"
+    }
+  ],
+  "business_number_id": "13002526500013",
+  "created_at": "2023-05-22T13:43:35.978000+00:00",
+  "deleted": null,
+  "description": "data.gouv.fr est la plateforme ouverte et communautaire qui vise à centraliser et structurer les données ouvertes en France (notamment les données publiques). Elle permet le dépôt et le référencement de données issues de ministères comme de collectivités locales. Le catalogue contient également des références vers d'autres catalogues d'administration ayant leur propre portail.\n\nL'équipe data.gouv.fr propose de publier certains jeux de données en son nom lorsque ceux-ci proviennent de différentes sources distinctes et qu'ils ont un intérêt en interministériel. ",
+  "extras": {
+    "siretisation:collectivite_territoriale:code_insee": "nan",
+    "siretisation:collectivite_territoriale:niveau": "nan",
+    "siretisation:denomination_unite_legale": "DIRECTION INTERMINISTERIELLE DU NUMERIQUE (DINUM)",
+    "siretisation:est_collectivite_territoriale": "False",
+    "siretisation:est_service_public": "True",
+    "siretisation:found_siret": "13002526500013"
+  },
+  "id": "646b7187b50b2a93b1ae3d45",
+  "last_modified": "2025-08-18T23:13:51.421000+00:00",
+  "logo": "https://static.data.gouv.fr/avatars/1d/f567cfdf4a4d1497298002cc09d772-original.png",
+  "logo_thumbnail": "https://static.data.gouv.fr/avatars/1d/f567cfdf4a4d1497298002cc09d772-100.png",
+  "members": [
+    {
+      "label": "Administrateur",
+      "role": "admin",
+      "since": "2023-05-22T13:43:35.979000+00:00",
+      "user": {
+        "avatar": "https://static.data.gouv.fr/avatars/b9/7bd8843f2e4ddfb61b028030519e7e-original.png",
+        "avatar_thumbnail": "https://static.data.gouv.fr/avatars/b9/7bd8843f2e4ddfb61b028030519e7e-500.png",
+        "class": "User",
+        "email": "***@data.gouv.fr",
+        "first_name": "Jean",
+        "id": "5e6f426e634f417810ab794b",
+        "last_login_at": "2025-08-06T13:46:55.423000",
+        "last_name": "Dupont",
+        "page": "https://www.data.gouv.fr/users/jean-dupont/",
+        "slug": "jean-dupont",
+        "uri": "https://www.data.gouv.fr/api/1/users/jean-dupont/"
+      }
+    },
+    {
+      "label": "Éditeur",
+      "role": "editor",
+      "since": "2023-06-05T08:24:08.836000+00:00",
+      "user": {
+        "avatar": null,
+        "avatar_thumbnail": null,
+        "class": "User",
+        "email": "***@data.gouv.fr",
+        "first_name": "Anne",
+        "id": "646f7a2fc5c5199ab1e22f8d",
+        "last_login_at": "2025-08-18T08:46:01.683000",
+        "last_name": "Martin",
+        "page": "https://www.data.gouv.fr/users/anne-martin/",
+        "slug": "anne-martin",
+        "uri": "https://www.data.gouv.fr/api/1/users/anne-martin/"
+      }
+    }
+  ],
+  "metrics": {
+    "dataservices": 2,
+    "dataservices_by_months": {
+      "2024-08": 0,
+      "2024-09": 0,
+      "2024-10": 0,
+      "2024-11": 1,
+      "2024-12": 0,
+      "2025-01": 0,
+      "2025-02": 0,
+      "2025-03": 0,
+      "2025-04": 0,
+      "2025-05": 0,
+      "2025-06": 0,
+      "2025-07": 0,
+      "2025-08": 0
+    },
+    "datasets": 37,
+    "datasets_by_months": {
+      "2024-08": 1,
+      "2024-09": 2,
+      "2024-10": 1,
+      "2024-11": 0,
+      "2024-12": 0,
+      "2025-01": 2,
+      "2025-02": 1,
+      "2025-03": 1,
+      "2025-04": 1,
+      "2025-05": 3,
+      "2025-06": 1,
+      "2025-07": 1,
+      "2025-08": 0
+    },
+    "datasets_followers_by_months": {
+      "2024-08": 4,
+      "2024-09": 1,
+      "2024-10": 7,
+      "2024-11": 3,
+      "2024-12": 1,
+      "2025-01": 5,
+      "2025-02": 10,
+      "2025-03": 7,
+      "2025-04": 4,
+      "2025-05": 11,
+      "2025-06": 4,
+      "2025-07": 2,
+      "2025-08": 0
+    },
+    "datasets_reuses_by_months": {
+      "2024-08": 0,
+      "2024-09": 2,
+      "2024-10": 7,
+      "2024-11": 5,
+      "2024-12": 2,
+      "2025-01": 3,
+      "2025-02": 3,
+      "2025-03": 9,
+      "2025-04": 8,
+      "2025-05": 12,
+      "2025-06": 4,
+      "2025-07": 1,
+      "2025-08": 1
+    },
+    "followers": 9,
+    "members": 13,
+    "reuses": 6,
+    "reuses_by_months": 0,
+    "reuses_followers_by_months": 0,
+    "views": 1075932
+  },
+  "name": "data.gouv.fr",
+  "page": "https://www.data.gouv.fr/organizations/data-gouv-fr/",
+  "slug": "data-gouv-fr",
+  "uri": "https://www.data.gouv.fr/api/1/organizations/data-gouv-fr/",
+  "url": "https://www.data.gouv.fr/"
+}

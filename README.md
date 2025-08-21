@@ -31,7 +31,7 @@ resource.download("my_file.csv")
 ### 📊 Getting existing datasets and resources
 If you only want to retrieve existing objects (aka you don't want to modify them on datagouv), here is what a workflow could look like:
 ```python
-from datagouv import Dataset, Resource
+from datagouv import Dataset, Resource, Organization
 
 dataset = Dataset("5d13a8b6634f41070a43dff3")  # you can find a dataset's id in the `Informations` tab of its landing page
 
@@ -39,6 +39,7 @@ dataset = Dataset("5d13a8b6634f41070a43dff3")  # you can find a dataset's id in 
 print(dataset.title)
 print(dataset.description)
 print(dataset.created_at)
+print(dataset.organization)  # this is an instance of Organization
 print(dataset)  # this displays all the attributes of the dataset as a dict
 
 # and of course its resources, which are all Resource instances
@@ -65,6 +66,12 @@ d.download_resources(
     folder="data",  # if not specified, saves them into your working directory
     resources_types=["main", "documentation"],  # default is only main resources
 )
+
+
+organization = Organization("646b7187b50b2a93b1ae3d45")  # you can find an organization's id in the `Informations` tab of its landing page, in "Informations techniques"
+# you can loop through the organization's datasets
+for dat in organization.datasets():
+    print(f"{dat.title} has {len(dat.resources)} resources")
 ```
 
 > **Note:** If you encounter errors during API calls, the client will raise appropriate exceptions (e.g., `PermissionError` for authentication issues, `requests.exceptions.HTTPError` for API errors).
@@ -121,6 +128,15 @@ dataset = client.dataset().create(
     },
 )  # this creates a dataset with the values you specified, and instantiates a Dataset
 dataset.update({"tags": ["environment", "water"]})
+
+# alternatively you can create a dataset from an organization, and it will be attached to it
+organization = client.organization("646b7187b50b2a93b1ae3d45")
+dataset = organization.create_dataset(
+    {
+        "title": "New dataset", 
+        "description": "A description is a required",
+    }
+)
 ```
 There are two types of resources on datagouv:
 - `static`: a file is uploaded directly on the platform

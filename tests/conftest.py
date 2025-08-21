@@ -5,6 +5,8 @@ import requests_mock
 
 DATASET_ID = "0123456789abcdef01234567"
 RESOURCE_ID = "aaaaaaaa-1111-bbbb-2222-cccccccccccc"
+ORGANIZATION_ID = "646b7187b50b2a93b1ae3d45"
+OWNER_ID = "637b5c6eef50bb3f5a97b24f"
 DATAGOUV_URL = "https://www.data.gouv.fr/"
 
 with open("tests/dataset_metadata.json", "r") as f:
@@ -15,6 +17,9 @@ with open("tests/resource_metadata_api1.json", "r") as f:
 
 with open("tests/resource_metadata_api2.json", "r") as f:
     resource_metadata_api2 = json.load(f)
+
+with open("tests/organization_metadata.json", "r") as f:
+    organization_metadata = json.load(f)
 
 
 @pytest.fixture
@@ -67,4 +72,11 @@ def remote_resource_api2_call():
             f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/",
             json=remote_metadata,
         )
+        yield m
+
+
+@pytest.fixture
+def organization_api_call():
+    with requests_mock.Mocker() as m:
+        m.get(f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/", json=organization_metadata)
         yield m

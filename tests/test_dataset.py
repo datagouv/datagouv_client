@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 import requests_mock
-from conftest import DATASET_ID, dataset_metadata
+from conftest import DATASET_ID, OWNER_ID, dataset_metadata
 
 from datagouv.base_object import BaseObject
 from datagouv.client import Client
@@ -30,6 +30,7 @@ def test_dataset_attributes_and_methods(dataset_api_call):
             "uri",
             "front_url",
             "resources",
+            "organization",
         ]
         + Dataset._attributes
         + [method for method in dir(BaseObject) if not method.startswith("__")]
@@ -91,3 +92,13 @@ def test_download_dataset_resources(dataset_api_call):
         d.download_resources(folder=folder, resources_types=["main"])
     assert len(os.listdir(folder)) == len([r for r in d.resources if r.type == "main"])
     shutil.rmtree(folder)
+
+
+def test_dataset_has_owner():
+    owner = {"id": OWNER_ID}
+    dataset_with_owner = Dataset(
+        DATASET_ID,
+        _from_response=dataset_metadata | {"organization": None} | {"owner": owner},
+    )
+    assert dataset_with_owner.organization is None
+    assert dataset_with_owner.owner == owner

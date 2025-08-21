@@ -20,7 +20,6 @@ class Dataset(BaseObject, ResourceCreator):
         "last_modified",
         "last_update",
         "metrics",
-        "organization",
         "owner",
         "tags",
         "title",
@@ -41,15 +40,25 @@ class Dataset(BaseObject, ResourceCreator):
             self.refresh(_from_response=_from_response)
 
     def refresh(self, _from_response: dict | None = None):
+        from .organization import Organization
+
         BaseObject.refresh(self, _from_response)
         if _from_response:
             resources = _from_response["resources"]
+            organization = _from_response["organization"]
         else:
-            resources = self._client.session.get(self.uri).json()["resources"]
+            metadata = self._client.session.get(self.uri).json()
+            resources = metadata["resources"]
+            organization = metadata["organization"]
         self.resources = [
             Resource(id=r["id"], dataset_id=self.id, _client=self._client, _from_response=r)
             for r in resources
         ]
+        self.organization = (
+            Organization(organization["id"], _from_response=organization)
+            if organization is not None
+            else None
+        )
 
     def download_resources(self, folder: str | None = None, resources_types: list[str] = ["main"]):
         for res in self.resources:
