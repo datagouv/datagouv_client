@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 0.1.2 (2025-08-21)
 
 - Switch to pyproject [#11](https://github.com/datagouv/csv-detective/pull/11)
