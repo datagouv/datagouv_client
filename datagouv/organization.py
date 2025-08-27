@@ -36,7 +36,7 @@ class Organization(BaseObject):
 
     def datasets(self) -> Iterator[Dataset]:
         for item in self._client.get_all_from_api_query(f"api/1/organizations/{self.id}/datasets/"):
-            yield Dataset(item["id"], _from_response=item)
+            yield Dataset(item["id"], _client=self._client, _from_response=item)
 
     def create_dataset(self, payload: dict) -> Dataset:
         # we don't simply heritate from DatasetCreator to have a different method name
