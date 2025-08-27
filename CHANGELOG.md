@@ -3,6 +3,7 @@
 ## Current (in progress)
 
 - Add `preview_url` field to resources' attributes [#18](https://github.com/datagouv/csv-detective/pull/18)
+- Pass the organization's client to its datasets [#19](https://github.com/datagouv/csv-detective/pull/19)
 
 ## 0.1.3 (2025-08-21)
 
