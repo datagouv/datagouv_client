@@ -21,7 +21,7 @@ class BaseObject:
         self._client = _client
         self._base_metrics_url = (
             f"https://metric-api.data.gouv.fr/api/{self.__class__.__name__.lower()}s/"
-            f"data/?{self.__class__.__name__.lower()}_id__exact="
+            f"data/?{self.__class__.__name__.lower()}_id__exact={id}"
             if self._client.environment == "www"
             else None
         )
@@ -82,7 +82,7 @@ class BaseObject:
     def get_metrics(self, start_month: str | None = None, end_month: str | None = None) -> Iterator[dict]:
         if self._base_metrics_url is None:
             raise ValueError("Metrics are only available for production objects.")
-        url = self._base_metrics_url + self.id
+        url = self._base_metrics_url
         if start_month is not None:
             if not re.match(r"^\d{4}-\d{2}$", start_month):
                 raise ValueError("`start_month` must look like YYYY-MM")
