@@ -79,7 +79,9 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def get_metrics(self, start_month: str | None = None, end_month: str | None = None) -> Iterator[dict]:
+    def get_metrics(
+        self, start_month: str | None = None, end_month: str | None = None
+    ) -> Iterator[dict]:
         if self._base_metrics_url is None:
             raise ValueError("Metrics are only available for production objects.")
         url = self._base_metrics_url
