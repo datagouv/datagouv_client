@@ -1,6 +1,6 @@
 import logging
 
-import requests
+import httpx
 
 from .client import Client
 from .retry import simple_connection_retry
@@ -34,7 +34,7 @@ class BaseObject:
         return metadata
 
     @simple_connection_retry
-    def update(self, payload: dict) -> requests.Response:
+    def update(self, payload: dict) -> httpx.Response:
         assert_auth(self._client)
         logging.info(f"🔁 Putting {self.uri} with {payload}")
         r = self._client.session.put(self.uri, json=payload)
@@ -43,7 +43,7 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def delete(self) -> requests.Response:
+    def delete(self) -> httpx.Response:
         assert_auth(self._client)
         logging.info(f"🚮 Deleting {self.uri}")
         r = self._client.session.delete(self.uri)
@@ -51,7 +51,7 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def update_extras(self, payload: dict) -> requests.Response:
+    def update_extras(self, payload: dict) -> httpx.Response:
         assert_auth(self._client)
         logging.info(f"🔁 Putting {self.uri} with extras {payload}")
         r = self._client.session.put(self.uri.replace("api/1", "api/2") + "extras/", json=payload)
@@ -60,7 +60,7 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def delete_extras(self, payload: dict) -> requests.Response:
+    def delete_extras(self, payload: dict) -> httpx.Response:
         assert_auth(self._client)
         logging.info(f"🚮 Deleting extras {payload} for {self.uri}")
         r = self._client.session.delete(

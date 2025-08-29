@@ -1,8 +1,8 @@
 import os
 from unittest.mock import patch
 
+import httpx  # noqa
 import pytest
-import requests_mock
 from conftest import DATASET_ID, RESOURCE_ID, resource_metadata_api1
 
 from datagouv.base_object import BaseObject
@@ -31,7 +31,7 @@ def test_remote_resource_instance_with_dataset_id(remote_resource_api1_call):
 def test_resource_attributes_and_methods(static_resource_api2_call):
     client = Client()
     r = client.resource(RESOURCE_ID)
-    with patch("requests.Session.get") as mock_func:
+    with patch("httpx.Client.get") as mock_func:
         r_from_response = Resource(
             RESOURCE_ID, dataset_id=DATASET_ID, _from_response=resource_metadata_api1
         )
@@ -84,7 +84,7 @@ def test_upload_file_into_remote(remote_resource_api2_call):
 
 def test_resource_no_fetch():
     # no fetch only if the dataset_id is given, otherwise we ping api/2
-    with patch("requests.Session.get") as mock_func:
+    with patch("httpx.Client.get") as mock_func:
         r = Resource(RESOURCE_ID, DATASET_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(r, a, None) is None for a in Resource._attributes)
@@ -98,14 +98,16 @@ def test_resource_no_fetch():
         None,
     ],
 )
-def test_resource_download(remote_resource_api1_call, file_name):
+def test_resource_download(remote_resource_api1_call, file_name, httpx_mock):
     r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
-    with requests_mock.Mocker() as m:
-        m.get(r.url, content=b"a,b,c\n1,2,3")
-        r.download(file_name)
-        local_name = file_name or f"{r.id}.{r.format}"
-        with open(local_name, "r") as f:
-            rows = f.readlines()
-        assert rows[0] == "a,b,c\n"
-        assert rows[1] == "1,2,3"
+    httpx_mock.add_response(
+        url=r.url,
+        content=b"a,b,c\n1,2,3",
+    )
+    r.download(file_name)
+    local_name = file_name or f"{r.id}.{r.format}"
+    with open(local_name, "r") as f:
+        rows = f.readlines()
+    assert rows[0] == "a,b,c\n"
+    assert rows[1] == "1,2,3"
     os.remove(local_name)

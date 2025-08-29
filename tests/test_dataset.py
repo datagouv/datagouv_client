@@ -2,8 +2,8 @@ import os
 import shutil
 from unittest.mock import patch
 
+import httpx  # noqa
 import pytest
-import requests_mock
 from conftest import DATASET_ID, OWNER_ID, dataset_metadata
 
 from datagouv.base_object import BaseObject
@@ -20,7 +20,7 @@ def test_dataset_instance(dataset_api_call):
 def test_dataset_attributes_and_methods(dataset_api_call):
     client = Client()
     d = client.dataset(DATASET_ID)
-    with patch("requests.Session.get") as mock_func:
+    with patch("httpx.Client.get") as mock_func:
         d_from_response = Dataset(dataset_metadata["id"], _from_response=dataset_metadata)
         # when instanciating from a response, we don't call the API another time
         mock_func.assert_not_called()
@@ -66,7 +66,7 @@ def test_authentification_assertion():
 
 
 def test_resources():
-    with patch("requests.Session.get") as mock_func:
+    with patch("httpx.Client.get") as mock_func:
         d_from_response = Dataset(DATASET_ID, _from_response=dataset_metadata)
         assert len(d_from_response.resources) == len(dataset_metadata["resources"])
         assert all(isinstance(r, Resource) for r in d_from_response.resources)
@@ -75,21 +75,26 @@ def test_resources():
 
 
 def test_dataset_no_fetch():
-    with patch("requests.Session.get") as mock_func:
+    with patch("httpx.Client.get") as mock_func:
         d = Dataset(DATASET_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(d, a, None) is None for a in Dataset._attributes)
     assert d.uri
 
 
-def test_download_dataset_resources(dataset_api_call):
+def test_download_dataset_resources(dataset_api_call, httpx_mock):
     d = Dataset(DATASET_ID)
     folder = "data_test"
     os.mkdir(folder)
-    with requests_mock.Mocker() as m:
-        for res in d.resources:
-            m.get(res.url, content=b"a,b,c\n1,2,3")
-        d.download_resources(folder=folder, resources_types=["main"])
+    for res in d.resources:
+        # only mocking the resources we download, otherwise httpx raises
+        if res.type == "main":
+            httpx_mock.add_response(
+                url=res.url,
+                content=b"a,b,c\n1,2,3",
+                is_reusable=True,
+            )
+    d.download_resources(folder=folder, resources_types=["main"])
     assert len(os.listdir(folder)) == len([r for r in d.resources if r.type == "main"])
     shutil.rmtree(folder)
 

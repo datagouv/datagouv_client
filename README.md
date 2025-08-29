@@ -74,7 +74,7 @@ for dat in organization.datasets():
     print(f"{dat.title} has {len(dat.resources)} resources")
 ```
 
-> **Note:** If you encounter errors during API calls, the client will raise appropriate exceptions (e.g., `PermissionError` for authentication issues, `requests.exceptions.HTTPError` for API errors).
+> **Note:** If you encounter errors during API calls, the client will raise appropriate exceptions (e.g., `PermissionError` for authentication issues, `httpx.HTTPError` for API errors).
 
 > **Note:** If you want to get objects from demo or dev, you must use a client:
 ```python
