@@ -1,6 +1,6 @@
 import logging
 
-import requests
+import httpx
 
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
@@ -79,10 +79,10 @@ class Resource(BaseObject):
     def download(self, path: str | None = None, chunk_size: int = 8192, **kwargs):
         if path is None:
             path = f"{self.id}.{self.format}"
-        with requests.get(self.url, stream=True, **kwargs) as r:
+        with httpx.stream("GET", self.url, **kwargs) as r:
             r.raise_for_status()
             with open(path, "wb") as f:
-                for chunk in r.iter_content(chunk_size=chunk_size):
+                for chunk in r.iter_raw(chunk_size=chunk_size):
                     f.write(chunk)
 
     def get_api2_metadata(self) -> dict:

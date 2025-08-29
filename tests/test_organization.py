@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
+import httpx  # noqa
 import pytest
-import requests_mock
 from conftest import (
     DATAGOUV_URL,
     ORGANIZATION_ID,
@@ -24,7 +24,7 @@ def test_organization_instance(organization_api_call):
 def test_organization_attributes_and_methods(organization_api_call):
     client = Client()
     o = client.organization(ORGANIZATION_ID)
-    with patch("requests.Session.get") as mock_func:
+    with patch("httpx.Client.get") as mock_func:
         o_from_response = Organization(
             organization_metadata["id"], _from_response=organization_metadata
         )
@@ -70,20 +70,19 @@ def test_authentification_assertion():
         o_from_response.create_dataset({"title": "Titre", "owner": OWNER_ID})
 
 
-def test_datasets():
-    with requests_mock.Mocker() as m:
-        m.get(
-            f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/datasets/",
-            json={"data": [dataset_metadata], "next_page": None},
-        )
-        o_from_response = Organization(ORGANIZATION_ID, _from_response=organization_metadata)
-        datasets = list(o_from_response.datasets())
-        assert len(datasets) == 1
-        assert isinstance(datasets[0], Dataset)
+def test_datasets(httpx_mock):
+    httpx_mock.add_response(
+        url=f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/datasets/",
+        json={"data": [dataset_metadata], "next_page": None},
+    )
+    o_from_response = Organization(ORGANIZATION_ID, _from_response=organization_metadata)
+    datasets = list(o_from_response.datasets())
+    assert len(datasets) == 1
+    assert isinstance(datasets[0], Dataset)
 
 
 def test_organization_no_fetch():
-    with patch("requests.Session.get") as mock_func:
+    with patch("httpx.Client.get") as mock_func:
         o = Organization(ORGANIZATION_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(o, a, None) is None for a in Organization._attributes)
