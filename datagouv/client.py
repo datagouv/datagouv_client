@@ -11,6 +11,7 @@ class Client:
             raise ValueError(f"`environment` must be in {self._envs}")
         self.base_url = f"https://{environment}.data.gouv.fr"
         self.session = httpx.Client()
+        self.environment = environment
         self._authenticated = False
         if api_key:
             self._authenticated = True
@@ -41,8 +42,8 @@ class Client:
         self,
         base_query: str,
         next_page: str = "next_page",
-        ignore_errors: bool = False,
         mask: str | None = None,
+        _ignore_base_url: bool = False,
     ) -> Iterator[dict]:
         """/!\ only for paginated endpoints"""
 
@@ -55,14 +56,15 @@ class Client:
         headers = {}
         if mask is not None:
             headers["X-fields"] = mask + f",{next_page}"
-        r = self.session.get(f"{self.base_url}/{base_query}", headers=headers)
-        if not ignore_errors:
-            r.raise_for_status()
+        r = self.session.get(
+            base_query if _ignore_base_url else f"{self.base_url}/{base_query}",
+            headers=headers,
+        )
+        r.raise_for_status()
         for elem in r.json()["data"]:
             yield elem
         while get_link_next_page(r.json(), next_page):
             r = self.session.get(get_link_next_page(r.json(), next_page), headers=headers)
-            if not ignore_errors:
-                r.raise_for_status()
+            r.raise_for_status()
             for data in r.json()["data"]:
                 yield data
