@@ -1,7 +1,38 @@
-venv_datagouv_client/
-datagouv_client.egg-info/
-*__pycache__*
-dist
+# Backup files
+*.txt~
+*.py~
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+__pycache__/
+
+# IDEs and editors
+.vscode
+.spyderproject
+
+# Git backup files
+.gitignore~
+
+# Build and distribution
 build
+datagouv_client.egg-info/
+dist
+
+# MacOS system files
+.DS_Store
+
+# Python environments
+venv
 .venv
+venv_datagouv_client/
+
+# Python package managers
+.python-version
+pdm.lock
+uv.lock
+
+# Code quality tools
+.ruff_cache/
+
+# Project specific files
 mise.local.toml
