@@ -65,12 +65,12 @@ class Dataset(BaseObject, ResourceCreator):
     ):
         for res in self.resources:
             if res.type in resources_types:
-                logging.info(f"Downloading {res.url}")
                 if folder is not None:
                     folder_path = Path(folder) if isinstance(folder, str) else folder
                     path = folder_path / f"{res.id}.{res.format}"
                 else:
                     path = None
+                logging.info(f"Downloading {res.url}")
                 res.download(path=path)
 
 
