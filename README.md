@@ -83,9 +83,9 @@ from datagouv import Client, Dataset, Resource
 dataset = Dataset("5d13a8b6634f41070a43dff3", _client=Client("demo"))
 ```
 
-You can also access objects' metrics (views, downloads) with the `get_metrics` function:
+You can also access objects' metrics (views, downloads) with the `get_monthly_traffic_metrics` function:
 ```python
-for month_metrics in Dataset("5d13a8b6634f41070a43dff3").get_metrics(
+for month_metrics in Dataset("5d13a8b6634f41070a43dff3").get_monthly_traffic_metrics(
     start_month="2025-01",  # optional, goes back as far as possible if not set
     end_month="2025-06",  # optional, until today if not set
 ):
