@@ -79,7 +79,7 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def get_monthly_tarffic_metrics(
+    def get_monthly_traffic_metrics(
         self, start_month: str | None = None, end_month: str | None = None
     ) -> Iterator[dict]:
         if self._base_metrics_url is None:
