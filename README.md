@@ -57,10 +57,10 @@ print(resource)
 # you can also access a dataset from one of its resources
 d = resource.dataset()  # **Note:** this is a method, and returns an instance of Dataset
 
-# you can also download a resource locally (**Note:** make sure to create the parent folders upstream)
+# you can also download a resource locally (**Note:** if it doesn't exist, parent path will be created)
 resource.download("./file.csv")  # this saves the resource in your working directory as "file.csv"
 
-# and a subset or all resources of a dataset (**Note:** make sure to create the parent folders upstream)
+# and a subset or all resources of a dataset (**Note:** if it doesn't exist, parent path will be created)
 # the files are named `resource_id.format` (for instance f868cca6-8da1-4369-a78d-47463f19a9a3.csv)
 d.download_resources(
     folder="data",  # if not specified, saves them into your working directory
