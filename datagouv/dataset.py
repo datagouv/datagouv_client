@@ -67,6 +67,8 @@ class Dataset(BaseObject, ResourceCreator):
             if res.type in resources_types:
                 if folder is not None:
                     folder_path = Path(folder) if isinstance(folder, str) else folder
+                    # Ensure the folder exists
+                    folder_path.mkdir(parents=True, exist_ok=True)
                     path = folder_path / f"{res.id}.{res.format}"
                 else:
                     path = None
