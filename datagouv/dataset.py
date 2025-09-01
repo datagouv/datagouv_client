@@ -1,5 +1,5 @@
 import logging
-import os
+from pathlib import Path
 
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
@@ -60,13 +60,18 @@ class Dataset(BaseObject, ResourceCreator):
             else None
         )
 
-    def download_resources(self, folder: str | None = None, resources_types: list[str] = ["main"]):
+    def download_resources(
+        self, folder: Path | str | None = None, resources_types: list[str] = ["main"]
+    ):
         for res in self.resources:
             if res.type in resources_types:
                 logging.info(f"Downloading {res.url}")
-                res.download(
-                    path=(os.path.join(folder, f"{res.id}.{res.format}") if folder else None),
-                )
+                if folder is not None:
+                    folder_path = Path(folder) if isinstance(folder, str) else folder
+                    path = folder_path / f"{res.id}.{res.format}"
+                else:
+                    path = None
+                res.download(path=path)
 
 
 class DatasetCreator(Creator):

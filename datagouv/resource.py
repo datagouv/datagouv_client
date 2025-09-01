@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 import httpx
 
@@ -76,9 +77,13 @@ class Resource(BaseObject):
 
         return Dataset(self.dataset_id, _client=self._client)
 
-    def download(self, path: str | None = None, chunk_size: int = 8192, **kwargs):
+    def download(self, path: Path | str | None = None, chunk_size: int = 8192, **kwargs):
         if path is None:
-            path = f"{self.id}.{self.format}"
+            path = Path(f"{self.id}.{self.format}")
+        if isinstance(path, str):
+            path = Path(path)
+        # Ensure parent directory exists
+        path.parent.mkdir(parents=True, exist_ok=True)
         with httpx.stream("GET", self.url, **kwargs) as r:
             r.raise_for_status()
             with open(path, "wb") as f:
