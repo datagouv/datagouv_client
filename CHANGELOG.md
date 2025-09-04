@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Enable creating a static resource from a URL [#26](https://github.com/datagouv/csv-detective/pull/26)
 
 ## 0.1.4 (2025-09-04)
 

@@ -54,7 +54,7 @@ def test_resource_attributes_and_methods(static_resource_api2_call):
 def test_authentification_assertion():
     client = Client()
     with pytest.raises(PermissionError):
-        client.resource().create_static({"path": "path"}, {"title": "Titre"}, DATASET_ID)
+        client.resource().create_static("path/to/file.csv", {"title": "Titre"}, DATASET_ID)
     with pytest.raises(PermissionError):
         client.resource().create_remote({"url": "url", "title": "Titre"}, DATASET_ID)
     r_from_response = Resource(
@@ -111,3 +111,14 @@ def test_resource_download(remote_resource_api1_call, file_name, httpx_mock):
     assert rows[0] == "a,b,c\n"
     assert rows[1] == "1,2,3"
     os.remove(local_name)
+
+
+def test_create_static_from_url():
+    client = Client(api_key="SUPER_SECRET")
+    with pytest.raises(ValueError):
+        client.resource().create_static(
+            "https://example.com/file.csv",
+            {"title": "Titre"},
+            DATASET_ID,
+            from_url=True,
+        )

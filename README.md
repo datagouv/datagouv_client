@@ -216,6 +216,18 @@ resource = dataset.create_remote(
 # to update the file of a static resource
 resource.update({"title": "New title"}, file_to_upload="path/to/your/new_file.txt")
 ```
+
+You can also create a static resource from a file using its URL by setting `from_url=True`, in which case the `file_name` and `mime` arguments are required:
+```python
+resource = dataset.create_static(
+    file_to_upload="https://wesite.org/path/to/your/file.txt",
+    payload={"title": "New static resource"},
+    from_url=True,
+    file_name="file.txt",
+    mime="text/plain",
+)  # this creates a static resource with the values you specified, and instantiates a Resource
+```
+
 > **Note:** If you are not planning to use an object's attributes, you may prevent the initial API call using `fetch=False`, in order not to unnecessarily ping the API.
 ```python
 dataset = client.dataset("5d13a8b6634f41070a43dff3", fetch=False)
