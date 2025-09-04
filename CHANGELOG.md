@@ -6,6 +6,7 @@
 - Pass the organization's client to its datasets [#19](https://github.com/datagouv/csv-detective/pull/19)
 - Switch to `httpx` [#21](https://github.com/datagouv/csv-detective/pull/21)
 - Add metrics [#22](https://github.com/datagouv/csv-detective/pull/22)
+- Accept `Path` type as download arguments, and use `Path` internally to handle file paths [#24](https://github.com/datagouv/datagouv_client/pull/24)
 
 ## 0.1.3 (2025-08-21)
 
