@@ -151,10 +151,13 @@ class ResourceCreator(Creator):
     @simple_connection_retry
     def create_static(
         self,
-        file_to_upload: str,  # the path of the file
+        file_to_upload: str,  # the path or URL of the file
         payload: dict,
         dataset_id: str | None = None,
         is_communautary: bool = False,
+        from_url: bool = False,
+        file_name: str | None = None,
+        mime: str | None = None,
     ) -> Resource:
         if dataset_id and self.__class__.__name__ == "Dataset":
             raise ValueError(
@@ -170,9 +173,26 @@ class ResourceCreator(Creator):
         if is_communautary:
             url += "community/"
         logging.info(f"🆕 Creating '{payload['title']}' for {file_to_upload}")
-        r = self._client.session.post(url, files={"file": open(file_to_upload, "rb")})
-        r.raise_for_status()
-        metadata = r.json()
+        if from_url:
+            if file_name is None or mime is None:
+                raise ValueError(
+                    "When uploading from a URL, file_name and mime arguments are required."
+                )
+            with self._client.session.stream("GET", file_to_upload) as streamed:
+                streamed.raise_for_status()
+                streamed.read()
+                with self._client.session.stream(
+                    "POST",
+                    url,
+                    files={"file": (file_name, streamed.content, mime)},
+                ) as r:
+                    r.raise_for_status()
+                    r.read()
+                    metadata = r.json()
+        else:
+            r = self._client.session.post(url, files={"file": open(file_to_upload, "rb")})
+            r.raise_for_status()
+            metadata = r.json()
         resource_id = metadata["id"]
         r = Resource(
             id=resource_id,
