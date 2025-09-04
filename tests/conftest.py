@@ -1,6 +1,5 @@
 import json
 
-import httpx  # noqa
 import pytest
 
 DATASET_ID = "0123456789abcdef01234567"

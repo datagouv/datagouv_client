@@ -83,6 +83,48 @@ from datagouv import Client, Dataset, Resource
 dataset = Dataset("5d13a8b6634f41070a43dff3", _client=Client("demo"))
 ```
 
+You can also access objects' metrics (views, downloads) with the `get_monthly_traffic_metrics` function:
+```python
+for month_metrics in Dataset("5d13a8b6634f41070a43dff3").get_monthly_traffic_metrics(
+    start_month="2025-01",  # optional, goes back as far as possible if not set
+    end_month="2025-06",  # optional, until today if not set
+):
+    print(month_metrics)
+```
+The metrics differ depending on the object:
+- for datasets:
+```json
+{
+    "__id": 43110395,
+    "dataset_id": "6789251f3a805425afee55e6",
+    "metric_month": "2025-01",
+    "monthly_visit": 233,
+    "monthly_download_resource": 3
+}
+```
+- for resources:
+```json
+{
+    "__id": 58728461,
+    "resource_id": "5ffa8553-0e8f-4622-add9-5c0b593ca1f8",
+    "dataset_id": "5c4ae55a634f4117716d5656",
+    "metric_month": "2025-04",
+    "monthly_download_resource": 5669
+}
+```
+- for organizations:
+```json
+{
+    "__id": 7,
+    "organization_id": "646b7187b50b2a93b1ae3d45",
+    "metric_month": "2023-07",
+    "monthly_visit_dataset": 27196,
+    "monthly_download_resource": 1085933,
+    "monthly_visit_reuse": 123,
+    "monthly_visit_dataservice": 456
+}
+```
+
 ### 🛠️ Interacting with objects online
 If you want to modify objects on the datagouv platforms, you will need to create an authenticated client:
 ```python

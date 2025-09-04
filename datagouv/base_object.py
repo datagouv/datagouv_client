@@ -1,4 +1,6 @@
 import logging
+import re
+from typing import Iterator
 
 import httpx
 
@@ -17,6 +19,12 @@ class BaseObject:
     def __init__(self, id: str | None = None, _client: Client = Client()):
         self.id = id
         self._client = _client
+        self._base_metrics_url = (
+            f"https://metric-api.data.gouv.fr/api/{self.__class__.__name__.lower()}s/"
+            f"data/?{self.__class__.__name__.lower()}_id__exact={id}"
+            if self._client.environment == "www"
+            else None
+        )
 
     def __repr__(self) -> str:
         return str(self.__dict__)
@@ -69,6 +77,27 @@ class BaseObject:
         r.raise_for_status()
         self.refresh()
         return r
+
+    @simple_connection_retry
+    def get_monthly_traffic_metrics(
+        self, start_month: str | None = None, end_month: str | None = None
+    ) -> Iterator[dict]:
+        if self._base_metrics_url is None:
+            raise ValueError("Metrics are only available for production objects.")
+        url = self._base_metrics_url
+        if start_month is not None:
+            if not re.match(r"^\d{4}-\d{2}$", start_month):
+                raise ValueError("`start_month` must look like YYYY-MM")
+            url += f"&metric_month__greater={start_month}"
+        if end_month is not None:
+            if not re.match(r"^\d{4}-\d{2}$", end_month):
+                raise ValueError("`end_month` must look like YYYY-MM")
+            url += f"&metric_month__less={end_month}"
+        return Client().get_all_from_api_query(
+            url,
+            next_page="links.next",
+            _ignore_base_url=True,
+        )
 
 
 class Creator:
