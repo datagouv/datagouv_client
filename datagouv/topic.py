@@ -8,16 +8,16 @@ class Topic(BaseObject):
     _datasets: list[Dataset] = []
 
     _attributes = [
-        "name",
-        "slug",
-        "description",
-        "tags",
-        "featured",
-        "private",
         "created_at",
-        "spatial",
+        "description",
+        "featured",
         "last_modified",
+        "name",
         "owner",
+        "private",
+        "slug",
+        "spatial",
+        "tags",
         "uri",
         "extras",
     ]
