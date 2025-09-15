@@ -65,6 +65,6 @@ class Topic(BaseObject):
         if self._datasets is None:
             self._datasets = []
             for element in self.elements:
-                if element["element"].get("class") == "Dataset":
+                if (element["element"] or {}).get("class") == "Dataset":
                     self._datasets.append(Dataset(element["element"]["id"]))
         return self._datasets

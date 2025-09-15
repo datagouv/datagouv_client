@@ -2,6 +2,20 @@
   "data": [
     {
       "id": "68c3dfbdf33154b8fabe1671",
+      "title": "Not a dataset",
+      "description": "XXX",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/5dceb39c634f416d5593c858",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": null
+    },
+    {
+      "id": "68c3dfbdf33154b8fabe1671",
       "title": "Impact du service public numérique Camino",
       "description": "Camino se charge d'ouvrir les données du domaine minier pour partager l'information sur les projets et faciliter leur gestion.  \nPlus d'information sur cette start up : https://beta.gouv.fr/startups/camino.html. ",
       "tags": [],
