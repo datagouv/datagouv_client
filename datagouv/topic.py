@@ -36,11 +36,7 @@ class Topic(BaseObject):
         from .organization import Organization
 
         metadata = super().refresh(_from_response)
-
-        if _from_response:
-            organization = _from_response["organization"]
-        else:
-            organization = metadata["organization"]
+        organization = metadata["organization"]
         self.organization = (
             Organization(organization["id"], _from_response=organization)
             if organization is not None
