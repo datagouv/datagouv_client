@@ -30,7 +30,6 @@ class Topic(BaseObject):
     ):
         BaseObject.__init__(self, id, _client)
         self.uri = f"{_client.base_url}/api/2/topics/{id}/"
-        self.front_url = self.uri.replace("/api/2", "")
         self.refresh(_from_response=_from_response)
 
     def refresh(self, _from_response: dict | None = None, include_elements: bool = False) -> dict:
