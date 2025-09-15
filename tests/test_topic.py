@@ -16,7 +16,7 @@ def test_topic_attributes_and_methods(topic_api_call):
     client = Client()
     topic = client.topic(TOPIC_ID)
     with patch("httpx.Client.get") as mock_func:
-        topic_from_response = Topic(topic.id, _from_response=topic_metadata)
+        topic_from_response = Topic(TOPIC_ID, _from_response=topic_metadata)
         # when instanciating from a response, we don't call the API another time
         mock_func.assert_not_called()
     for attribute in (

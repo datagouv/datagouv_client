@@ -26,7 +26,7 @@ class Topic(BaseObject):
 
     def __init__(
         self,
-        id: str | None = None,
+        id: str,
         _client: Client = Client(),
         _from_response: dict | None = None,
     ):
