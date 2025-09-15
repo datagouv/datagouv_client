@@ -4,6 +4,7 @@ from conftest import OWNER_ID, TOPIC_ID, elements_metadata, topic_metadata
 
 from datagouv.base_object import BaseObject
 from datagouv.client import Client
+from datagouv.organization import Organization
 from datagouv.topic import Topic
 
 
