@@ -36,13 +36,13 @@ def test_topic_attributes_and_methods(topic_api_call):
 def test_elements(topic_api_call, elements_api_call):
     topic = Topic(TOPIC_ID)
     elements = topic.elements
-    assert len(elements) == len(elements_metadata["data"])
+    assert len(list(elements)) == len(elements_metadata["data"])
 
 
 def test_datasets(topic_api_call, elements_api_call, dataset_catchall_api_call):
     topic = Topic(TOPIC_ID)
     datasets = topic.datasets
-    assert len(datasets) == len(
+    assert len(list(datasets)) == len(
         [
             e
             for e in elements_metadata["data"]
