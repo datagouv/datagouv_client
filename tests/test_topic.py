@@ -22,7 +22,6 @@ def test_topic_attributes_and_methods(topic_api_call):
         [
             "id",
             "uri",
-            "front_url",
             "organization",
         ]
         + Topic._attributes

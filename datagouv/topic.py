@@ -4,8 +4,8 @@ from .dataset import Dataset
 
 
 class Topic(BaseObject):
-    _elements: list = []
-    _datasets: list[Dataset] = []
+    _elements: list | None = None
+    _datasets: list | None = None
 
     _attributes = [
         "created_at",
@@ -45,15 +45,15 @@ class Topic(BaseObject):
 
         if include_elements:
             # invalidate caches so that the next call will fetch fresh data
-            self._elements = []
-            self._datasets = []
+            self._elements = None
+            self._datasets = None
 
         return metadata
 
     @property
     def elements(self) -> list[dict]:
         """Lazy fetch elements in raw form"""
-        if not self._elements:
+        if self._elements is None:
             self._elements = list(
                 self._client.get_all_from_api_query(f"{self.uri}elements/")
             )
@@ -62,7 +62,8 @@ class Topic(BaseObject):
     @property
     def datasets(self) -> list[Dataset]:
         """Lazy fetch topic.Datasets"""
-        if not self._datasets:
+        if self._datasets is None:
+            self._datasets = []
             for element in self.elements:
                 if element["element"].get("class") == "Dataset":
                     self._datasets.append(Dataset(element["element"]["id"]))
