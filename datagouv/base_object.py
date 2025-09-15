@@ -16,6 +16,9 @@ def assert_auth(client: Client) -> None:
 
 
 class BaseObject:
+    uri: str
+    _attributes: list[str] = []
+
     def __init__(self, id: str | None = None, _client: Client = Client()):
         self.id = id
         self._client = _client
@@ -71,9 +74,7 @@ class BaseObject:
     def delete_extras(self, payload: dict) -> httpx.Response:
         assert_auth(self._client)
         logging.info(f"🚮 Deleting extras {payload} for {self.uri}")
-        r = self._client.session.delete(
-            self.uri.replace("api/1", "api/2") + "extras/", json=payload
-        )
+        r = self._client.session.delete(self.uri.replace("api/1", "api/2") + "extras/")
         r.raise_for_status()
         self.refresh()
         return r

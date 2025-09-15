@@ -16,7 +16,7 @@ pip install datagouv-client
 
 ### 📥 Quick Start
 ```python
-from datagouv import Dataset, Resource
+from datagouv import Dataset, Resource, Topic
 
 # Get a dataset and its resources
 dataset = Dataset("5d13a8b6634f41070a43dff3")
@@ -26,6 +26,11 @@ print(f"Resources: {len(dataset.resources)}")
 # Download a resource
 resource = dataset.resources[0]
 resource.download("my_file.csv")
+
+# Get a topic and its elements
+topic = Topic("68b6e6dbdac745f47d4ff6e0")
+elements = topic.elements
+datasets = topic.datasets
 ```
 
 ### 📊 Getting existing objects
@@ -163,7 +168,7 @@ With an authenticated client, you are also allowed to create datasets and resour
 ```python
 dataset = client.dataset().create(
     {
-        "title": "New dataset", 
+        "title": "New dataset",
         "description": "A description is required",
         "organization": "646b7187b50b2a93b1ae3d45",  # the organization that will own the dataset
     },
@@ -174,7 +179,7 @@ dataset.update({"tags": ["environment", "water"]})
 organization = client.organization("646b7187b50b2a93b1ae3d45")
 dataset = organization.create_dataset(
     {
-        "title": "New dataset", 
+        "title": "New dataset",
         "description": "A description is a required",
     }
 )

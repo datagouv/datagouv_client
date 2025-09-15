@@ -1,0 +1,128 @@
+{
+  "data": [
+    {
+      "id": "68c3dfbdf33154b8fabe1671",
+      "title": "Impact du service public numérique Camino",
+      "description": "Camino se charge d'ouvrir les données du domaine minier pour partager l'information sur les projets et faciliter leur gestion.  \nPlus d'information sur cette start up : https://beta.gouv.fr/startups/camino.html. ",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/5dceb39c634f416d5593c858",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": {
+        "class": "Dataset",
+        "id": "5dceb39c634f416d5593c858"
+      }
+    },
+    {
+      "id": "68c3dfbdf33154b8fabe1672",
+      "title": "Indicateurs d'impact de DossierFacile ",
+      "description": "DossierFacile est une plateforme en ligne qui accompagne gratuitement les candidats locataires dans la constitution de leur dossier de location. Un DossierFacile, c’est un dossier simple, en ligne et totalement gratuit qui aide les locataires à rassurer bailleurs et professionnels de l’immobilier. \n\nDossierFacile mesure son impact en nombre de personnes accompagnées, qui sont assimilées au nombre de comptes uniques.\n\nPlus d'information : https://beta.gouv.fr/startups/dossierfacile.html",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/682ee597f1343124de616db7",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": {
+        "class": "Dataset",
+        "id": "682ee597f1343124de616db7"
+      }
+    },
+    {
+      "id": "68c3dfbdf33154b8fabe1673",
+      "title": "Impact de BoRiS",
+      "description": "BoRiS informe les bénéficiaires potentiels du Bail Réel Solidaire, simule l'éligibilité au dispositif et met en relation les acheteurs avec les Organismes Fonciers Solidaires. \n\nPlus d'informations : https://beta.gouv.fr/startups/boris.html",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/684ad52ff704c49ecc2a0f27",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": {
+        "class": "Dataset",
+        "id": "684ad52ff704c49ecc2a0f27"
+      }
+    },
+    {
+      "id": "68c3dfbdf33154b8fabe1674",
+      "title": "Impact de Mon Diagnostic Artificialisation",
+      "description": "Mon Diagnostic Artificialisation aide les collectivités à atteindre leurs objectifs de sobriété foncière en leur permettant de :\n\n- Mesurer la consommation d’espaces NAF (Naturels, Agricoles, et Forestiers) du territoire pendant la décennie précédente 2011-2021 (en se basant sur les données allant du 01/01/2011 au 31/12/2020)\n- Simuler divers scenarii de trajectoires de consommation d’espaces NAF (Naturels, Agricoles et Forestiers) pour les dix prochaines années 2021-2031 (en se basant sur les données allant du 01/01/2021 au 31/12/2030) et préparer le rapport triennal local exigé depuis août 2024,\n- Se projeter sur l’objectif d’atteindre le « zéro artificialisation nette des sols » en 2050, avec l’analyse de l’artificialisation des sols à l’échelle de la parcelle (pour les départements couverts par l’OCS GE).\n\nService aval de l’Observatoire de l’Artificialisation des Sols, le service numérique s’appuie sur les données et calculs de référence. En libre accès, le service numérique fournit en instantané et toute transparence des diagnostics aux collectivités, services de l’Etat, acteurs de l’aménagement ou citoyens.\n\nPlus d'informations : https://beta.gouv.fr/startups/mon-diagnostic-artificialisation.html",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/682722bb3b4efbb91891cdc1",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": {
+        "class": "Dataset",
+        "id": "682722bb3b4efbb91891cdc1"
+      }
+    },
+    {
+      "id": "68c3dfbdf33154b8fabe1675",
+      "title": "Indicateurs d'impact de Signal Logement",
+      "description": "Signal Logement, plateforme numérique fédérant et coordonnant les acteurs de la lutte contre l'habitat indigne et dégradé à l’échelle d’un territoire, permet à l’occupant (ou au propriétaire) de signaler en ligne sa situation à l’ensemble des services compétents, en une seule démarche. \n\nLe mal logement concerne aujourd’hui plus de 4 millions de ménages.\n\nL'ambition de Signal Logement est d'accélérer la résolution des situations de mal logement des usagers en accompagnant les territoires. ",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/680f74c2e7a460f494925bcb",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": {
+        "class": "Dataset",
+        "id": "680f74c2e7a460f494925bcb"
+      }
+    },
+    {
+      "id": "68c3dfbdf33154b8fabe1676",
+      "title": "Impact de Zéro Logement Vacant",
+      "description": "Zéro logement vacant permet aux collectivités de mobiliser les propriétaires de logements vacants pour les remettre sur le marché. \n\nPlus d'information : https://beta.gouv.fr/startups/zero-logement-vacant.html",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/6841b738091851c393f0ce27",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": {
+        "class": "Dataset",
+        "id": "6841b738091851c393f0ce27"
+      }
+    },
+    {
+      "id": "68c3dfbdf33154b8fabe1677",
+      "title": "Indicateurs d'impact d'Aigle ",
+      "description": "Aigle lutte contre les constructions illégales et les détournements d’usages d’espaces naturels, agricoles et forestiers. \n\nPlus d'information : https://beta.gouv.fr/startups/aigle.html",
+      "tags": [],
+      "extras": {
+        "ecospheres": {
+          "uri": "/datasets/6839c0c45bb5ec504eb91ae8",
+          "group": null,
+          "availability": "available"
+        }
+      },
+      "element": {
+        "class": "Dataset",
+        "id": "6839c0c45bb5ec504eb91ae8"
+      }
+    }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "total": 7,
+  "next_page": null,
+  "previous_page": null
+}

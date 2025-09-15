@@ -31,6 +31,11 @@ class Client:
             return Dataset(id, _client=self, fetch=fetch)
         return DatasetCreator(_client=self)
 
+    def topic(self, id: str):
+        from .topic import Topic
+
+        return Topic(id, _client=self)
+
     def organization(self, id: str | None = None, fetch: bool = True):
         from .organization import Organization, OrganizationCreator
 
@@ -45,7 +50,7 @@ class Client:
         mask: str | None = None,
         _ignore_base_url: bool = False,
     ) -> Iterator[dict]:
-        """/!\ only for paginated endpoints"""
+        """⚠️ only for paginated endpoints"""
 
         def get_link_next_page(elem: dict, separated_keys: str):
             result = elem
@@ -57,7 +62,7 @@ class Client:
         if mask is not None:
             headers["X-fields"] = mask + f",{next_page}"
         r = self.session.get(
-            base_query if _ignore_base_url else f"{self.base_url}/{base_query}",
+            base_query if _ignore_base_url else f"{self.base_url}{'/' if not base_query.startswith('/') else ''}{base_query}",
             headers=headers,
         )
         r.raise_for_status()
