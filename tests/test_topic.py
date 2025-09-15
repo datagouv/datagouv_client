@@ -29,6 +29,7 @@ def test_topic_attributes_and_methods(topic_api_call):
     ):
         assert attribute in dir(topic)
         assert attribute in dir(topic_from_response)
+    assert isinstance(topic.organization, Organization)
 
 
 def test_elements(topic_api_call, elements_api_call):
