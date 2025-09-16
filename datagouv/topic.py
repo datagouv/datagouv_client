@@ -62,7 +62,7 @@ class Topic(BaseObject):
         """Lazy fetch elements in raw form"""
         if self._elements is None:
             self._elements = list(
-                self._client.get_all_from_api_query(f"{self.uri}elements/")
+                self._client.get_all_from_api_query(f"{self.uri}elements/", _ignore_base_url=True)
             )
         yield from self._elements
 

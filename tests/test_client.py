@@ -64,14 +64,6 @@ def test_get_all(args):
         assert data["id"]
 
 
-def test_build_url():
-    client = Client()
-    expected = "https://www.data.gouv.fr/api/2/coucou"
-    assert client._build_url("/api/2/coucou") == expected
-    assert client._build_url(expected) == expected
-    assert client._build_url("api/2/coucou") == expected
-
-
 @pytest.mark.parametrize(
     "responses,next_page_key,expected_data",
     [

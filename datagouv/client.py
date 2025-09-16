@@ -46,16 +46,12 @@ class Client:
             return Organization(id, _client=self, fetch=fetch)
         return OrganizationCreator(_client=self)
 
-    def _build_url(self, url: str) -> str:
-        """Detect if an URL is relative or not and always return absolute"""
-        has_protocol = re.compile(r'^https?://').match(url)
-        return url if has_protocol else f"{self.base_url}{'' if url.startswith('/') else '/'}{url}"
-
     def get_all_from_api_query(
         self,
         base_query: str,
         next_page: str = "next_page",
         mask: str | None = None,
+        _ignore_base_url: bool = False,
     ) -> Iterator[dict]:
         """⚠️ only for paginated endpoints"""
 
@@ -70,7 +66,10 @@ class Client:
         headers = {}
         if mask is not None:
             headers["X-fields"] = mask + f",{next_page}"
-        r = self.session.get(self._build_url(base_query), headers=headers)
+        r = self.session.get(
+            base_query if _ignore_base_url else f"{self.base_url}/{base_query}",
+            headers=headers,
+        )
         r.raise_for_status()
         for elem in r.json()["data"]:
             yield elem
