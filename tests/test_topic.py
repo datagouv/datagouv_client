@@ -51,6 +51,7 @@ def test_datasets(topic_api_call, elements_api_call, dataset_catchall_api_call):
             if e["element"] and e["element"]["class"] == "Dataset"
         ]
     )
+    assert all(isinstance(d, Dataset) for d in datasets)
 
 
 def test_topic_has_owner():
