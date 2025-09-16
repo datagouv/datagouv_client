@@ -59,11 +59,13 @@ class Client:
     ) -> Iterator[dict]:
         """⚠️ only for paginated endpoints"""
 
-        def get_link_next_page(elem: dict, separated_keys: str):
+        def get_link_next_page(elem: dict, separated_keys: str) -> str | None:
             result = elem
             for k in separated_keys.split("."):
+                if k not in result or result[k] is None:
+                    return None
                 result = result[k]
-            return result
+            return result if isinstance(result, str) else None
 
         headers = {}
         if mask is not None:
@@ -72,8 +74,10 @@ class Client:
         r.raise_for_status()
         for elem in r.json()["data"]:
             yield elem
-        while get_link_next_page(r.json(), next_page):
-            r = self.session.get(get_link_next_page(r.json(), next_page), headers=headers)
+        next_url = get_link_next_page(r.json(), next_page)
+        while next_url:
+            r = self.session.get(next_url, headers=headers)
             r.raise_for_status()
             for data in r.json()["data"]:
                 yield data
+            next_url = get_link_next_page(r.json(), next_page)
