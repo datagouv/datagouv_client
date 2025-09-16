@@ -61,3 +61,10 @@ def test_get_all(args):
         if mask:
             assert list(sorted(fields)) == list(sorted(data.keys()))
         assert data["id"]
+
+
+def test_build_url():
+    client = Client()
+    assert client._build_url("/api/2/coucou") == "https://www.data.gouv.fr/api/2/coucou"
+    assert client._build_url("https://www.data.gouv.fr/api/2/coucou") == "https://www.data.gouv.fr/api/2/coucou"
+    assert client._build_url("api/2/coucou") == "https://www.data.gouv.fr/api/2/coucou"
