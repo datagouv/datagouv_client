@@ -8,6 +8,8 @@ from .dataset import Dataset
 class Topic(BaseObject):
     _elements: list | None = None
     _datasets: list | None = None
+    # no metrics on Topic
+    has_metrics: bool = False
 
     _attributes = [
         "created_at",

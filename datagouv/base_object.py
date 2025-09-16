@@ -18,6 +18,7 @@ def assert_auth(client: Client) -> None:
 class BaseObject:
     uri: str
     _attributes: list[str] = []
+    has_metrics: bool = True
 
     def __init__(self, id: str | None = None, _client: Client = Client()):
         self.id = id
@@ -25,7 +26,7 @@ class BaseObject:
         self._base_metrics_url = (
             f"https://metric-api.data.gouv.fr/api/{self.__class__.__name__.lower()}s/"
             f"data/?{self.__class__.__name__.lower()}_id__exact={id}"
-            if self._client.environment == "www"
+            if self._client.environment == "www" and self.has_metrics
             else None
         )
 
@@ -86,7 +87,7 @@ class BaseObject:
         self, start_month: str | None = None, end_month: str | None = None
     ) -> Iterator[dict]:
         if self._base_metrics_url is None:
-            raise ValueError("Metrics are only available for production objects.")
+            raise ValueError("Metrics not available for this object on this env.")
         url = self._base_metrics_url
         if start_month is not None:
             if not re.match(r"^\d{4}-\d{2}$", start_month):
