@@ -18,7 +18,7 @@ def assert_auth(client: Client) -> None:
 class BaseObject:
     uri: str
     _attributes: list[str] = []
-    has_metrics: bool = True
+    _has_metrics: bool = True
 
     def __init__(self, id: str | None = None, _client: Client = Client()):
         self.id = id
@@ -26,7 +26,7 @@ class BaseObject:
         self._base_metrics_url = (
             f"https://metric-api.data.gouv.fr/api/{self.__class__.__name__.lower()}s/"
             f"data/?{self.__class__.__name__.lower()}_id__exact={id}"
-            if self._client.environment == "www" and self.has_metrics
+            if self._client.environment == "www" and self._has_metrics
             else None
         )
 
