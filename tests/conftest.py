@@ -9,7 +9,6 @@ ORGANIZATION_ID = "646b7187b50b2a93b1ae3d45"
 OWNER_ID = "637b5c6eef50bb3f5a97b24f"
 DATAGOUV_URL = "https://www.data.gouv.fr/"
 TOPIC_ID = "68b6e6dbdac745f47d4ff6e0"
-TOPIC_SLUG = "impact-des-services-publics-numeriques-de-la-dgaln"
 
 with open("tests/dataset_metadata.json", "r") as f:
     dataset_metadata = json.load(f)
@@ -63,7 +62,7 @@ def topic_api_call(httpx_mock):
 @pytest.fixture
 def elements_api_call(httpx_mock):
     httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/2/topics/{TOPIC_SLUG}/elements/",
+        url=f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/elements/",
         json=elements_metadata,
         is_reusable=True,
     )
