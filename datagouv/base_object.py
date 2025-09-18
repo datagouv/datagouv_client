@@ -16,6 +16,9 @@ def assert_auth(client: Client) -> None:
 
 
 class BaseObject:
+    uri: str
+    _attributes: list[str] = []
+
     def __init__(self, id: str | None = None, _client: Client = Client()):
         self.id = id
         self._client = _client
@@ -72,7 +75,7 @@ class BaseObject:
         assert_auth(self._client)
         logging.info(f"🚮 Deleting extras {payload} for {self.uri}")
         r = self._client.session.delete(
-            self.uri.replace("api/1", "api/2") + "extras/", json=payload
+            self.uri.replace("api/1", "api/2") + "extras/", json=payload  # pyright: ignore[reportCallIssue] udata handles body on DELETE
         )
         r.raise_for_status()
         self.refresh()
@@ -83,7 +86,7 @@ class BaseObject:
         self, start_month: str | None = None, end_month: str | None = None
     ) -> Iterator[dict]:
         if self._base_metrics_url is None:
-            raise ValueError("Metrics are only available for production objects.")
+            raise ValueError("Metrics not available for this object on this env.")
         url = self._base_metrics_url
         if start_month is not None:
             if not re.match(r"^\d{4}-\d{2}$", start_month):

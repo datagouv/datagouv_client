@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- feat: add Topic [#27](https://github.com/datagouv/datagouv_client/pull/27)
 
 ## 0.1.4 (2025-09-04)
 

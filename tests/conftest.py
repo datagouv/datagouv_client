@@ -1,4 +1,5 @@
 import json
+import re
 
 import pytest
 
@@ -7,6 +8,7 @@ RESOURCE_ID = "aaaaaaaa-1111-bbbb-2222-cccccccccccc"
 ORGANIZATION_ID = "646b7187b50b2a93b1ae3d45"
 OWNER_ID = "637b5c6eef50bb3f5a97b24f"
 DATAGOUV_URL = "https://www.data.gouv.fr/"
+TOPIC_ID = "68b6e6dbdac745f47d4ff6e0"
 
 with open("tests/dataset_metadata.json", "r") as f:
     dataset_metadata = json.load(f)
@@ -20,12 +22,48 @@ with open("tests/resource_metadata_api2.json", "r") as f:
 with open("tests/organization_metadata.json", "r") as f:
     organization_metadata = json.load(f)
 
+with open("tests/topic_metadata.json", "r") as f:
+    topic_metadata = json.load(f)
+
+with open("tests/elements_metadata.json", "r") as f:
+    elements_metadata = json.load(f)
+
 
 @pytest.fixture
 def dataset_api_call(httpx_mock):
     httpx_mock.add_response(
         url=f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/",
         json=dataset_metadata,
+        is_reusable=True,
+    )
+    yield httpx_mock
+
+
+@pytest.fixture
+def dataset_catchall_api_call(httpx_mock):
+    httpx_mock.add_response(
+        url=re.compile(f"{DATAGOUV_URL}api/1/datasets/.*?/"),
+        json=dataset_metadata,
+        is_reusable=True,
+    )
+    yield httpx_mock
+
+
+@pytest.fixture
+def topic_api_call(httpx_mock):
+    httpx_mock.add_response(
+        url=f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/",
+        json=topic_metadata,
+        is_reusable=True,
+    )
+    yield httpx_mock
+
+
+@pytest.fixture
+def elements_api_call(httpx_mock):
+    httpx_mock.add_response(
+        url=f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/elements/",
+        json=elements_metadata,
         is_reusable=True,
     )
     yield httpx_mock

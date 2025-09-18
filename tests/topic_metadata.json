@@ -1,0 +1,45 @@
+{
+  "id": "68b6e6dbdac745f47d4ff6e0",
+  "name": "Impact des services publics numériques de la DGALN",
+  "slug": "impact-des-services-publics-numeriques-de-la-dgaln",
+  "description": "Les indicateurs d’impact des services publics numériques sont construits par les équipes produit de la direction générale de l'aménagement du logement et de la nature (DGALN) afin de caractériser les usages des service et les effets de leurs services en matière de politique publique.\n\nUn [schéma de données](https://schema.data.gouv.fr/etalab/schema-impact-service-public-numerique/0.5.0/documentation.html) a été défini pour assurer une publication structurée des mesures d’impact des services publics numériques. Son utilisation permet de comparer et centraliser des données issues de différents produits, afin de faciliter leur compréhension, leur réutilisation et de les comparer quand cela est pertinent.\n\nSeuls les services numériques DGALN qui utilisent le schéma ci-dessus sont intégrés à ce bouquet de données.\n",
+  "tags": [
+    "univers-ecospheres",
+    "ecospheres-theme-mieux-se-loger"
+  ],
+  "elements": {
+    "rel": "subsection",
+    "href": "https://www.data.gouv.fr/api/2/topics/68b6e6dbdac745f47d4ff6e0/elements/?page=1&page_size=20",
+    "type": "GET",
+    "total": 7
+  },
+  "featured": false,
+  "private": false,
+  "created_at": "2025-09-02T12:45:15.741000+00:00",
+  "spatial": null,
+  "last_modified": "2025-09-12T08:54:21.565000+00:00",
+  "organization": {
+    "name": "Ministère de la Transition écologique",
+    "acronym": "MTE",
+    "slug": "ministere-de-la-transition-ecologique",
+    "uri": "https://www.data.gouv.fr/api/1/organizations/ministere-de-la-transition-ecologique/",
+    "page": "https://www.data.gouv.fr/organizations/ministere-de-la-transition-ecologique/",
+    "logo": "https://static.data.gouv.fr/avatars/61/7e6ce6a2b648a8b13472c8ba84b05b-original.jpg",
+    "logo_thumbnail": "https://static.data.gouv.fr/avatars/61/7e6ce6a2b648a8b13472c8ba84b05b-100.jpg",
+    "badges": [
+      {
+        "kind": "public-service"
+      },
+      {
+        "kind": "certified"
+      }
+    ],
+    "id": "534fff8da3a7292c64a77eee",
+    "class": "Organization"
+  },
+  "owner": null,
+  "uri": "/api/2/topics/impact-des-services-publics-numeriques-de-la-dgaln/",
+  "extras": {
+
+  }
+}
