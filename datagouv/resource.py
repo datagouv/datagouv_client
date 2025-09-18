@@ -43,6 +43,7 @@ class Resource(BaseObject):
             # we prevent another api call because we have the metadata here
             dataset_id, _from_response = response["dataset_id"], response["resource"]
         self.dataset_id = dataset_id
+        self.dataset = None
         self.uri = (
             f"{_client.base_url}/api/1/datasets/{self.dataset_id}/resources/{self.id}/"
             if not is_communautary and self.dataset_id is not None
@@ -68,14 +69,17 @@ class Resource(BaseObject):
             r.raise_for_status()
         return super().update(payload)
 
+    @property
     def dataset(self):
         # we cannot instanciate the dataset in the init, because it would infinitely loop
         # between the dataset and its resources (each one creating the other)
         # it makes more sense that a dataset has its resources instantiated at init
         # so resources must have dataset as a separate method
         from .dataset import Dataset
-
-        return Dataset(self.dataset_id, _client=self._client)
+        if self.dataset is None:
+            dataset = Dataset(self.dataset_id, _client=self._client)
+            self.dataset = dataset
+        return self.dataset
 
     def download(self, path: Path | str | None = None, chunk_size: int = 8192, **kwargs):
         if path is None:
