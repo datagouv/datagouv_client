@@ -87,3 +87,66 @@ def test_organization_no_fetch():
         mock_func.assert_not_called()
     assert all(getattr(o, a, None) is None for a in Organization._attributes)
     assert o.uri
+
+
+def test_organization_create(httpx_mock):
+    # Mock the API response for organization creation
+    httpx_mock.add_response(
+        method="POST",
+        url="https://www.data.gouv.fr/api/1/organizations/",
+        json=organization_metadata,
+        status_code=201,
+    )
+
+    client = Client(api_key="test-api-key")
+
+    payload = {
+        "name": "New organization",
+        "description": "A nice description",
+    }
+
+    created_organization = client.organization().create(payload)
+
+    assert isinstance(created_organization, Organization)
+    for attr in Organization._attributes:
+        assert getattr(created_organization, attr) == organization_metadata[attr]
+
+
+def test_organization_update(organization_api_call, httpx_mock):
+    # Mock the update response
+    updated_metadata = organization_metadata.copy()
+    payload = {
+        "name": "Updated Oragnization Name",
+        "description": "Updated description",
+    }
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"https://www.data.gouv.fr/api/1/organizations/{ORGANIZATION_ID}/",
+        json=updated_metadata | payload,
+        status_code=200,
+    )
+
+    client = Client(api_key="test-api-key")
+    organization = client.organization(ORGANIZATION_ID)
+
+    response = organization.update(payload)
+
+    assert response.status_code == 200
+    for attr in payload.keys():
+        assert getattr(organization, attr) == payload[attr]
+
+
+def test_organization_delete(organization_api_call, httpx_mock):
+    # Mock the delete response
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"https://www.data.gouv.fr/api/1/organizations/{ORGANIZATION_ID}/",
+        status_code=204,
+    )
+
+    client = Client(api_key="test-api-key")
+    organization = client.organization(ORGANIZATION_ID)
+
+    response = organization.delete()
+
+    assert response.status_code == 204
