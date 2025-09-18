@@ -86,7 +86,7 @@ def test_topic_create(httpx_mock):
         method="POST",
         url="https://www.data.gouv.fr/api/2/topics/",
         json=topic_metadata,
-        status_code=201
+        status_code=201,
     )
 
     client = Client(api_key="test-api-key")
@@ -95,7 +95,7 @@ def test_topic_create(httpx_mock):
     payload = {
         "name": "Test Topic",
         "description": "A test topic",
-        "private": False
+        "private": False,
     }
 
     created_topic = topic_creator.create(payload)
@@ -108,29 +108,26 @@ def test_topic_create(httpx_mock):
 def test_topic_update(topic_api_call, httpx_mock):
     # Mock the update response
     updated_metadata = topic_metadata.copy()
-    updated_metadata["name"] = "Updated Topic Name"
-    updated_metadata["description"] = "Updated description"
+    payload = {
+        "name": "Updated Topic Name",
+        "description": "Updated description"
+    }
 
     httpx_mock.add_response(
         method="PUT",
         url=f"https://www.data.gouv.fr/api/2/topics/{TOPIC_ID}/",
-        json=updated_metadata,
+        json=updated_metadata | payload,
         status_code=200
     )
 
     client = Client(api_key="test-api-key")
     topic = client.topic(TOPIC_ID)
 
-    payload = {
-        "name": "Updated Topic Name",
-        "description": "Updated description"
-    }
-
     response = topic.update(payload)
 
     assert response.status_code == 200
-    assert topic.name == "Updated Topic Name"
-    assert topic.description == "Updated description"
+    for attr in payload.keys():
+        assert getattr(topic, attr) == payload[attr]
 
 
 def test_topic_delete(topic_api_call, httpx_mock):
@@ -138,7 +135,7 @@ def test_topic_delete(topic_api_call, httpx_mock):
     httpx_mock.add_response(
         method="DELETE",
         url=f"https://www.data.gouv.fr/api/2/topics/{TOPIC_ID}/",
-        status_code=204
+        status_code=204,
     )
 
     client = Client(api_key="test-api-key")

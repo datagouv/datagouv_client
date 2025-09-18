@@ -107,3 +107,67 @@ def test_dataset_has_owner():
     )
     assert dataset_with_owner.organization is None
     assert dataset_with_owner.owner == owner
+
+
+def test_dataset_create(httpx_mock):
+    # Mock the API response for dataset creation
+    httpx_mock.add_response(
+        method="POST",
+        url="https://www.data.gouv.fr/api/1/datasets/",
+        json=dataset_metadata,
+        status_code=201,
+    )
+
+    client = Client(api_key="test-api-key")
+
+    payload = {
+        "title": "New dataset",
+        "description": "A new dataset",
+        "organization": "646b7187b50b2a93b1ae3d45",
+    }
+
+    created_dataset = client.dataset().create(payload)
+
+    assert isinstance(created_dataset, Dataset)
+    for attr in Dataset._attributes:
+        assert getattr(created_dataset, attr) == dataset_metadata[attr]
+
+
+def test_dataset_update(dataset_api_call, httpx_mock):
+    # Mock the update response
+    updated_metadata = dataset_metadata.copy()
+    payload = {
+        "title": "Updated Dataset Title",
+        "description": "Updated description",
+    }
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/",
+        json=updated_metadata | payload,
+        status_code=200,
+    )
+
+    client = Client(api_key="test-api-key")
+    dataset = client.dataset(DATASET_ID)
+
+    response = dataset.update(payload)
+
+    assert response.status_code == 200
+    for attr in payload.keys():
+        assert getattr(dataset, attr) == payload[attr]
+
+
+def test_dataset_delete(dataset_api_call, httpx_mock):
+    # Mock the delete response
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/",
+        status_code=204,
+    )
+
+    client = Client(api_key="test-api-key")
+    dataset = client.dataset(DATASET_ID)
+
+    response = dataset.delete()
+
+    assert response.status_code == 204
