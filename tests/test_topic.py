@@ -101,8 +101,8 @@ def test_topic_create(httpx_mock):
     created_topic = topic_creator.create(payload)
 
     assert isinstance(created_topic, Topic)
-    assert created_topic.id == "68b6e6dbdac745f47d4ff6e0"
-    assert created_topic.name == "Impact des services publics numériques de la DGALN"
+    for attr in Topic._attributes:
+        assert getattr(created_topic, attr) == topic_metadata[attr]
 
 
 def test_topic_update(topic_api_call, httpx_mock):
