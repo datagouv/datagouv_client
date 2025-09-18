@@ -9,6 +9,8 @@ from .retry import simple_connection_retry
 
 
 class Resource(BaseObject):
+    from .dataset import Dataset
+    _dataset: Dataset | None = None
     _attributes = [
         "checksum",
         "created_at",
@@ -43,7 +45,6 @@ class Resource(BaseObject):
             # we prevent another api call because we have the metadata here
             dataset_id, _from_response = response["dataset_id"], response["resource"]
         self.dataset_id = dataset_id
-        self.dataset = None
         self.uri = (
             f"{_client.base_url}/api/1/datasets/{self.dataset_id}/resources/{self.id}/"
             if not is_communautary and self.dataset_id is not None
@@ -52,6 +53,11 @@ class Resource(BaseObject):
         self.front_url = self.uri.replace("/api/1", "").replace("/resources", "/#/resources")
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
+
+    def refresh(self, _from_response: dict | None = None):
+        metadata = super().refresh(_from_response)
+        self._dataset = None
+        return metadata
 
     def update(self, payload: dict, file_to_upload: str | None = None):
         assert_auth(self._client)
@@ -76,10 +82,10 @@ class Resource(BaseObject):
         # it makes more sense that a dataset has its resources instantiated at init
         # so resources must have dataset as a separate method
         from .dataset import Dataset
-        if self.dataset is None:
+        if self._dataset is None:
             dataset = Dataset(self.dataset_id, _client=self._client)
-            self.dataset = dataset
-        return self.dataset
+            self._dataset = dataset
+        return self._dataset
 
     def download(self, path: Path | str | None = None, chunk_size: int = 8192, **kwargs):
         if path is None:
