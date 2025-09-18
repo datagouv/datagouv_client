@@ -75,7 +75,8 @@ class BaseObject:
         assert_auth(self._client)
         logging.info(f"🚮 Deleting extras {payload} for {self.uri}")
         r = self._client.session.delete(
-            self.uri.replace("api/1", "api/2") + "extras/", json=payload  # pyright: ignore[reportCallIssue] udata handles body on DELETE
+            self.uri.replace("api/1", "api/2") + "extras/",
+            json=payload,  # pyright: ignore[reportCallIssue] udata handles body on DELETE
         )
         r.raise_for_status()
         self.refresh()

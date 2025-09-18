@@ -131,7 +131,7 @@ def test_resource_download(remote_resource_api1_call, file_name, httpx_mock):
                 "dataset_id": DATASET_ID,
             },
         ),
-    ]
+    ],
 )
 def test_resource_create(httpx_mock, method, kwargs):
     # Mock the API response for resource creation

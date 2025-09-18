@@ -108,16 +108,13 @@ def test_topic_create(httpx_mock):
 def test_topic_update(topic_api_call, httpx_mock):
     # Mock the update response
     updated_metadata = topic_metadata.copy()
-    payload = {
-        "name": "Updated Topic Name",
-        "description": "Updated description"
-    }
+    payload = {"name": "Updated Topic Name", "description": "Updated description"}
 
     httpx_mock.add_response(
         method="PUT",
         url=f"https://www.data.gouv.fr/api/2/topics/{TOPIC_ID}/",
         json=updated_metadata | payload,
-        status_code=200
+        status_code=200,
     )
 
     client = Client(api_key="test-api-key")

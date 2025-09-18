@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
 
 from datagouv.client import Client
 
@@ -100,7 +101,10 @@ def test_get_all(args):
         # Test deeply nested key
         (
             [
-                {"data": [{"id": 1}], "meta": {"pagination": {"next": "https://api.example.com/page2"}}},
+                {
+                    "data": [{"id": 1}],
+                    "meta": {"pagination": {"next": "https://api.example.com/page2"}},
+                },
                 {"data": [{"id": 2}], "meta": {"pagination": {"next": None}}},
             ],
             "meta.pagination.next",
@@ -119,7 +123,7 @@ def test_get_all_from_api_query_pagination(responses, next_page_key, expected_da
         mock_response.raise_for_status.return_value = None
         mock_responses.append(mock_response)
 
-    with patch.object(client.session, 'get', side_effect=mock_responses):
+    with patch.object(client.session, "get", side_effect=mock_responses):
         result = list(client.get_all_from_api_query("api/test", next_page=next_page_key))
 
     assert result == expected_data
@@ -132,10 +136,10 @@ def test_get_all_from_api_query_with_mask():
     mock_response.json.return_value = {"data": [{"id": 1, "title": "test"}], "next_page": None}
     mock_response.raise_for_status.return_value = None
 
-    with patch.object(client.session, 'get', return_value=mock_response) as mock_get:
+    with patch.object(client.session, "get", return_value=mock_response) as mock_get:
         list(client.get_all_from_api_query("api/test", mask="data{id,title}"))
 
         # Verify the mask was added to headers
         mock_get.assert_called_once()
-        headers = mock_get.call_args[1]['headers']
-        assert headers['X-fields'] == "data{id,title},next_page"
+        headers = mock_get.call_args[1]["headers"]
+        assert headers["X-fields"] == "data{id,title},next_page"

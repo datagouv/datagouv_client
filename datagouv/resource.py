@@ -81,6 +81,7 @@ class Resource(BaseObject):
         # it makes more sense that a dataset has its resources instantiated at init
         # so resources must have dataset as a separate method
         from .dataset import Dataset
+
         if self._dataset is None:
             dataset = Dataset(self.dataset_id, _client=self._client)
             self._dataset = dataset
@@ -155,7 +156,9 @@ class ResourceCreator(Creator):
         r = self._client.session.post(url, json=payload)
         r.raise_for_status()
         metadata = r.json()
-        return Resource(metadata["id"], dataset_id=dataset_id, _client=self._client, _from_response=metadata)
+        return Resource(
+            metadata["id"], dataset_id=dataset_id, _client=self._client, _from_response=metadata
+        )
 
     @simple_connection_retry
     def create_static(
