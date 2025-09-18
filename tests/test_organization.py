@@ -76,7 +76,7 @@ def test_datasets(httpx_mock):
         json={"data": [dataset_metadata], "next_page": None},
     )
     o_from_response = Organization(ORGANIZATION_ID, _from_response=organization_metadata)
-    datasets = list(o_from_response.datasets())
+    datasets = list(o_from_response.datasets)
     assert len(datasets) == 1
     assert isinstance(datasets[0], Dataset)
 

@@ -71,7 +71,7 @@ def test_dataset(dataset_api_call):
     r_from_response = Resource(
         RESOURCE_ID, dataset_id=DATASET_ID, _from_response=resource_metadata_api1
     )
-    assert isinstance(r_from_response.dataset(), Dataset)
+    assert isinstance(r_from_response.dataset, Dataset)
 
 
 def test_upload_file_into_remote(remote_resource_api2_call):
