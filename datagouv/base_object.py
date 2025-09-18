@@ -19,7 +19,7 @@ class BaseObject:
     uri: str
     _attributes: list[str] = []
 
-    def __init__(self, id: str | None = None, _client: Client = Client()):
+    def __init__(self, id: str, _client: Client = Client()):
         self.id = id
         self._client = _client
         self._base_metrics_url = (

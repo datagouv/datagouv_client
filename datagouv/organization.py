@@ -23,7 +23,7 @@ class Organization(BaseObject):
 
     def __init__(
         self,
-        id: str | None = None,
+        id: str,
         fetch: bool = True,
         _client: Client = Client(),
         _from_response: dict | None = None,
