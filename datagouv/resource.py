@@ -9,8 +9,7 @@ from .retry import simple_connection_retry
 
 
 class Resource(BaseObject):
-    from .dataset import Dataset
-    _dataset: Dataset | None = None
+    _dataset = None
     _attributes = [
         "checksum",
         "created_at",
