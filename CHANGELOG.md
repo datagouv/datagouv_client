@@ -3,6 +3,7 @@
 ## Current (in progress)
 
 - feat: add Topic [#27](https://github.com/datagouv/datagouv_client/pull/27)
+- Replace relevant methods with attributes (/!\ breaking changes) and add tests [#27](https://github.com/datagouv/datagouv_client/pull/28)
 
 ## 0.1.4 (2025-09-04)
 
