@@ -155,7 +155,7 @@ class ResourceCreator(Creator):
         r = self._client.session.post(url, json=payload)
         r.raise_for_status()
         metadata = r.json()
-        return Resource(metadata["id"], _client=self._client, _from_response=metadata)
+        return Resource(metadata["id"], dataset_id=dataset_id, _client=self._client, _from_response=metadata)
 
     @simple_connection_retry
     def create_static(
