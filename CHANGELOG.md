@@ -1,6 +1,6 @@
 # Changelog
 
-## Current (in progress)
+## 0.2.0 (2025-09-19)
 
 - feat: add Topic [#27](https://github.com/datagouv/datagouv_client/pull/27)
 - Replace relevant methods with attributes (/!\ breaking changes) and add tests [#27](https://github.com/datagouv/datagouv_client/pull/28)
