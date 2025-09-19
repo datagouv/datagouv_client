@@ -71,7 +71,7 @@ def test_dataset(dataset_api_call):
     r_from_response = Resource(
         RESOURCE_ID, dataset_id=DATASET_ID, _from_response=resource_metadata_api1
     )
-    assert isinstance(r_from_response.dataset(), Dataset)
+    assert isinstance(r_from_response.dataset, Dataset)
 
 
 def test_upload_file_into_remote(remote_resource_api2_call):
@@ -111,3 +111,95 @@ def test_resource_download(remote_resource_api1_call, file_name, httpx_mock):
     assert rows[0] == "a,b,c\n"
     assert rows[1] == "1,2,3"
     os.remove(local_name)
+
+
+@pytest.mark.parametrize(
+    "method,kwargs",
+    [
+        (
+            "create_static",
+            {
+                "payload": {"title": "New static resource"},
+                "file_to_upload": "tests/resource_metadata_api1.json",
+                "dataset_id": DATASET_ID,
+            },
+        ),
+        (
+            "create_remote",
+            {
+                "payload": {"title": "New remote resource"},
+                "dataset_id": DATASET_ID,
+            },
+        ),
+    ],
+)
+def test_resource_create(httpx_mock, method, kwargs):
+    # Mock the API response for resource creation
+    httpx_mock.add_response(
+        method="POST",
+        url=(
+            f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/"
+            + ("resources/" if "remote" in method else "upload/")
+        ),
+        json=resource_metadata_api1,
+        status_code=201,
+    )
+    if "static" in method:
+        httpx_mock.add_response(
+            method="PUT",
+            url=(
+                f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}"
+                f"/resources/{resource_metadata_api1['id']}/"
+            ),
+            json=resource_metadata_api1,
+            status_code=200,
+        )
+
+    client = Client(api_key="test-api-key")
+
+    created_resource = getattr(client.resource(), method)(**kwargs)
+
+    assert isinstance(created_resource, Resource)
+    for attr in Resource._attributes:
+        assert getattr(created_resource, attr) == resource_metadata_api1[attr]
+
+
+def test_resource_update(static_resource_api2_call, httpx_mock):
+    updated_metadata = resource_metadata_api1.copy()
+    payload = {
+        "title": "Updated Resource Title",
+        "description": "Updated description",
+    }
+
+    client = Client(api_key="test-api-key")
+    resource = client.resource(RESOURCE_ID)
+
+    # Mock the update response
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"https://www.data.gouv.fr/api/1/datasets/{resource.dataset_id}/resources/{resource.id}/",
+        json=updated_metadata | payload,
+        status_code=200,
+    )
+
+    response = resource.update(payload)
+
+    assert response.status_code == 200
+    for attr in payload.keys():
+        assert getattr(resource, attr) == payload[attr]
+
+
+def test_resource_delete(static_resource_api2_call, httpx_mock):
+    client = Client(api_key="test-api-key")
+    resource = client.resource(RESOURCE_ID)
+
+    # Mock the delete response
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"https://www.data.gouv.fr/api/1/datasets/{resource.dataset_id}/resources/{resource.id}/",
+        status_code=204,
+    )
+
+    response = resource.delete()
+
+    assert response.status_code == 204

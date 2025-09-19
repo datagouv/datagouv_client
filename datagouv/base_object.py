@@ -19,7 +19,7 @@ class BaseObject:
     uri: str
     _attributes: list[str] = []
 
-    def __init__(self, id: str | None = None, _client: Client = Client()):
+    def __init__(self, id: str, _client: Client = Client()):
         self.id = id
         self._client = _client
         self._base_metrics_url = (
@@ -75,7 +75,8 @@ class BaseObject:
         assert_auth(self._client)
         logging.info(f"🚮 Deleting extras {payload} for {self.uri}")
         r = self._client.session.delete(
-            self.uri.replace("api/1", "api/2") + "extras/", json=payload  # pyright: ignore[reportCallIssue] udata handles body on DELETE
+            self.uri.replace("api/1", "api/2") + "extras/",
+            json=payload,  # pyright: ignore[reportCallIssue] udata handles body on DELETE
         )
         r.raise_for_status()
         self.refresh()

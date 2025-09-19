@@ -9,6 +9,7 @@ from .retry import simple_connection_retry
 
 
 class Resource(BaseObject):
+    _dataset = None
     _attributes = [
         "checksum",
         "created_at",
@@ -52,6 +53,11 @@ class Resource(BaseObject):
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
 
+    def refresh(self, _from_response: dict | None = None):
+        metadata = super().refresh(_from_response)
+        self._dataset = None
+        return metadata
+
     def update(self, payload: dict, file_to_upload: str | None = None):
         assert_auth(self._client)
         if file_to_upload:
@@ -68,6 +74,7 @@ class Resource(BaseObject):
             r.raise_for_status()
         return super().update(payload)
 
+    @property
     def dataset(self):
         # we cannot instanciate the dataset in the init, because it would infinitely loop
         # between the dataset and its resources (each one creating the other)
@@ -75,7 +82,10 @@ class Resource(BaseObject):
         # so resources must have dataset as a separate method
         from .dataset import Dataset
 
-        return Dataset(self.dataset_id, _client=self._client)
+        if self._dataset is None:
+            dataset = Dataset(self.dataset_id, _client=self._client)
+            self._dataset = dataset
+        return self._dataset
 
     def download(self, path: Path | str | None = None, chunk_size: int = 8192, **kwargs):
         if path is None:
@@ -146,7 +156,9 @@ class ResourceCreator(Creator):
         r = self._client.session.post(url, json=payload)
         r.raise_for_status()
         metadata = r.json()
-        return Resource(metadata["id"], _client=self._client, _from_response=metadata)
+        return Resource(
+            metadata["id"], dataset_id=dataset_id, _client=self._client, _from_response=metadata
+        )
 
     @simple_connection_retry
     def create_static(

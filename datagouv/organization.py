@@ -8,6 +8,7 @@ from .retry import simple_connection_retry
 
 
 class Organization(BaseObject):
+    _datasets: list[Dataset] | None = None
     _attributes = [
         "badges",
         "business_number_id",
@@ -23,7 +24,7 @@ class Organization(BaseObject):
 
     def __init__(
         self,
-        id: str | None = None,
+        id: str,
         fetch: bool = True,
         _client: Client = Client(),
         _from_response: dict | None = None,
@@ -34,9 +35,21 @@ class Organization(BaseObject):
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
 
+    def refresh(self, _from_response: dict | None = None):
+        metadata = super().refresh(_from_response)
+        self._datasets = None
+        return metadata
+
+    @property
     def datasets(self) -> Iterator[Dataset]:
-        for item in self._client.get_all_from_api_query(f"api/1/organizations/{self.id}/datasets/"):
-            yield Dataset(item["id"], _client=self._client, _from_response=item)
+        if self._datasets is None:
+            self._datasets = [
+                Dataset(item["id"], _client=self._client, _from_response=item)
+                for item in self._client.get_all_from_api_query(
+                    f"api/1/organizations/{self.id}/datasets/"
+                )
+            ]
+        yield from self._datasets
 
     def create_dataset(self, payload: dict) -> Dataset:
         # we don't simply heritate from DatasetCreator to have a different method name

@@ -60,7 +60,7 @@ resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")  # you can find a re
 print(resource)
 
 # you can also access a dataset from one of its resources
-d = resource.dataset()  # **Note:** this is a method, and returns an instance of Dataset
+d = resource.dataset  # this returns an instance of Dataset
 
 # you can also download a resource locally (**Note:** if it doesn't exist, parent path will be created)
 resource.download("./file.csv")  # this saves the resource in your working directory as "file.csv"
@@ -74,8 +74,8 @@ d.download_resources(
 
 
 organization = Organization("646b7187b50b2a93b1ae3d45")  # you can find an organization's id in the `Informations` tab of its landing page, in "Informations techniques"
-# you can loop through the organization's datasets
-for dat in organization.datasets():
+# you can loop through the organization's datasets, which are Dataset instances
+for dat in organization.datasets:
     print(f"{dat.title} has {len(dat.resources)} resources")
 ```
 
