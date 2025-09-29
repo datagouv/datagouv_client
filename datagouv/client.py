@@ -24,25 +24,25 @@ class Client:
             return Resource(id, _client=self, **kwargs)
         return ResourceCreator(_client=self)
 
-    def dataset(self, id: str | None = None, fetch: bool = True):
+    def dataset(self, id: str | None = None, **kwargs):
         from .dataset import Dataset, DatasetCreator
 
         if id:
-            return Dataset(id, _client=self, fetch=fetch)
+            return Dataset(id, _client=self, **kwargs)
         return DatasetCreator(_client=self)
 
-    def topic(self, id: str | None = None):
+    def topic(self, id: str | None = None, **kwargs):
         from .topic import Topic, TopicCreator
 
         if id:
-            return Topic(id, _client=self)
+            return Topic(id, _client=self, **kwargs)
         return TopicCreator(_client=self)
 
-    def organization(self, id: str | None = None, fetch: bool = True):
+    def organization(self, id: str | None = None, **kwargs):
         from .organization import Organization, OrganizationCreator
 
         if id:
-            return Organization(id, _client=self, fetch=fetch)
+            return Organization(id, _client=self, **kwargs)
         return OrganizationCreator(_client=self)
 
     def get_all_from_api_query(
@@ -79,3 +79,4 @@ class Client:
             for data in r.json()["data"]:
                 yield data
             next_url = get_link_next_page(r.json(), next_page)
+
