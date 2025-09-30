@@ -64,10 +64,14 @@ class Client:
             return result if isinstance(result, str) else None
 
         def cast_elem(elem: dict, client: Client, cast_as):
-            return elem if cast_as is None else cast_as(
-                elem["id"],
-                _client=client,
-                _from_response=elem,
+            return (
+                elem
+                if cast_as is None
+                else cast_as(
+                    elem["id"],
+                    _client=client,
+                    _from_response=elem,
+                )
             )
 
         headers = {}
