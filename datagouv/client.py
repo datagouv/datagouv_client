@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, Literal
 
 import httpx
 
@@ -51,6 +51,7 @@ class Client:
         next_page: str = "next_page",
         mask: str | None = None,
         _ignore_base_url: bool = False,
+        cast_as: Literal["Dataset", "Organization", "Topic"] | None = None,
     ) -> Iterator[dict]:
         """⚠️ only for paginated endpoints"""
 
@@ -62,6 +63,13 @@ class Client:
                 result = result[k]
             return result if isinstance(result, str) else None
 
+        def cast_elem(elem: dict, cast_as):
+            return (
+                elem
+                if cast_as is None
+                else cast_as(elem["id"], _from_response=elem)
+            )
+
         headers = {}
         if mask is not None:
             headers["X-fields"] = mask + f",{next_page}"
@@ -71,11 +79,11 @@ class Client:
         )
         r.raise_for_status()
         for elem in r.json()["data"]:
-            yield elem
+            yield cast_elem(elem, cast_as)
         next_url = get_link_next_page(r.json(), next_page)
         while next_url:
             r = self.session.get(next_url, headers=headers)
             r.raise_for_status()
             for data in r.json()["data"]:
-                yield data
+                yield cast_elem(data, cast_as)
             next_url = get_link_next_page(r.json(), next_page)
