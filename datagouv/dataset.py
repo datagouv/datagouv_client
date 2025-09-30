@@ -50,10 +50,21 @@ class Dataset(BaseObject, ResourceCreator):
             metadata = self._client.session.get(self.uri).json()
             resources = metadata["resources"]
             organization = metadata["organization"]
-        self.resources = [
-            Resource(id=r["id"], dataset_id=self.id, _client=self._client, _from_response=r)
-            for r in resources
-        ]
+        self.resources = (
+            [
+                Resource(id=r["id"], dataset_id=self.id, _client=self._client, _from_response=r)
+                for r in resources
+            ]
+            if isinstance(resources, list)
+            # when coming from api/2 the resources have to be retrieved
+            else [
+                Resource(id=r["id"], dataset_id=self.id, _client=self._client, _from_response=r)
+                for r in self._client.get_all_from_api_query(
+                    resources["href"],
+                    _ignore_base_url=True,
+                )
+            ]
+        )
         self.organization = (
             Organization(organization["id"], _from_response=organization)
             if organization is not None
