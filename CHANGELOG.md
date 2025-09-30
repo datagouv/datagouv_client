@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- allow to pass kwargs from client and to cast objects from `get_all_from_api_query` [#29](https://github.com/datagouv/datagouv_client/pull/29)
 
 ## 0.2.0 (2025-09-19)
 
