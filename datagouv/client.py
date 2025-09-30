@@ -63,8 +63,12 @@ class Client:
                 result = result[k]
             return result if isinstance(result, str) else None
 
-        def cast_elem(elem: dict, cast_as):
-            return elem if cast_as is None else cast_as(elem["id"], _from_response=elem)
+        def cast_elem(elem: dict, client: Client, cast_as):
+            return elem if cast_as is None else cast_as(
+                elem["id"],
+                _client=client,
+                _from_response=elem,
+            )
 
         headers = {}
         if mask is not None:
@@ -75,11 +79,11 @@ class Client:
         )
         r.raise_for_status()
         for elem in r.json()["data"]:
-            yield cast_elem(elem, cast_as)
+            yield cast_elem(elem, self, cast_as)
         next_url = get_link_next_page(r.json(), next_page)
         while next_url:
             r = self.session.get(next_url, headers=headers)
             r.raise_for_status()
             for data in r.json()["data"]:
-                yield cast_elem(data, cast_as)
+                yield cast_elem(data, self, cast_as)
             next_url = get_link_next_page(r.json(), next_page)
