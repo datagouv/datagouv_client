@@ -79,4 +79,3 @@ class Client:
             for data in r.json()["data"]:
                 yield data
             next_url = get_link_next_page(r.json(), next_page)
-
