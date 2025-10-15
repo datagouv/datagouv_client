@@ -51,7 +51,7 @@ class Client:
         next_page: str = "next_page",
         mask: str | None = None,
         _ignore_base_url: bool = False,
-        cast_as: Literal["Dataset", "Organization", "Topic"] | None = None,
+        cast_as: Any | None = None,
     ) -> Iterator[Any]:
         """⚠️ only for paginated endpoints"""
 
