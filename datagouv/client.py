@@ -1,4 +1,4 @@
-from typing import Iterator, Literal
+from typing import Any, Iterator, Literal
 
 import httpx
 
@@ -52,7 +52,7 @@ class Client:
         mask: str | None = None,
         _ignore_base_url: bool = False,
         cast_as: Literal["Dataset", "Organization", "Topic"] | None = None,
-    ) -> Iterator[dict]:
+    ) -> Iterator[Any]:
         """⚠️ only for paginated endpoints"""
 
         def get_link_next_page(elem: dict, separated_keys: str) -> str | None:
@@ -63,7 +63,7 @@ class Client:
                 result = result[k]
             return result if isinstance(result, str) else None
 
-        def cast_elem(elem: dict, client: Client, cast_as):
+        def cast_elem(elem: dict, client: Client, cast_as: Any) -> dict | Any:
             return (
                 elem
                 if cast_as is None
