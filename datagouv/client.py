@@ -1,6 +1,9 @@
-from typing import Any, Iterator, Literal
+from typing import Iterator, TYPE_CHECKING
 
 import httpx
+
+if TYPE_CHECKING:
+    from datagouv import Dataset, Organization, Resource, Topic
 
 
 class Client:
@@ -51,8 +54,8 @@ class Client:
         next_page: str = "next_page",
         mask: str | None = None,
         _ignore_base_url: bool = False,
-        cast_as: Any | None = None,
-    ) -> Iterator[Any]:
+        cast_as: "Dataset|Organization|Resource|Topic|None" = None,
+    ) -> Iterator["Dataset|Organization|Resource|Topic|dict"]:
         """⚠️ only for paginated endpoints"""
 
         def get_link_next_page(elem: dict, separated_keys: str) -> str | None:
@@ -63,7 +66,11 @@ class Client:
                 result = result[k]
             return result if isinstance(result, str) else None
 
-        def cast_elem(elem: dict, client: Client, cast_as: Any) -> dict | Any:
+        def cast_elem(
+            elem: dict,
+            client: Client,
+            cast_as: "Dataset|Organization|Resource|Topic|None",
+        ) -> "Dataset|Organization|Resource|Topic|dict":
             return (
                 elem
                 if cast_as is None
