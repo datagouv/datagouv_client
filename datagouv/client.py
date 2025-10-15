@@ -1,6 +1,9 @@
-from typing import Iterator
+from typing import TYPE_CHECKING, Iterator
 
 import httpx
+
+if TYPE_CHECKING:
+    from datagouv import Dataset, Organization, Resource, Topic
 
 
 class Client:
@@ -24,25 +27,25 @@ class Client:
             return Resource(id, _client=self, **kwargs)
         return ResourceCreator(_client=self)
 
-    def dataset(self, id: str | None = None, fetch: bool = True):
+    def dataset(self, id: str | None = None, **kwargs):
         from .dataset import Dataset, DatasetCreator
 
         if id:
-            return Dataset(id, _client=self, fetch=fetch)
+            return Dataset(id, _client=self, **kwargs)
         return DatasetCreator(_client=self)
 
-    def topic(self, id: str | None = None):
+    def topic(self, id: str | None = None, **kwargs):
         from .topic import Topic, TopicCreator
 
         if id:
-            return Topic(id, _client=self)
+            return Topic(id, _client=self, **kwargs)
         return TopicCreator(_client=self)
 
-    def organization(self, id: str | None = None, fetch: bool = True):
+    def organization(self, id: str | None = None, **kwargs):
         from .organization import Organization, OrganizationCreator
 
         if id:
-            return Organization(id, _client=self, fetch=fetch)
+            return Organization(id, _client=self, **kwargs)
         return OrganizationCreator(_client=self)
 
     def get_all_from_api_query(
@@ -51,7 +54,8 @@ class Client:
         next_page: str = "next_page",
         mask: str | None = None,
         _ignore_base_url: bool = False,
-    ) -> Iterator[dict]:
+        cast_as: "Dataset|Organization|Resource|Topic|None" = None,
+    ) -> Iterator["Dataset|Organization|Resource|Topic|dict"]:
         """⚠️ only for paginated endpoints"""
 
         def get_link_next_page(elem: dict, separated_keys: str) -> str | None:
@@ -62,6 +66,21 @@ class Client:
                 result = result[k]
             return result if isinstance(result, str) else None
 
+        def cast_elem(
+            elem: dict,
+            client: Client,
+            cast_as: "Dataset|Organization|Resource|Topic|None",
+        ) -> "Dataset|Organization|Resource|Topic|dict":
+            return (
+                elem
+                if cast_as is None
+                else cast_as(
+                    elem["id"],
+                    _client=client,
+                    _from_response=elem,
+                )
+            )
+
         headers = {}
         if mask is not None:
             headers["X-fields"] = mask + f",{next_page}"
@@ -71,11 +90,11 @@ class Client:
         )
         r.raise_for_status()
         for elem in r.json()["data"]:
-            yield elem
+            yield cast_elem(elem, self, cast_as)
         next_url = get_link_next_page(r.json(), next_page)
         while next_url:
             r = self.session.get(next_url, headers=headers)
             r.raise_for_status()
             for data in r.json()["data"]:
-                yield data
+                yield cast_elem(data, self, cast_as)
             next_url = get_link_next_page(r.json(), next_page)

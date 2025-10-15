@@ -39,6 +39,9 @@ class Topic(BaseObject):
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
 
+    def __call__(self, *args, **kwargs):
+        return Topic(*args, **kwargs)
+
     def refresh(self, _from_response: dict | None = None, include_elements: bool = False) -> dict:
         from .organization import Organization
 
