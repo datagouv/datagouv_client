@@ -2,7 +2,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from datagouv.client import Client
+from datagouv import Client, Dataset
 
 
 @pytest.mark.parametrize(
@@ -40,29 +40,34 @@ def test_client_types(args):
 @pytest.mark.parametrize(
     "args",
     [
-        ("api/1/datasets/", None, None),
+        ("api/1/datasets/", None, None, None),
         (
             "api/1/datasets/",
             "data{id,title,created_at}",
             ["id", "title", "created_at"],
+            None,
         ),
+        ("api/1/datasets/", None, None, Dataset),
     ],
 )
 def test_get_all(args):
     # is there a good way to mock this so that we don't call the API?
-    query, mask, fields = args
+    query, mask, fields, cast_as = args
     client = Client()
     for idx, data in enumerate(
         client.get_all_from_api_query(
             query,
             mask=mask,
+            cast_as=cast_as,
         )
     ):
         if idx > 3:
             break
         if mask:
             assert list(sorted(fields)) == list(sorted(data.keys()))
-        assert data["id"]
+        if cast_as:
+            assert isinstance(data, cast_as)
+        assert data["id"] if cast_as is None else data.id
 
 
 @pytest.mark.parametrize(
