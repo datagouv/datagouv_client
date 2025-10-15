@@ -236,8 +236,9 @@ Many datagouv endpoints are paginated, which can make it tedious to retrieve all
 for obj in client.get_all_from_api_query(
     "api/1/datasets/?organization=534fff81a3a7292c64a77e5c",  # get all datasets from a specific organization
     mask="data{id,title,resources{id,title}}",  # you can apply a mask to retrieve only specific fields of the objects
+    cast_as=Dataset,  # you can get the results as objects to manipulate them more easily
 ):
-    print(f"Dataset {obj['title']} has {len(obj['resources'])} resources")
+    print(f"Dataset {obj['title']} has {len(obj['resources'])} resources")  # if cast_as is not used, otherwise `obj.id` and `obj.resources`
 ```
 
 You can also check if resources have been updated more recently than others:
