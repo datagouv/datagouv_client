@@ -13,7 +13,7 @@ class Client:
         if environment not in self._envs:
             raise ValueError(f"`environment` must be in {self._envs}")
         self.base_url = f"https://{environment}.data.gouv.fr"
-        self.session = httpx.Client(**kwargs)
+        self.session = httpx.Client(**({"timeout": 15} | kwargs))
         self.environment = environment
         self._authenticated = False
         if api_key:
