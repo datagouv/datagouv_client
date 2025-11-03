@@ -9,9 +9,7 @@ if TYPE_CHECKING:
 class Client:
     _envs = ["www", "demo", "dev"]
 
-    def __init__(
-        self, environment: str = "www", api_key: str | None = None, **kwargs
-    ):
+    def __init__(self, environment: str = "www", api_key: str | None = None, **kwargs):
         if environment not in self._envs:
             raise ValueError(f"`environment` must be in {self._envs}")
         self.base_url = f"https://{environment}.data.gouv.fr"
@@ -100,5 +98,3 @@ class Client:
             for data in r.json()["data"]:
                 yield cast_elem(data, self, cast_as)
             next_url = get_link_next_page(r.json(), next_page)
-
-
