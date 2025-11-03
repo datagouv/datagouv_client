@@ -19,6 +19,7 @@ class Organization(BaseObject):
         "members",
         "metrics",
         "name",
+        "url",
         "extras",
     ]
 
