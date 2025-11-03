@@ -76,11 +76,11 @@ class Resource(BaseObject):
                     files={"file": open(file_to_upload, "rb")},
                     timeout=timeout,
                 )
-            except httpx.TimeoutException:
+            except httpx.TimeoutException as e:
                 raise TimeoutError(
                     "The upload reached the timeout, consider setting it higher like:"
                     f" update(..., timeout={timeout * 2})"
-                )
+                ) from e
             r.raise_for_status()
         return super().update(payload)
 
