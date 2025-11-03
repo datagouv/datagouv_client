@@ -70,11 +70,17 @@ class Resource(BaseObject):
                     "To modify the URL it points to, please use the `url` field in the payload."
                 )
             logging.info(f"⬆️ Posting file {file_to_upload} into {self.uri}")
-            r = self._client.session.post(
-                f"{self.uri}upload/",
-                files={"file": open(file_to_upload, "rb")},
-                timeout=timeout,
-            )
+            try:
+                r = self._client.session.post(
+                    f"{self.uri}upload/",
+                    files={"file": open(file_to_upload, "rb")},
+                    timeout=timeout,
+                )
+            except httpx.TimeoutException:
+                raise TimeoutError(
+                    "The upload reached the timeout, consider setting it higher like:"
+                    f" update(..., timeout={timeout * 2})"
+                )
             r.raise_for_status()
         return super().update(payload)
 
