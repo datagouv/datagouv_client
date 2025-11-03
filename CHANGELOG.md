@@ -2,7 +2,9 @@
 
 ## Current (in progress)
 
-- allow to pass kwargs from client and to cast objects from `get_all_from_api_query` [#29](https://github.com/datagouv/datagouv_client/pull/29)
+- Allow to pass kwargs from client and to cast objects from `get_all_from_api_query` [#29](https://github.com/datagouv/datagouv_client/pull/29)
+- Add more attributes to objects [#30](https://github.com/datagouv/datagouv_client/pull/30)
+- Allow to pass arguments to the client's session and to set timeout [#31](https://github.com/datagouv/datagouv_client/pull/31)
 
 ## 0.2.0 (2025-09-19)
 
