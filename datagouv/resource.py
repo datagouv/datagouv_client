@@ -61,7 +61,7 @@ class Resource(BaseObject):
         self._dataset = None
         return metadata
 
-    def update(self, payload: dict, file_to_upload: str | None = None):
+    def update(self, payload: dict, file_to_upload: str | None = None, timeout: int = 30):
         assert_auth(self._client)
         if file_to_upload:
             if self.filetype != "file":
@@ -70,10 +70,17 @@ class Resource(BaseObject):
                     "To modify the URL it points to, please use the `url` field in the payload."
                 )
             logging.info(f"⬆️ Posting file {file_to_upload} into {self.uri}")
-            r = self._client.session.post(
-                f"{self.uri}upload/",
-                files={"file": open(file_to_upload, "rb")},
-            )
+            try:
+                r = self._client.session.post(
+                    f"{self.uri}upload/",
+                    files={"file": open(file_to_upload, "rb")},
+                    timeout=timeout,
+                )
+            except httpx.TimeoutException as e:
+                raise TimeoutError(
+                    "The upload reached the timeout, consider setting it higher like:"
+                    f" update(..., timeout={timeout * 2})"
+                ) from e
             r.raise_for_status()
         return super().update(payload)
 
