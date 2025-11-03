@@ -1,6 +1,6 @@
 # Changelog
 
-## Current (in progress)
+## 0.2.1 (2025-11-03)
 
 - Allow to pass kwargs from client and to cast objects from `get_all_from_api_query` [#29](https://github.com/datagouv/datagouv_client/pull/29)
 - Add more attributes to objects [#30](https://github.com/datagouv/datagouv_client/pull/30)

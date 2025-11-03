@@ -1,6 +1,6 @@
 [project]
 name = "datagouv_client"
-version = "0.2.1.dev"
+version = "0.2.1"
 description = "Wrapper for the data.gouv.fr API"
 authors = [{ name = "Etalab", email = "opendatateam@data.gouv.fr" }]
 dependencies = [
