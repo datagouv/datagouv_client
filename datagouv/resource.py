@@ -47,7 +47,7 @@ class Resource(BaseObject):
         self.uri = (
             f"{_client.base_url}/api/1/datasets/{self.dataset_id}/resources/{self.id}/"
             if not is_communautary and self.dataset_id is not None
-            else f"{_client.base_url}/api/1/datasets/community_resources/{self.id}"
+            else f"{_client.base_url}/api/1/datasets/community_resources/{self.id}/"
         )
         self.front_url = self.uri.replace("/api/1", "").replace("/resources", "/#/resources")
         if fetch or _from_response:
@@ -207,3 +207,4 @@ class ResourceCreator(Creator):
             payload.update({"type": "main"})
         r.update(payload=payload)
         return r
+
