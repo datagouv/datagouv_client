@@ -17,19 +17,19 @@
 
 ## 0.1.4 (2025-09-04)
 
-- Add `preview_url` field to resources' attributes [#18](https://github.com/datagouv/csv-detective/pull/18)
-- Pass the organization's client to its datasets [#19](https://github.com/datagouv/csv-detective/pull/19)
-- Switch to `httpx` [#21](https://github.com/datagouv/csv-detective/pull/21)
-- Add metrics [#22](https://github.com/datagouv/csv-detective/pull/22)
+- Add `preview_url` field to resources' attributes [#18](https://github.com/datagouv/datagouv_client/pull/18)
+- Pass the organization's client to its datasets [#19](https://github.com/datagouv/datagouv_client/pull/19)
+- Switch to `httpx` [#21](https://github.com/datagouv/datagouv_client/pull/21)
+- Add metrics [#22](https://github.com/datagouv/datagouv_client/pull/22)
 - Accept `Path` type as download arguments, and use `Path` internally to handle file paths [#24](https://github.com/datagouv/datagouv_client/pull/24)
 
 ## 0.1.3 (2025-08-21)
 
-- Switch to pyproject [#11](https://github.com/datagouv/csv-detective/pull/11)
-- Upgrade requests for security reasons [#12](https://github.com/datagouv/csv-detective/pull/12)
-- Add more attributes to dataset and resource objects [#13](https://github.com/datagouv/csv-detective/pull/13)
-- Add organization object [#15](https://github.com/datagouv/csv-detective/pull/15)
-- Adapt front URLs to the new standard [#17](https://github.com/datagouv/csv-detective/pull/17)
+- Switch to pyproject [#11](https://github.com/datagouv/datagouv_client/pull/11)
+- Upgrade requests for security reasons [#12](https://github.com/datagouv/datagouv_client/pull/12)
+- Add more attributes to dataset and resource objects [#13](https://github.com/datagouv/datagouv_client/pull/13)
+- Add organization object [#15](https://github.com/datagouv/datagouv_client/pull/15)
+- Adapt front URLs to the new standard [#17](https://github.com/datagouv/datagouv_client/pull/17)
 
 ## 0.1.1 (2025-06-06)
 
