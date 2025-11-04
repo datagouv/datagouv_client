@@ -207,4 +207,3 @@ class ResourceCreator(Creator):
             payload.update({"type": "main"})
         r.update(payload=payload)
         return r
-
