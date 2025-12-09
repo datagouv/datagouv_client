@@ -1,9 +1,5 @@
 # Changelog
 
-## Current (in progress)
-
-- Nothing yet
-
 ## 0.2.2 (2025-11-13)
 
 - Fix community resources URIs [#33](https://github.com/datagouv/datagouv_client/pull/33)
