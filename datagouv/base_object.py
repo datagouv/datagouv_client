@@ -71,13 +71,11 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def delete_extras(self, payload: dict) -> httpx.Response:
+    def delete_extras(self, keys: list[str]) -> httpx.Response:
+        """Convenience method"""
         assert_auth(self._client)
-        logging.info(f"🚮 Deleting extras {payload} for {self.uri}")
-        r = self._client.session.delete(
-            self.uri.replace("api/1", "api/2") + "extras/",
-            json=payload,  # pyright: ignore[reportCallIssue] udata handles body on DELETE
-        )
+        logging.info(f"🚮 Deleting extras {keys} for {self.uri}")
+        r = self.update_extras({k: None for k in keys})
         r.raise_for_status()
         self.refresh()
         return r
