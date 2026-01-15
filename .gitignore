@@ -29,7 +29,6 @@ venv_datagouv_client/
 # Python package managers
 .python-version
 pdm.lock
-uv.lock
 
 # Code quality tools
 .ruff_cache/

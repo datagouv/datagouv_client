@@ -1,6 +1,6 @@
 [project]
 name = "datagouv_client"
-version = "0.2.3.dev"
+dynamic = ["version"]
 description = "Wrapper for the data.gouv.fr API"
 authors = [{ name = "Etalab", email = "opendatateam@data.gouv.fr" }]
 dependencies = [
@@ -16,7 +16,6 @@ keywords = ["api", "wrapper", "datagouv"]
 dev = [
     "httpx>=0.28.1,<1",
     "pytest-httpx>=0.35.0,<1",
-    "bumpx>=0.3.10",
     "ruff>=0.11.2",
 ]
 
@@ -24,11 +23,15 @@ dev = [
 Source = "https://github.com/datagouv/datagouv_client"
 
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=68", "wheel", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.package-data]
 csv_detective = ["CHANGELOG.md", "LICENSE", "README.md"]
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
