@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.3 (2026-01-15)
+
+- Change release process ([#36](https://github.com/datagouv/datagouv_client/pull/36))
+- Fix `delete_extras` function ([#35](https://github.com/datagouv/datagouv_client/pull/35))
+- Fix resource download ([#34](https://github.com/datagouv/datagouv_client/pull/34))
+- Update to version 0.2.3.dev for next development cycle
+
+
 ## 0.2.2 (2025-11-13)
 
 - Fix community resources URIs [#33](https://github.com/datagouv/datagouv_client/pull/33)
