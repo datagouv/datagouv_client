@@ -127,6 +127,17 @@ workflows:
             - tests
             - lint
       - publish:
+          name: publish-dev
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
+            tags:
+              ignore: /.*/
+          context: org-global
+      - publish:
+          name: publish-release
           requires:
             - build
           filters:
