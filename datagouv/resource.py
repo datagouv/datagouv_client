@@ -1,11 +1,29 @@
 import logging
 from pathlib import Path
+from typing import Iterator
 
 import httpx
 
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
 from .retry import simple_connection_retry
+
+OPERATORS = {
+    "sort": "sort",
+    "==": "exact",
+    "!=": "differs",
+    "isnull": "isnull",
+    "isnotnull": "isnotnull",
+    "contains": "contains",
+    "notcontains": "notcontains",
+    "in": "in",
+    "notin": "notin",
+    ">": "strictly_greater",
+    ">=": "greater",
+    "<": "strictly_less",
+    "<=": "less",
+}
+OPERATORS = OPERATORS | {v: v for k, v in OPERATORS.items() if k != v}
 
 
 class Resource(BaseObject):
@@ -52,6 +70,10 @@ class Resource(BaseObject):
         self.front_url = self.uri.replace("/api/1", "").replace("/resources", "/#/resources")
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
+        if fetch and self.preview_url:
+            self.tabular_api_url = f"https://tabular-api.data.gouv.fr/api/resources/{self.id}/"
+            self.profile: dict = self._client.session.get(self.tabular_api_url + "profile/").json()["profile"]
+            self.columns: list[str] = self.profile["header"]
 
     def __call__(self, *args, **kwargs):
         return Resource(*args, **kwargs)
@@ -133,6 +155,44 @@ class Resource(BaseObject):
             headers={"X-fields": "resource{internal{last_modified_internal}}"},
         ).json()["resource"]["internal"]["last_modified_internal"]
         return any(r["internal"]["last_modified_internal"] > latest_update for r in resources)
+
+    def rows(self, filters: list[tuple[str, str, str] | tuple[str, str]] | None = None) -> Iterator[dict]:
+        if not getattr(self, "tabular_api_url", None):
+            raise ValueError("This resource does not have available tabular data.")
+        data_url = self.tabular_api_url + "data/"
+        if not filters:
+            return self._client.get_all_from_api_query(
+                data_url,
+                next_page="links.next",
+                _ignore_base_url=True,
+            )
+        data_url += "?"
+        for filter in filters:
+            if len(filter) == 2:
+                col, op = filter
+                self._raise_bad_col_or_op(col, op)
+                data_url += f"{col}__{OPERATORS[op]}&"
+            elif len(filter) == 3:
+                col, op, val = filter
+                self._raise_bad_col_or_op(col, op)
+                data_url += f"{col}__{OPERATORS[op]}={val}&"
+            else:
+                raise ValueError("Filters must be of length 2 or 3.")
+        return self._client.get_all_from_api_query(
+            data_url[:-1],  # popping the last "&" by construction
+            next_page="links.next",
+            _ignore_base_url=True,
+        )
+    
+    def _raise_bad_col_or_op(self, col: str, op: str) -> None:
+        if col not in self.columns:
+            raise ValueError(
+                f"`{col}` is not a valid column. Available columns: {self.columns}"
+            )
+        if op not in OPERATORS:
+            raise ValueError(
+                f"`{op}` is not a valid operator. Available columns: {list(OPERATORS)}"
+            )
 
 
 class ResourceCreator(Creator):
