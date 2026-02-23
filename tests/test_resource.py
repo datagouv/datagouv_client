@@ -1,5 +1,5 @@
-from copy import deepcopy
 import os
+from copy import deepcopy
 from unittest.mock import patch
 
 import httpx  # noqa
@@ -264,7 +264,8 @@ def test_tabular_resource_data_with_filters(
     ]
     httpx_mock.add_response(
         url=(
-            res.tabular_api_url + f"data/?"
+            res.tabular_api_url
+            + f"data/?"
             + f"{res.columns[0]}__strictly_greater=6"
             + f"&{res.columns[1]}__exact=a"
             + f"&{res.columns[2]}__isnotnull"
@@ -273,4 +274,3 @@ def test_tabular_resource_data_with_filters(
     )
     # just testing that calling the method works
     assert list(res.rows(filters))
-

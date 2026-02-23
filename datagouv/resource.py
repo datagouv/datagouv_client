@@ -72,7 +72,9 @@ class Resource(BaseObject):
             self.refresh(_from_response=_from_response)
         if fetch and self.preview_url:
             self.tabular_api_url = f"https://tabular-api.data.gouv.fr/api/resources/{self.id}/"
-            self.profile: dict = self._client.session.get(self.tabular_api_url + "profile/").json()["profile"]
+            self.profile: dict = self._client.session.get(self.tabular_api_url + "profile/").json()[
+                "profile"
+            ]
             self.columns: list[str] = self.profile["header"]
 
     def __call__(self, *args, **kwargs):
@@ -156,7 +158,9 @@ class Resource(BaseObject):
         ).json()["resource"]["internal"]["last_modified_internal"]
         return any(r["internal"]["last_modified_internal"] > latest_update for r in resources)
 
-    def rows(self, filters: list[tuple[str, str, str] | tuple[str, str]] | None = None) -> Iterator[dict]:
+    def rows(
+        self, filters: list[tuple[str, str, str] | tuple[str, str]] | None = None
+    ) -> Iterator[dict]:
         if not getattr(self, "tabular_api_url", None):
             raise ValueError("This resource does not have available tabular data.")
         data_url = self.tabular_api_url + "data/"
@@ -183,12 +187,10 @@ class Resource(BaseObject):
             next_page="links.next",
             _ignore_base_url=True,
         )
-    
+
     def _raise_bad_col_or_op(self, col: str, op: str) -> None:
         if col not in self.columns:
-            raise ValueError(
-                f"`{col}` is not a valid column. Available columns: {self.columns}"
-            )
+            raise ValueError(f"`{col}` is not a valid column. Available columns: {self.columns}")
         if op not in OPERATORS:
             raise ValueError(
                 f"`{op}` is not a valid operator. Available columns: {list(OPERATORS)}"
