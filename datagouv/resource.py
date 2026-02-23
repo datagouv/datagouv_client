@@ -193,7 +193,7 @@ class Resource(BaseObject):
             raise ValueError(f"`{col}` is not a valid column. Available columns: {self.columns}")
         if op not in OPERATORS:
             raise ValueError(
-                f"`{op}` is not a valid operator. Available columns: {list(OPERATORS)}"
+                f"`{op}` is not a valid operator. Available operators: {list(OPERATORS)}"
             )
 
 
