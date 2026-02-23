@@ -238,5 +238,39 @@ def test_tabular_resource_data(
         url=second_page_url,
         json=tabular_api_data,
     )
-    rows = list(res.rows())
-    assert len(rows) == len(first_page["data"]) + len(tabular_api_data["data"])
+    assert len(list(res.rows())) == len(first_page["data"]) + len(tabular_api_data["data"])
+
+
+def test_tabular_resource_data_with_filters(
+    tabular_resource_api_calls,
+    httpx_mock,
+):
+    res = Resource(RESOURCE_ID)
+
+    # check that a wrong column name or operator raises an error
+    with pytest.raises(ValueError):
+        res.rows(filters=[("not_a_column", ">", "6")])
+
+    with pytest.raises(ValueError):
+        res.rows(filters=[(res.columns[0], ">>", "6")])
+
+    with pytest.raises(ValueError):
+        res.rows(filters=[(res.columns[0], ">", "6", "extra_arg")])
+
+    filters = [
+        (res.columns[0], ">", "6"),
+        (res.columns[1], "exact", "a"),
+        (res.columns[2], "isnotnull"),
+    ]
+    httpx_mock.add_response(
+        url=(
+            res.tabular_api_url + f"data/?"
+            + f"{res.columns[0]}__strictly_greater=6"
+            + f"&{res.columns[1]}__exact=a"
+            + f"&{res.columns[2]}__isnotnull"
+        ),
+        json=tabular_api_data,
+    )
+    # just testing that calling the method works
+    assert list(res.rows(filters))
+
