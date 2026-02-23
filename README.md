@@ -66,7 +66,7 @@ for row in resource.rows(
     filters=[
         ("col1", "==", "6"),
         ("col4", "isnotnull"),
-    ],  # filters is an optional argument to retrieve only the rows that match the conditions
+    ],  # filters is an optional argument to retrieve only the rows that match conditions
 ):
     print(row)
 
