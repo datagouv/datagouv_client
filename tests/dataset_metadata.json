@@ -139,7 +139,7 @@
           "views": 2463
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/f868cca6-8da1-4369-a78d-47463f19a9a3",
+        "preview_url": null,
         "schema": null,
         "title": "export-dataset-20250407-054928.csv",
         "type": "main",
@@ -184,7 +184,7 @@
           "views": 3676
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/4babf5f2-6a9c-45b5-9144-ca5eae6a7a6d",
+        "preview_url": null,
         "schema": {
           "name": null,
           "url": null,
@@ -233,7 +233,7 @@
           "views": 379
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/322d1475-f36a-472d-97ce-d218c8f79092",
+        "preview_url": null,
         "schema": null,
         "title": "export-dataservice-20250407-061526.csv",
         "type": "main",
@@ -279,7 +279,7 @@
           "views": 2524
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/970aafa0-3778-4d8b-b9d1-de937525e379",
+        "preview_url": null,
         "schema": null,
         "title": "export-reuse-20250407-061524.csv",
         "type": "main",
@@ -325,7 +325,7 @@
           "views": 3530
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/b7bbfedc-2448-4135-a6c7-104548d396e7",
+        "preview_url": null,
         "schema": null,
         "title": "export-organization-20250407-061427.csv",
         "type": "main",
@@ -370,7 +370,7 @@
           "views": 2656
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/7ea59647-ce69-4b30-bf56-a63000ca9859",
+        "preview_url": null,
         "schema": {
           "name": null,
           "url": null,
@@ -421,7 +421,7 @@
           "views": 1573
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/d77705e1-4ecd-461c-8c24-662d47c4c2f9",
+        "preview_url": null,
         "schema": null,
         "title": "export-discussion-20250407-060758.csv",
         "type": "main",
@@ -467,7 +467,7 @@
           "views": 1597
         },
         "mime": "text/csv",
-        "preview_url": "https://explore.data.gouv.fr/fr/resources/1ac234c7-1da4-49cf-a122-646b21d64b43",
+        "preview_url": null,
         "schema": null,
         "title": "export-tag-20250407-061529.csv",
         "type": "documentation",

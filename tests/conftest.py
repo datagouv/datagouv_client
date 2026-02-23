@@ -14,10 +14,13 @@ with open("tests/dataset_metadata.json", "r") as f:
     dataset_metadata = json.load(f)
 
 with open("tests/resource_metadata_api1.json", "r") as f:
-    resource_metadata_api1 = json.load(f)
+    tabular_resource_metadata_api1 = json.load(f)
+resource_metadata_api1 = tabular_resource_metadata_api1 | {"preview_url": None}
 
 with open("tests/resource_metadata_api2.json", "r") as f:
-    resource_metadata_api2 = json.load(f)
+    tabular_resource_metadata_api2 = json.load(f)
+resource_metadata_api2 = tabular_resource_metadata_api2.copy()
+resource_metadata_api2["resource"]["preview_url"] = None
 
 with open("tests/organization_metadata.json", "r") as f:
     organization_metadata = json.load(f)
