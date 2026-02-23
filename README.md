@@ -59,6 +59,17 @@ for res in dataset.resources:
 resource = Resource("f868cca6-8da1-4369-a78d-47463f19a9a3")  # you can find a resource's id in its `Métadonnées` tab
 print(resource)
 
+# if the resource contains tabular data that has been APIfied (see https://www.data.gouv.fr/dataservices/673b0e6774a23d9eac2af8ce for more info), it also has:
+resource.columns  # the columns of the table, as a list of strings
+resource.profile  # the profile of the table (number of rows, detected formats and types...)
+for row in resource.rows(
+    filters=[
+        ("col1", "==", "6"),
+        ("col4", "isnotnull"),
+    ],  # filters is an optional argument to retrieve only the rows that match the conditions
+):
+    print(row)
+
 # you can also access a dataset from one of its resources
 d = resource.dataset  # this returns an instance of Dataset
 
