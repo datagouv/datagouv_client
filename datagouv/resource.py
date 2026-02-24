@@ -69,7 +69,8 @@ class Resource(BaseObject):
                     "This resource is not static, you can't upload a file. "
                     "To modify the URL it points to, please use the `url` field in the payload."
                 )
-            logging.info(f"⬆️ Posting file {file_to_upload} into {self.uri}")
+            if self._client.verbose:
+                logging.info(f"⬆️ Posting file {file_to_upload} into {self.uri}")
             try:
                 r = self._client.session.post(
                     f"{self.uri}upload/",
@@ -158,7 +159,8 @@ class ResourceCreator(Creator):
             payload["dataset"] = {"class": "Dataset", "id": dataset_id}
         else:
             url = f"{self._client.base_url}/api/1/datasets/{dataset_id}/resources/"
-        logging.info(f"🆕 Creating '{payload['title']}' for {url}")
+        if self._client.verbose:
+            logging.info(f"🆕 Creating '{payload['title']}' for {url}")
         if "filetype" not in payload:
             payload.update({"filetype": "remote"})
         if "type" not in payload:
@@ -191,7 +193,8 @@ class ResourceCreator(Creator):
         url = f"{self._client.base_url}/api/1/datasets/{dataset_id}/upload/"
         if is_communautary:
             url += "community/"
-        logging.info(f"🆕 Creating '{payload['title']}' for {file_to_upload}")
+        if self._client.verbose:
+            logging.info(f"🆕 Creating '{payload['title']}' for {file_to_upload}")
         r = self._client.session.post(url, files={"file": open(file_to_upload, "rb")})
         r.raise_for_status()
         metadata = r.json()

@@ -47,7 +47,8 @@ class BaseObject:
     @simple_connection_retry
     def update(self, payload: dict) -> httpx.Response:
         assert_auth(self._client)
-        logging.info(f"🔁 Putting {self.uri} with {payload}")
+        if self._client.verbose:
+            logging.info(f"🔁 Putting {self.uri} with {payload}")
         r = self._client.session.put(self.uri, json=payload)
         r.raise_for_status()
         self.refresh(_from_response=r.json())
@@ -56,7 +57,8 @@ class BaseObject:
     @simple_connection_retry
     def delete(self) -> httpx.Response:
         assert_auth(self._client)
-        logging.info(f"🚮 Deleting {self.uri}")
+        if self._client.verbose:
+            logging.info(f"🚮 Deleting {self.uri}")
         r = self._client.session.delete(self.uri)
         r.raise_for_status()
         return r
@@ -64,7 +66,8 @@ class BaseObject:
     @simple_connection_retry
     def update_extras(self, payload: dict) -> httpx.Response:
         assert_auth(self._client)
-        logging.info(f"🔁 Putting {self.uri} with extras {payload}")
+        if self._client.verbose:
+            logging.info(f"🔁 Putting {self.uri} with extras {payload}")
         r = self._client.session.put(self.uri.replace("api/1", "api/2") + "extras/", json=payload)
         r.raise_for_status()
         self.refresh()
@@ -74,7 +77,8 @@ class BaseObject:
     def delete_extras(self, keys: list[str]) -> httpx.Response:
         """Convenience method"""
         assert_auth(self._client)
-        logging.info(f"🚮 Deleting extras {keys} for {self.uri}")
+        if self._client.verbose:
+            logging.info(f"🚮 Deleting extras {keys} for {self.uri}")
         r = self.update_extras({k: None for k in keys})
         r.raise_for_status()
         self.refresh()

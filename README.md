@@ -83,7 +83,7 @@ for dat in organization.datasets:
 
 > **Note:** If you want to get objects from demo or dev, you must use a client:
 ```python
-from datagouv import Client, Dataset, Resource
+from datagouv import Client, Dataset
 
 dataset = Dataset("5d13a8b6634f41070a43dff3", _client=Client("demo"))
 ```
@@ -138,6 +138,7 @@ from datagouv import Client
 client = Client(
     environment="www",  # here you can set which platform the client will interact with, default is production
     api_key="MY_SECRET_API_KEY",  # your API key, that grants your rights on the platform
+    verbose=True,  # whether or not to display logs in the processes, default is True
 )
 ```
 > **Note:** You can find your API key on https://www.data.gouv.fr/fr/admin/me/ (don't forget to change the prefix to get the key from the right environment).

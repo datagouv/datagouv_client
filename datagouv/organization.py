@@ -72,7 +72,8 @@ class OrganizationCreator(Creator):
     @simple_connection_retry
     def create(self, payload: dict) -> Organization:
         assert_auth(self._client)
-        logging.info(f"Creating organization '{payload['name']}'")
+        if self._client.verbose:
+            logging.info(f"Creating organization '{payload['name']}'")
         r = self._client.session.post(f"{self._client.base_url}/api/1/organizations/", json=payload)
         r.raise_for_status()
         metadata = r.json()
