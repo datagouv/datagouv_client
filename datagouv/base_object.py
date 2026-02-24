@@ -38,7 +38,10 @@ class BaseObject:
             metadata = _from_response
         else:
             r = self._client.session.get(self.uri)
-            r.raise_for_status()
+            try:
+                r.raise_for_status()
+            except Exception as e:
+                raise httpx.HTTPStatusError(r.text) from e
             metadata = r.json()
         for a in self._attributes:
             setattr(self, a, metadata.get(a))
@@ -50,7 +53,10 @@ class BaseObject:
         if self._client.verbose:
             logging.info(f"🔁 Putting {self.uri} with {payload}")
         r = self._client.session.put(self.uri, json=payload)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         self.refresh(_from_response=r.json())
         return r
 
@@ -60,7 +66,10 @@ class BaseObject:
         if self._client.verbose:
             logging.info(f"🚮 Deleting {self.uri}")
         r = self._client.session.delete(self.uri)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         return r
 
     @simple_connection_retry
@@ -69,7 +78,10 @@ class BaseObject:
         if self._client.verbose:
             logging.info(f"🔁 Putting {self.uri} with extras {payload}")
         r = self._client.session.put(self.uri.replace("api/1", "api/2") + "extras/", json=payload)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         self.refresh()
         return r
 
@@ -80,7 +92,10 @@ class BaseObject:
         if self._client.verbose:
             logging.info(f"🚮 Deleting extras {keys} for {self.uri}")
         r = self.update_extras({k: None for k in keys})
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         self.refresh()
         return r
 

@@ -96,13 +96,19 @@ class Client:
             base_query if _ignore_base_url else f"{self.base_url}/{base_query}",
             headers=headers,
         )
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         for elem in r.json()["data"]:
             yield cast_elem(elem, self, cast_as)
         next_url = get_link_next_page(r.json(), next_page)
         while next_url:
             r = self.session.get(next_url, headers=headers)
-            r.raise_for_status()
+            try:
+                r.raise_for_status()
+            except Exception as e:
+                raise httpx.HTTPStatusError(r.text) from e
             for data in r.json()["data"]:
                 yield cast_elem(data, self, cast_as)
             next_url = get_link_next_page(r.json(), next_page)

@@ -82,7 +82,10 @@ class Resource(BaseObject):
                     "The upload reached the timeout, consider setting it higher like:"
                     f" update(..., timeout={timeout * 2})"
                 ) from e
-            r.raise_for_status()
+            try:
+                r.raise_for_status()
+            except Exception as e:
+                raise httpx.HTTPStatusError(r.text) from e
         return super().update(payload)
 
     @property
@@ -106,14 +109,20 @@ class Resource(BaseObject):
         # Ensure parent directory exists
         path.parent.mkdir(parents=True, exist_ok=True)
         with httpx.stream("GET", self.url, **kwargs) as r:
-            r.raise_for_status()
+            try:
+                r.raise_for_status()
+            except Exception as e:
+                raise httpx.HTTPStatusError(r.text) from e
             with open(path, "wb") as f:
                 for chunk in r.iter_bytes(chunk_size=chunk_size):
                     f.write(chunk)
 
     def get_api2_metadata(self) -> dict:
         r = self._client.session.get(f"{self._client.base_url}/api/2/datasets/resources/{self.id}/")
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         return r.json()
 
     @simple_connection_retry
@@ -166,7 +175,10 @@ class ResourceCreator(Creator):
         if "type" not in payload:
             payload.update({"type": "main"})
         r = self._client.session.post(url, json=payload)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         metadata = r.json()
         return Resource(
             metadata["id"], dataset_id=dataset_id, _client=self._client, _from_response=metadata
@@ -196,7 +208,10 @@ class ResourceCreator(Creator):
         if self._client.verbose:
             logging.info(f"🆕 Creating '{payload['title']}' for {file_to_upload}")
         r = self._client.session.post(url, files={"file": open(file_to_upload, "rb")})
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise httpx.HTTPStatusError(r.text) from e
         metadata = r.json()
         resource_id = metadata["id"]
         r = Resource(
