@@ -1,8 +1,6 @@
 import logging
 from typing import Iterator
 
-import httpx
-
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
 from .dataset import Dataset, DatasetCreator
@@ -80,6 +78,6 @@ class OrganizationCreator(Creator):
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         metadata = r.json()
         return Organization(metadata["id"], _client=self._client, _from_response=metadata)

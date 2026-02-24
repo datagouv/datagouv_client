@@ -85,7 +85,7 @@ class Resource(BaseObject):
             try:
                 r.raise_for_status()
             except Exception as e:
-                raise httpx.HTTPStatusError(r.text) from e
+                raise Exception(r.text) from e
         return super().update(payload)
 
     @property
@@ -112,7 +112,7 @@ class Resource(BaseObject):
             try:
                 r.raise_for_status()
             except Exception as e:
-                raise httpx.HTTPStatusError(r.text) from e
+                raise Exception(r.text) from e
             with open(path, "wb") as f:
                 for chunk in r.iter_bytes(chunk_size=chunk_size):
                     f.write(chunk)
@@ -122,7 +122,7 @@ class Resource(BaseObject):
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         return r.json()
 
     @simple_connection_retry
@@ -178,7 +178,7 @@ class ResourceCreator(Creator):
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         metadata = r.json()
         return Resource(
             metadata["id"], dataset_id=dataset_id, _client=self._client, _from_response=metadata
@@ -211,7 +211,7 @@ class ResourceCreator(Creator):
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         metadata = r.json()
         resource_id = metadata["id"]
         r = Resource(

@@ -99,7 +99,7 @@ class Client:
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         for elem in r.json()["data"]:
             yield cast_elem(elem, self, cast_as)
         next_url = get_link_next_page(r.json(), next_page)
@@ -108,7 +108,7 @@ class Client:
             try:
                 r.raise_for_status()
             except Exception as e:
-                raise httpx.HTTPStatusError(r.text) from e
+                raise Exception(r.text) from e
             for data in r.json()["data"]:
                 yield cast_elem(data, self, cast_as)
             next_url = get_link_next_page(r.json(), next_page)

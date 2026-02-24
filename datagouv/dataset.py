@@ -1,8 +1,6 @@
 import logging
 from pathlib import Path
 
-import httpx
-
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
 from .resource import Resource, ResourceCreator
@@ -109,6 +107,6 @@ class DatasetCreator(Creator):
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         metadata = r.json()
         return Dataset(metadata["id"], _client=self._client, _from_response=metadata)

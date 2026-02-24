@@ -41,7 +41,7 @@ class BaseObject:
             try:
                 r.raise_for_status()
             except Exception as e:
-                raise httpx.HTTPStatusError(r.text) from e
+                raise Exception(r.text) from e
             metadata = r.json()
         for a in self._attributes:
             setattr(self, a, metadata.get(a))
@@ -56,7 +56,7 @@ class BaseObject:
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         self.refresh(_from_response=r.json())
         return r
 
@@ -69,7 +69,7 @@ class BaseObject:
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         return r
 
     @simple_connection_retry
@@ -81,7 +81,7 @@ class BaseObject:
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         self.refresh()
         return r
 
@@ -95,7 +95,7 @@ class BaseObject:
         try:
             r.raise_for_status()
         except Exception as e:
-            raise httpx.HTTPStatusError(r.text) from e
+            raise Exception(r.text) from e
         self.refresh()
         return r
 
