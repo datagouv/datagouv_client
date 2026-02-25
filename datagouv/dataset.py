@@ -92,7 +92,8 @@ class Dataset(BaseObject, ResourceCreator):
                     path = folder_path / f"{res.id}.{res.format}"
                 else:
                     path = None
-                logging.info(f"Downloading {res.url}")
+                if self._client.verbose:
+                    logging.info(f"Downloading {res.url}")
                 res.download(path=path)
 
 
@@ -100,8 +101,12 @@ class DatasetCreator(Creator):
     @simple_connection_retry
     def create(self, payload: dict) -> Dataset:
         assert_auth(self._client)
-        logging.info(f"Creating dataset '{payload['title']}'")
+        if self._client.verbose:
+            logging.info(f"Creating dataset '{payload['title']}'")
         r = self._client.session.post(f"{self._client.base_url}/api/1/datasets/", json=payload)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise Exception(r.text) from e
         metadata = r.json()
         return Dataset(metadata["id"], _client=self._client, _from_response=metadata)
