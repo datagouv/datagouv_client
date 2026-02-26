@@ -1,9 +1,10 @@
 import os
+from copy import deepcopy
 from unittest.mock import patch
 
 import httpx  # noqa
 import pytest
-from conftest import DATASET_ID, RESOURCE_ID, resource_metadata_api1
+from conftest import DATASET_ID, RESOURCE_ID, resource_metadata_api1, tabular_api_data
 
 from datagouv.base_object import BaseObject
 from datagouv.client import Client
@@ -203,3 +204,73 @@ def test_resource_delete(static_resource_api2_call, httpx_mock):
     response = resource.delete()
 
     assert response.status_code == 204
+
+
+def test_not_tabular_resource(static_resource_api2_call):
+    res = Resource(RESOURCE_ID)
+    for attr in ["tabular_api_url", "profile", "columns"]:
+        with pytest.raises(AttributeError):
+            getattr(res, attr)
+    with pytest.raises(ValueError):
+        res.rows()
+
+
+def test_tabular_resource_instanciation(tabular_resource_api_calls):
+    res = Resource(RESOURCE_ID)
+    assert res.tabular_api_url == f"https://tabular-api.data.gouv.fr/api/resources/{res.id}/"
+    assert isinstance(res.profile, dict)
+    assert isinstance(res.columns, list) and all(isinstance(col, str) for col in res.columns)
+
+
+def test_tabular_resource_data(
+    tabular_resource_api_calls,
+    httpx_mock,
+):
+    res = Resource(RESOURCE_ID)
+    first_page = deepcopy(tabular_api_data)
+    second_page_url = f"{res.tabular_api_url}data/?page=2&page_size=20"
+    first_page["links"]["next"] = second_page_url
+    httpx_mock.add_response(
+        url=res.tabular_api_url + "data/",
+        json=first_page,
+    )
+    httpx_mock.add_response(
+        url=second_page_url,
+        json=tabular_api_data,
+    )
+    assert len(list(res.rows())) == len(first_page["data"]) + len(tabular_api_data["data"])
+
+
+def test_tabular_resource_data_with_filters(
+    tabular_resource_api_calls,
+    httpx_mock,
+):
+    res = Resource(RESOURCE_ID)
+
+    # check that a wrong column name or operator raises an error
+    with pytest.raises(ValueError):
+        res.rows(filters=[("not_a_column", ">", "6")])
+
+    with pytest.raises(ValueError):
+        res.rows(filters=[(res.columns[0], ">>", "6")])
+
+    with pytest.raises(ValueError):
+        res.rows(filters=[(res.columns[0], ">", "6", "extra_arg")])
+
+    filters = [
+        (res.columns[0], ">", "6"),
+        (res.columns[1], "exact", "a"),
+        (res.columns[2], "isnotnull"),
+    ]
+    httpx_mock.add_response(
+        url=(
+            res.tabular_api_url
+            + f"data/?"
+            + f"{res.columns[0]}__strictly_greater=6"
+            + f"&{res.columns[1]}__exact=a"
+            + f"&{res.columns[2]}__isnotnull"
+        ),
+        json=tabular_api_data,
+    )
+    # just testing that calling the method works
+    assert list(res.rows(filters))
