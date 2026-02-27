@@ -1,4 +1,5 @@
 import logging
+from io import BytesIO
 from pathlib import Path
 
 import httpx
@@ -101,6 +102,48 @@ class Resource(BaseObject):
             self._dataset = dataset
         return self._dataset
 
+    def _iter_download(self, chunk_size: int = 8192, **kwargs):
+        with httpx.stream("GET", self.url, **kwargs) as r:
+            try:
+                r.raise_for_status()
+            except Exception as e:
+                raise Exception(r.text) from e
+            for chunk in r.iter_bytes(chunk_size=chunk_size):
+                yield chunk
+
+    def download_buffer(
+        self,
+        chunk_size: int = 8192,
+        max_mib: float | None = 95,
+        **kwargs,
+    ) -> BytesIO:
+        """Download the file into memory and return it as a BytesIO buffer.
+
+        The response is streamed in chunks and accumulated in memory.
+        Use `chunk_size` to control read granularity and `max_mib` to
+        enforce an upper size limit to prevent excessive memory usage.
+
+        Note:
+            100 MB ≈ 95 MiB.
+        """
+
+        max_bytes = None if max_mib is None else int(max_mib * 1024**2)
+
+        buf = BytesIO()
+        total = 0
+
+        for chunk in self._iter_download(chunk_size=chunk_size, **kwargs):
+            buf.write(chunk)
+            total += len(chunk)
+
+            if max_bytes is not None and total > max_bytes:
+                raise ValueError(
+                    f"Response too large (> {max_mib} MiB). Consider increasing `max_mib` value."
+                )
+
+        buf.seek(0)
+        return buf
+
     def download(self, path: Path | str | None = None, chunk_size: int = 8192, **kwargs):
         if path is None:
             path = Path(f"{self.id}.{self.format}")
@@ -108,14 +151,10 @@ class Resource(BaseObject):
             path = Path(path)
         # Ensure parent directory exists
         path.parent.mkdir(parents=True, exist_ok=True)
-        with httpx.stream("GET", self.url, **kwargs) as r:
-            try:
-                r.raise_for_status()
-            except Exception as e:
-                raise Exception(r.text) from e
-            with open(path, "wb") as f:
-                for chunk in r.iter_bytes(chunk_size=chunk_size):
-                    f.write(chunk)
+        chunks = self._iter_download(chunk_size)
+        with open(path, "wb") as f:
+            for chunk in chunks:
+                f.write(chunk)
 
     def get_api2_metadata(self) -> dict:
         r = self._client.session.get(f"{self._client.base_url}/api/2/datasets/resources/{self.id}/")
