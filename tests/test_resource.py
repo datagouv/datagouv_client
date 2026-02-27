@@ -105,7 +105,7 @@ def test_resource_download(remote_resource_api1_call, file_name, httpx_mock):
         content=b"a,b,c\n1,2,3",
     )
     r.download(file_name)
-    local_name = file_name or f"{r.id}.{r.format}"
+    local_name = file_name or r.url.split("/")[-1]
     with open(local_name, "r") as f:
         rows = f.readlines()
     assert rows[0] == "a,b,c\n"
