@@ -99,16 +99,14 @@ def test_resource_no_fetch():
             None,
             "https://api.insee.fr/melodi/file/DS_ESTIMATION_POPULATION/DS_ESTIMATION_POPULATION_CSV_FR",
             {
-                "content-length": "100", "content-disposition":
-                'inline; filename="file.csv"',
+                "content-length": "100",
+                "content-disposition": 'inline; filename="file.csv"',
             },
         ),
         (None, None, {}),
     ],
 )
-def test_resource_download(
-    remote_resource_api1_call, file_name, custom_url, headers, httpx_mock
-):
+def test_resource_download(remote_resource_api1_call, file_name, custom_url, headers, httpx_mock):
     r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
     if custom_url:
         r.url = custom_url
@@ -119,13 +117,7 @@ def test_resource_download(
         is_reusable=True,
     )
     r.download(file_name)
-    local_name = (
-        file_name or (
-            r.url.split("/")[-1]
-            if not custom_url
-            else "file.csv"
-        )
-    )
+    local_name = file_name or (r.url.split("/")[-1] if not custom_url else "file.csv")
     with open(local_name, "r") as f:
         rows = f.readlines()
     assert rows[0] == "a,b,c\n"
