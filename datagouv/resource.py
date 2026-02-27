@@ -1,6 +1,6 @@
 import logging
-from pathlib import Path
 import re
+from pathlib import Path
 
 import httpx
 
@@ -113,18 +113,20 @@ class Resource(BaseObject):
             else:
                 head = self._client.session.head(self.url)
                 if head.status_code == 200 and head.headers.get("content-disposition"):
-                    # check if the headers indicate a filename 
+                    # check if the headers indicate a filename
                     found = re.findall(
-                        r'filename\*?=\"?(?P<filename>[^;\"]+)\"?',
+                        r"filename\*?=\"?(?P<filename>[^;\"]+)\"?",
                         head.headers["content-disposition"],
                     )
                     if found:
                         path = Path(found[0])
                 if path is None and self.format is not None:
-                    # fall back on <resource_id>.<format> if possible 
+                    # fall back on <resource_id>.<format> if possible
                     path = Path(f"{self.id}.{self.format}")
                 if path is None:
-                    raise ValueError("Could not build a good file name, please specify the `path` argument")
+                    raise ValueError(
+                        "Could not build a good file name, please specify the `path` argument"
+                    )
         if isinstance(path, str):
             path = Path(path)
         # Ensure parent directory exists
