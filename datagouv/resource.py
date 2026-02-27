@@ -1,4 +1,5 @@
 import logging
+import re
 from pathlib import Path
 
 import httpx
@@ -101,9 +102,31 @@ class Resource(BaseObject):
             self._dataset = dataset
         return self._dataset
 
-    def download(self, path: Path | str | None = None, chunk_size: int = 8192, **kwargs):
+    def download(self, path: Path | str | None = None, chunk_size: int = 8192, **kwargs) -> Path:
+        """Download the resource into the specified path (or the best found path if not specified).
+        Return the path as a pathlib.Path object"""
         if path is None:
-            path = Path(f"{self.id}.{self.format}")
+            found = re.findall("[^/]+$", self.url)
+            if found and "." in found[0]:
+                # url seems to be ending with the file's name, we use it
+                path = Path(found[0])
+            else:
+                head = self._client.session.head(self.url)
+                if head.status_code == 200 and head.headers.get("content-disposition"):
+                    # check if the headers indicate a filename
+                    found = re.findall(
+                        r"filename\*?=\"?(?P<filename>[^;\"]+)\"?",
+                        head.headers["content-disposition"],
+                    )
+                    if found:
+                        path = Path(found[0])
+                if path is None and self.format is not None:
+                    # fall back on <resource_id>.<format> if possible
+                    path = Path(f"{self.id}.{self.format}")
+                if path is None:
+                    raise ValueError(
+                        "Could not build a good file name, please specify the `path` argument"
+                    )
         if isinstance(path, str):
             path = Path(path)
         # Ensure parent directory exists
@@ -116,6 +139,7 @@ class Resource(BaseObject):
             with open(path, "wb") as f:
                 for chunk in r.iter_bytes(chunk_size=chunk_size):
                     f.write(chunk)
+        return path
 
     def get_api2_metadata(self) -> dict:
         r = self._client.session.get(f"{self._client.base_url}/api/2/datasets/resources/{self.id}/")
