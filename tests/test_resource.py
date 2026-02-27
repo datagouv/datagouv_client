@@ -116,8 +116,7 @@ def test_resource_download(remote_resource_api1_call, file_name, custom_url, hea
         headers=headers,
         is_reusable=True,
     )
-    r.download(file_name)
-    local_name = file_name or (r.url.split("/")[-1] if not custom_url else "file.csv")
+    local_name = r.download(file_name)
     with open(local_name, "r") as f:
         rows = f.readlines()
     assert rows[0] == "a,b,c\n"
