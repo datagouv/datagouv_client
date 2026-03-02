@@ -113,7 +113,12 @@ def test_resource_no_fetch():
     ],
 )
 def test_resource_download(
-    remote_resource_api1_call, file_name, custom_url, headers, expected_name, httpx_mock,
+    remote_resource_api1_call,
+    file_name,
+    custom_url,
+    headers,
+    expected_name,
+    httpx_mock,
 ):
     r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
     if custom_url:
