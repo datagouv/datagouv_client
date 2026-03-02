@@ -1,6 +1,6 @@
 import logging
-from io import BytesIO
 import re
+from io import BytesIO
 from pathlib import Path
 
 import httpx
