@@ -92,20 +92,51 @@ def test_resource_no_fetch():
 
 
 @pytest.mark.parametrize(
-    "file_name",
+    "file_name, custom_url, headers, expected_name",
     [
-        "my_file.csv",
-        None,
+        ("my_file.csv", None, {}, "my_file.csv"),
+        (
+            None,
+            "https://api.insee.fr/melodi/file/DS_ESTIMATION_POPULATION/DS_ESTIMATION_POPULATION_CSV_FR",
+            {
+                "content-length": "100",
+                "content-disposition": 'inline; filename="file.csv"',
+            },
+            "file.csv",
+        ),
+        (
+            None,
+            "https://api.insee.fr/melodi/file/DS_ESTIMATION_POPULATION/DS_ESTIMATION_POPULATION_CSV_FR",
+            {},
+            f"{RESOURCE_ID}.csv",
+        ),
     ],
 )
-def test_resource_download(remote_resource_api1_call, file_name, httpx_mock):
+def test_resource_download(
+    remote_resource_api1_call,
+    file_name,
+    custom_url,
+    headers,
+    expected_name,
+    httpx_mock,
+):
     r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
+    if custom_url:
+        r.url = custom_url
+        httpx_mock.add_response(
+            method="HEAD",
+            url=r.url,
+            status_code=200,
+            headers=headers,
+        )
     httpx_mock.add_response(
+        method="GET",
         url=r.url,
+        status_code=200,
         content=b"a,b,c\n1,2,3",
     )
-    r.download(file_name)
-    local_name = file_name or f"{r.id}.{r.format}"
+    local_name = r.download(file_name)
+    assert local_name.as_posix() == expected_name
     with open(local_name, "r") as f:
         rows = f.readlines()
     assert rows[0] == "a,b,c\n"
