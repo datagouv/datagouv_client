@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 from unittest.mock import patch
 
 import httpx  # noqa
@@ -142,6 +143,91 @@ def test_resource_download(
     assert rows[0] == "a,b,c\n"
     assert rows[1] == "1,2,3"
     os.remove(local_name)
+
+
+def test_iter_download_streams_bytes(httpx_mock):
+    r = Resource("id", dataset_id="ds", fetch=False)
+    r.url = "https://example.com/file.csv"
+
+    payload = b"a,b,c\n1,2,3\n"
+
+    httpx_mock.add_response(
+        method="GET",
+        url=r.url,
+        content=payload,
+        status_code=200,
+    )
+
+    out = b"".join(r._iter_download(chunk_size=4))
+    assert out == payload
+
+
+def test_iter_download_raises_on_http_error(httpx_mock):
+    r = Resource("id", dataset_id="ds", fetch=False)
+    r.url = "https://example.com/missing.csv"
+
+    httpx_mock.add_response(
+        method="GET",
+        url=r.url,
+        status_code=404,
+        text="not found",
+    )
+
+    with pytest.raises(Exception):
+        next(r._iter_download())  # force iteration so the request actually happens
+
+
+def test_download_buffer_happy_path(monkeypatch):
+    # Test when good parameters are provided, it returns the expected buffer
+    r = Resource("id", dataset_id="ds", fetch=False)
+    r.url = "https://example.com/file.csv"
+
+    chunks = [b"a,b,c\n", b"1,2,3\n"]
+
+    def fake_iter_download(*, chunk_size=8192, **kwargs):
+        assert chunk_size == 4
+        assert kwargs == {"timeout": 5.0}
+        yield from chunks
+
+    monkeypatch.setattr(r, "_iter_download", fake_iter_download)
+
+    buf = r.download_buffer(chunk_size=4, max_mib=1, timeout=5.0)
+
+    assert isinstance(buf, BytesIO)
+    assert buf.tell() == 0
+    assert buf.read() == b"".join(chunks)
+
+
+def test_download_buffer_raises_when_too_large(monkeypatch):
+    # Test the responses too large raise an error
+    r = Resource("id", dataset_id="ds", fetch=False)
+    r.url = "https://example.com/big.bin"
+
+    chunks = [b"x" * 600, b"y" * 600]  # total 1200 bytes
+
+    def fake_iter_download(*, chunk_size=8192, **kwargs):
+        yield from chunks
+
+    monkeypatch.setattr(r, "_iter_download", fake_iter_download)
+
+    with pytest.raises(ValueError, match=r"Response too large"):
+        r.download_buffer(max_mib=0.001)  # about 1048 bytes limit
+
+
+def test_download_buffer_no_limit_when_max_mib_none(monkeypatch):
+    # Test we can download larger files when the limit is set to None
+    r = Resource("id", dataset_id="ds", fetch=False)
+    r.url = "https://example.com/huge.bin"
+
+    chunks = [b"x" * 10_000, b"y" * 10_000]
+
+    def fake_iter_download(*, chunk_size=8192, **kwargs):
+        yield from chunks
+
+    monkeypatch.setattr(r, "_iter_download", fake_iter_download)
+
+    buf = r.download_buffer(max_mib=None)
+    assert buf.read() == b"".join(chunks)
 
 
 @pytest.mark.parametrize(
