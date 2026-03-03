@@ -174,9 +174,8 @@ class Resource(BaseObject):
             path = Path(path)
         # Ensure parent directory exists
         path.parent.mkdir(parents=True, exist_ok=True)
-        chunks = self._iter_download(chunk_size)
         with open(path, "wb") as f:
-            for chunk in chunks:
+            for chunk in self._iter_download(chunk_size):
                 f.write(chunk)
         return path
 
