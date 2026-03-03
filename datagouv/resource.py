@@ -134,13 +134,12 @@ class Resource(BaseObject):
         total = 0
 
         for chunk in self._iter_download(chunk_size=chunk_size, **kwargs):
-            buf.write(chunk)
             total += len(chunk)
-
             if max_bytes is not None and total > max_bytes:
                 raise ValueError(
                     f"Response too large (> {max_mib} MiB). Consider increasing `max_mib` value."
                 )
+            buf.write(chunk)
 
         buf.seek(0)
         return buf
