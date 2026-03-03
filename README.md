@@ -65,6 +65,13 @@ d = resource.dataset  # this returns an instance of Dataset
 # you can also download a resource locally (**Note:** if it doesn't exist, parent path will be created)
 resource.download("./file.csv")  # this saves the resource in your working directory as "file.csv"
 
+# alternatively, you can load the resource directly into memory as a BytesIO buffer to process the content without writing it to disk
+buf = resource.download_buffer()
+# by default, in-memory downloads are limited to about 95 MiB to prevent excessive memory usage.
+# Note: If you expect larger files and your infrastructure can handle them,
+# increase the `max_mib` limit:
+buf = resource.download_buffer(max_mib=200)  # allow up to about 200 MiB
+
 # and a subset or all resources of a dataset (**Note:** if it doesn't exist, parent path will be created)
 # the files are named `resource_id.format` (for instance f868cca6-8da1-4369-a78d-47463f19a9a3.csv)
 d.download_resources(

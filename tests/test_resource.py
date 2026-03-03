@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 from unittest.mock import patch
 
 import httpx  # noqa
@@ -142,6 +143,101 @@ def test_resource_download(
     assert rows[0] == "a,b,c\n"
     assert rows[1] == "1,2,3"
     os.remove(local_name)
+
+
+@pytest.mark.parametrize(
+    "payload,status_code,text,chunk_size,expect_exception",
+    [
+        # Success case: yields bytes that reconstruct to payload
+        (b"a,b,c\n1,2,3\n", 200, None, 4, False),
+        # Error case: raise_for_status triggers on 404
+        (None, 404, "not found", 8192, True),
+    ],
+)
+def test_iter_download_http_behaviour(
+    httpx_mock, payload, status_code, text, chunk_size, expect_exception
+):
+    r = Resource("id", dataset_id="ds", fetch=False)
+    r.url = "https://example.com/file.csv"
+
+    httpx_mock.add_response(
+        method="GET",
+        url=r.url,
+        status_code=status_code,
+        content=payload if payload is not None else b"",
+        text=text,
+    )
+
+    it = r._iter_download(chunk_size=chunk_size)
+
+    if expect_exception:
+        with pytest.raises(Exception):
+            next(it)  # trigger request + raise_for_status
+    else:
+        out = b"".join(it)
+        assert out == payload
+
+
+@pytest.mark.parametrize(
+    "chunks,chunk_size,kwargs,max_mib,expect_error,expected_bytes",
+    [
+        # Happy path
+        (
+            [b"a,b,c\n", b"1,2,3\n"],
+            4,
+            {"timeout": 5.0},
+            1,
+            None,
+            b"a,b,c\n1,2,3\n",
+        ),
+        # Too large
+        (
+            [b"x" * 600, b"y" * 600],
+            8192,
+            {},
+            0.001,
+            (ValueError, r"Response too large"),
+            None,
+        ),
+        # Unlimited
+        (
+            [b"x" * 10_000, b"y" * 10_000],
+            8192,
+            {},
+            None,
+            None,
+            b"x" * 10_000 + b"y" * 10_000,
+        ),
+    ],
+)
+def test_download_buffer(
+    monkeypatch, chunks, chunk_size, kwargs, max_mib, expect_error, expected_bytes
+):
+    r = Resource("id", dataset_id="ds", fetch=False)
+    r.url = "https://example.com/file.csv"
+
+    seen = {}
+
+    def fake_iter_download(*, chunk_size=8192, **inner_kwargs):
+        seen["chunk_size"] = chunk_size
+        seen["kwargs"] = inner_kwargs
+        yield from chunks
+
+    monkeypatch.setattr(r, "_iter_download", fake_iter_download)
+
+    if expect_error:
+        exc_type, pattern = expect_error
+        with pytest.raises(exc_type, match=pattern):
+            r.download_buffer(chunk_size=chunk_size, max_mib=max_mib, **kwargs)
+    else:
+        buf = r.download_buffer(chunk_size=chunk_size, max_mib=max_mib, **kwargs)
+        assert isinstance(buf, BytesIO)
+        assert buf.tell() == 0
+        assert buf.read() == expected_bytes
+
+    # Verify kwargs are well passed
+    assert seen["chunk_size"] == chunk_size
+    assert seen["kwargs"] == kwargs
 
 
 @pytest.mark.parametrize(
