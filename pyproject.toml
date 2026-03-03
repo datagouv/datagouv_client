@@ -3,7 +3,10 @@ name = "datagouv_client"
 dynamic = ["version"]
 description = "Wrapper for the data.gouv.fr API"
 authors = [{ name = "Etalab", email = "opendatateam@data.gouv.fr" }]
-dependencies = ["httpx>=0.28.1,<1", "tenacity>=9.0.0,<10"]
+dependencies = [
+    "httpx>=0.28.1,<1",
+    "tenacity>=9.0.0,<10",
+]
 requires-python = ">=3.10,<3.14"
 license = "MIT"
 readme = "README.md"
@@ -12,7 +15,6 @@ keywords = ["api", "wrapper", "datagouv"]
 [project.optional-dependencies]
 dev = [
     "httpx>=0.28.1,<1",
-    "pytest>=9.0.2",
     "pytest-httpx>=0.35.0,<1",
     "ruff>=0.11.2",
 ]
@@ -35,7 +37,5 @@ local_scheme = "no-local-version"
 pythonpath = ["."]
 
 [tool.ruff]
-lint = { extend-select = [
-    "I",
-] } # ["I"] is to also sort imports with an isort rule
+lint = { extend-select = ["I"] } # ["I"] is to also sort imports with an isort rule
 line-length = 100
