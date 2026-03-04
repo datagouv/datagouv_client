@@ -91,7 +91,7 @@ def static_resource_api1_call(httpx_mock):
 
 @pytest.fixture
 def remote_resource_api1_call(httpx_mock):
-    remote_metadata = resource_metadata_api1
+    remote_metadata = deepcopy(resource_metadata_api1)
     remote_metadata["filetype"] = "remote"
     remote_metadata["url"] = "https://example.com/file.csv"
     httpx_mock.add_response(

@@ -35,3 +35,6 @@ pdm.lock
 
 # Project specific files
 mise.local.toml
+
+# Dev Scripts
+*.ipynb

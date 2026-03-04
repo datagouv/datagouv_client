@@ -76,6 +76,13 @@ d = resource.dataset  # this returns an instance of Dataset
 # you can also download a resource locally (**Note:** if it doesn't exist, parent path will be created)
 resource.download("./file.csv")  # this saves the resource in your working directory as "file.csv"
 
+# alternatively, you can load the resource directly into memory as a BytesIO buffer to process the content without writing it to disk
+buf = resource.download_buffer()
+# by default, in-memory downloads are limited to about 95 MiB to prevent excessive memory usage.
+# Note: If you expect larger files and your infrastructure can handle them,
+# increase the `max_mib` limit:
+buf = resource.download_buffer(max_mib=200)  # allow up to about 200 MiB
+
 # and a subset or all resources of a dataset (**Note:** if it doesn't exist, parent path will be created)
 # the files are named `resource_id.format` (for instance f868cca6-8da1-4369-a78d-47463f19a9a3.csv)
 d.download_resources(
@@ -94,7 +101,7 @@ for dat in organization.datasets:
 
 > **Note:** If you want to get objects from demo or dev, you must use a client:
 ```python
-from datagouv import Client, Dataset, Resource
+from datagouv import Client, Dataset
 
 dataset = Dataset("5d13a8b6634f41070a43dff3", _client=Client("demo"))
 ```
@@ -149,6 +156,7 @@ from datagouv import Client
 client = Client(
     environment="www",  # here you can set which platform the client will interact with, default is production
     api_key="MY_SECRET_API_KEY",  # your API key, that grants your rights on the platform
+    verbose=True,  # whether or not to display logs in the processes, default is True
 )
 ```
 > **Note:** You can find your API key on https://www.data.gouv.fr/fr/admin/me/ (don't forget to change the prefix to get the key from the right environment).

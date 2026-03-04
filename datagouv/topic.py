@@ -93,8 +93,12 @@ class TopicCreator(Creator):
     @simple_connection_retry
     def create(self, payload: dict) -> Topic:
         assert_auth(self._client)
-        logging.info(f"Creating topic '{payload['name']}'")
+        if self._client.verbose:
+            logging.info(f"Creating topic '{payload['name']}'")
         r = self._client.session.post(f"{self._client.base_url}/api/2/topics/", json=payload)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise Exception(r.text) from e
         metadata = r.json()
         return Topic(metadata["id"], _client=self._client, _from_response=metadata)
