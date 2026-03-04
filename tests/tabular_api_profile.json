@@ -1,0 +1,1192 @@
+{
+  "profile": {
+    "header": [
+      "dataset.id",
+      "dataset.title",
+      "dataset.slug",
+      "dataset.url",
+      "dataset.organization",
+      "dataset.organization_id",
+      "dataset.license",
+      "dataset.private",
+      "dataset.archived",
+      "id",
+      "url",
+      "title",
+      "description",
+      "filetype",
+      "type",
+      "format",
+      "mime",
+      "filesize",
+      "checksum.type",
+      "checksum.value",
+      "created_at",
+      "modified",
+      "downloads",
+      "harvest.issued_at",
+      "harvest.modified_at",
+      "schema_name",
+      "schema_version",
+      "preview_url",
+      "extras"
+    ],
+    "columns": {
+      "id": {
+        "score": 1.5,
+        "format": "uuid",
+        "python_type": "string"
+      },
+      "url": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "mime": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "type": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "title": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "extras": {
+        "score": 1,
+        "format": "json",
+        "python_type": "json"
+      },
+      "format": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "filesize": {
+        "score": 1,
+        "format": "int",
+        "python_type": "int"
+      },
+      "filetype": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "modified": {
+        "score": 1.5,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "downloads": {
+        "score": 1,
+        "format": "int",
+        "python_type": "int"
+      },
+      "created_at": {
+        "score": 1.25,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "dataset.id": {
+        "score": 1,
+        "format": "mongo_object_id",
+        "python_type": "string"
+      },
+      "dataset.url": {
+        "score": 1.25,
+        "format": "url",
+        "python_type": "string"
+      },
+      "description": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "preview_url": {
+        "score": 1.25,
+        "format": "url",
+        "python_type": "string"
+      },
+      "schema_name": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.slug": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "checksum.type": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.title": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "checksum.value": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "schema_version": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.license": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.private": {
+        "score": 1,
+        "format": "booleen",
+        "python_type": "bool"
+      },
+      "dataset.archived": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "harvest.issued_at": {
+        "score": 1,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "harvest.modified_at": {
+        "score": 1.25,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "dataset.organization": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.organization_id": {
+        "score": 1,
+        "format": "mongo_object_id",
+        "python_type": "string"
+      }
+    },
+    "formats": {
+      "int": [
+        "filesize",
+        "downloads"
+      ],
+      "url": [
+        "dataset.url",
+        "preview_url"
+      ],
+      "json": [
+        "extras"
+      ],
+      "uuid": [
+        "id"
+      ],
+      "string": [
+        "dataset.title",
+        "dataset.slug",
+        "dataset.organization",
+        "dataset.license",
+        "dataset.archived",
+        "url",
+        "title",
+        "description",
+        "filetype",
+        "type",
+        "format",
+        "mime",
+        "checksum.type",
+        "checksum.value",
+        "schema_name",
+        "schema_version"
+      ],
+      "booleen": [
+        "dataset.private"
+      ],
+      "datetime_naive": [
+        "created_at",
+        "modified",
+        "harvest.issued_at",
+        "harvest.modified_at"
+      ],
+      "mongo_object_id": [
+        "dataset.id",
+        "dataset.organization_id"
+      ]
+    },
+    "profile": {
+      "id": {
+        "tops": [
+          {
+            "count": 35,
+            "value": "562dbb20-986d-4d3e-ac15-101a309d3e58"
+          },
+          {
+            "count": 35,
+            "value": "28050caf-357c-491c-acf1-55375c02990a"
+          },
+          {
+            "count": 35,
+            "value": "a1129db0-f96b-4a84-9b64-24bebee984fb"
+          },
+          {
+            "count": 35,
+            "value": "7ecf14a4-f340-4eb3-8151-6c7d1624aff6"
+          },
+          {
+            "count": 35,
+            "value": "20c46be3-3929-468c-9ce6-c66af9dfc53c"
+          },
+          {
+            "count": 35,
+            "value": "d0f2f552-0918-4885-a7b2-3219f502159c"
+          },
+          {
+            "count": 35,
+            "value": "75fa6cf0-0474-4309-8b6d-3c5c278b9f5f"
+          },
+          {
+            "count": 35,
+            "value": "08d28854-84f2-43c7-9552-80db9b7593ee"
+          },
+          {
+            "count": 35,
+            "value": "7801b9f1-22c2-4348-a754-0ff61b24d3fd"
+          },
+          {
+            "count": 35,
+            "value": "5ebece1a-b4a9-4157-9f0a-9dee9449ea29"
+          }
+        ],
+        "nb_distinct": 18,
+        "nb_missing_values": 0
+      },
+      "url": {
+        "tops": [],
+        "nb_distinct": 19,
+        "nb_missing_values": 0
+      },
+      "mime": {
+        "tops": [],
+        "nb_distinct": 25,
+        "nb_missing_values": 0
+      },
+      "type": {
+        "tops": [],
+        "nb_distinct": 23,
+        "nb_missing_values": 0
+      },
+      "title": {
+        "tops": [],
+        "nb_distinct": 20,
+        "nb_missing_values": 0
+      },
+      "extras": {
+        "tops": [
+          {
+            "count": 138059,
+            "value": "{}"
+          },
+          {
+            "count": 14798,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Licence Ouverte / Open Licence Version 2.0 https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf\", \"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\"]}}"
+          },
+          {
+            "count": 8946,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\", \"Licence Ouverte / Open Licence Version 2.0 https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf\"]}}"
+          },
+          {
+            "count": 3949,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Licence Ouverte 1.0 http://www.data.gouv.fr/Licence-Ouverte-Open-Licence.\", \"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\"]}}"
+          },
+          {
+            "count": 2576,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Licence Ouverte 1.0 http://www.data.gouv.fr/Licence-Ouverte-Open-Licence.\", \"En application du code de l'urbanisme, la mise \\u00e0 disposition du public des documents d'urbanisme est \\u00e0 la charge de la collectivit\\u00e9 responsable (Commune ou EPCI). Les donn\\u00e9es du document d'urbanisme num\\u00e9rique sont r\\u00e9utilisables sans restriction par le public. Toute production issue d'une r\\u00e9utilisation de ces donn\\u00e9es doit citer les mentions l\\u00e9gales impos\\u00e9es par le producteur du r\\u00e9f\\u00e9rentiel g\\u00e9ographique source, le nom de l'organisme fournisseur, et la date de mise \\u00e0 jour des donn\\u00e9es.\", \"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\"]}}"
+          },
+          {
+            "count": 1358,
+            "value": "{\"check:available\": true, \"check:url\": \"http://xml.insee.fr/schema/index.html\", \"check:date\": \"2019-10-25 14:43:49.159000\", \"check:count-availability\": 1}"
+          },
+          {
+            "count": 1015,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Licence Ouverte / Open Licence Version 2.0 https://www.etalab.gouv.fr/licence-ouverte-open-licence\", \"Licence Ouverte / Open Licence Version 2.0 https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf\", \"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\"]}}"
+          },
+          {
+            "count": 991,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Licence Ouverte 1.0 http://www.data.gouv.fr/Licence-Ouverte-Open-Licence.\", \"Utilisation libre sous r\\u00e9serve de citer DDT 74 comme source de donn\\u00e9es et d'indiquer la date de mise \\u00e0 jour des donn\\u00e9es.\", \"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\", \"Les donn\\u00e9es diffus\\u00e9es sont informatives et non opposables aux tiers. Les donn\\u00e9es SIG ont \\u00e9t\\u00e9 standardis\\u00e9es \\u00e0 partir des donn\\u00e9es num\\u00e9riques des PPRn approuv\\u00e9s. Nous ne garantissons pas leur exhaustivit\\u00e9 et leur exactitude par rapport aux documents opposables. Les documents officiels et opposables aux tiers peuvent \\u00eatre consult\\u00e9s \\u00e0 la Mairie ou \\u00e0 la pr\\u00e9fecture.\"]}}"
+          },
+          {
+            "count": 860,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Licence Ouverte / Open Licence Version 2.0 https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf\", \"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\", \"Utilisation libre sous r\\u00e9serve de mentionner la source (Direction D\\u00e9partementale des Territoires et de la Mer du Var - DDTM 83) et la date de sa derni\\u00e8re mise \\u00e0 jour.\"]}}"
+          },
+          {
+            "count": 806,
+            "value": "{\"dcat\": {\"accessRights\": [\"Pas de restriction d'acc\\u00e8s public selon INSPIRE\"], \"license\": [\"Licence Ouverte / Open Licence Version 2.0 https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf\", \"Aucun des articles de la loi ne peut \\u00eatre invoqu\\u00e9 pour justifier d'une restriction d'acc\\u00e8s public.\", \"Toute production issue d'une r\\u00e9utilisation de ces donn\\u00e9es doit mentionner le nom de l'organisme fournisseur : Direction d\\u00e9partementale des territoires de Tarn-et-Garonne.\"]}}"
+          }
+        ],
+        "nb_distinct": 29,
+        "nb_missing_values": 0
+      },
+      "format": {
+        "tops": [],
+        "nb_distinct": 24,
+        "nb_missing_values": 0
+      },
+      "filesize": {
+        "max": 75265497280,
+        "min": -2,
+        "std": 95008580,
+        "mean": 22705114,
+        "tops": [
+          {
+            "count": 10349,
+            "value": "308"
+          },
+          {
+            "count": 554,
+            "value": "33206"
+          },
+          {
+            "count": 336,
+            "value": "1625584"
+          },
+          {
+            "count": 171,
+            "value": "49"
+          },
+          {
+            "count": 168,
+            "value": "1625572"
+          },
+          {
+            "count": 168,
+            "value": "1625560"
+          },
+          {
+            "count": 144,
+            "value": "1625580"
+          },
+          {
+            "count": 88,
+            "value": "252391"
+          },
+          {
+            "count": 72,
+            "value": "1625568"
+          },
+          {
+            "count": 72,
+            "value": "1625556"
+          }
+        ],
+        "nb_distinct": 25,
+        "nb_missing_values": 0
+      },
+      "filetype": {
+        "tops": [],
+        "nb_distinct": 22,
+        "nb_missing_values": 0
+      },
+      "modified": {
+        "tops": [
+          {
+            "count": 1359,
+            "value": "2025-03-17T17:06:13"
+          },
+          {
+            "count": 791,
+            "value": "2025-06-24T15:21:55"
+          },
+          {
+            "count": 662,
+            "value": "2026-01-16T16:39:05"
+          },
+          {
+            "count": 648,
+            "value": "2025-06-24T15:21:54"
+          },
+          {
+            "count": 617,
+            "value": "2024-09-18T09:47:30"
+          },
+          {
+            "count": 476,
+            "value": "2019-05-09T00:00:00"
+          },
+          {
+            "count": 467,
+            "value": "2024-02-16T16:22:04"
+          },
+          {
+            "count": 336,
+            "value": "2022-10-12T00:00:00"
+          },
+          {
+            "count": 331,
+            "value": "2026-01-26T08:46:56"
+          },
+          {
+            "count": 278,
+            "value": "2023-09-05T19:30:16"
+          }
+        ],
+        "nb_distinct": 27,
+        "nb_missing_values": 0
+      },
+      "downloads": {
+        "max": 73448914,
+        "min": 0,
+        "std": 157050,
+        "mean": 1228,
+        "tops": [
+          {
+            "count": 16211,
+            "value": "1"
+          },
+          {
+            "count": 14026,
+            "value": "3"
+          },
+          {
+            "count": 11582,
+            "value": "4"
+          },
+          {
+            "count": 10276,
+            "value": "2"
+          },
+          {
+            "count": 8949,
+            "value": "5"
+          },
+          {
+            "count": 8746,
+            "value": "32"
+          },
+          {
+            "count": 8628,
+            "value": "33"
+          },
+          {
+            "count": 8613,
+            "value": "31"
+          },
+          {
+            "count": 8607,
+            "value": "30"
+          },
+          {
+            "count": 8593,
+            "value": "13"
+          }
+        ],
+        "nb_distinct": 27,
+        "nb_missing_values": 0
+      },
+      "created_at": {
+        "tops": [
+          {
+            "count": 2151,
+            "value": "2022-11-18T00:00:00"
+          },
+          {
+            "count": 2048,
+            "value": "2023-08-10T00:00:00"
+          },
+          {
+            "count": 1760,
+            "value": "2022-12-15T00:00:00"
+          },
+          {
+            "count": 1637,
+            "value": "2023-01-13T00:00:00"
+          },
+          {
+            "count": 1378,
+            "value": "2023-04-07T00:00:00"
+          },
+          {
+            "count": 1256,
+            "value": "2022-10-06T00:00:00"
+          },
+          {
+            "count": 1201,
+            "value": "2022-12-13T00:00:00"
+          },
+          {
+            "count": 1169,
+            "value": "2024-10-12T00:00:00"
+          },
+          {
+            "count": 1162,
+            "value": "2024-06-22T00:00:00"
+          },
+          {
+            "count": 990,
+            "value": "2025-07-04T00:00:00"
+          }
+        ],
+        "nb_distinct": 27,
+        "nb_missing_values": 0
+      },
+      "dataset.id": {
+        "tops": [
+          {
+            "count": 15044,
+            "value": "67a1e85a366f75613f750296"
+          },
+          {
+            "count": 10347,
+            "value": "643671587b87c77bffaae082"
+          },
+          {
+            "count": 7503,
+            "value": "5eebbc067a14b6fecc9c9976"
+          },
+          {
+            "count": 4649,
+            "value": "601e804443dc3c741a19d74f"
+          },
+          {
+            "count": 3733,
+            "value": "65cf3c55ec910b5a8e2fc084"
+          },
+          {
+            "count": 3153,
+            "value": "684c2d56f3861808c0a5d465"
+          },
+          {
+            "count": 2401,
+            "value": "67f79b112ceb5b1df4c25a8b"
+          },
+          {
+            "count": 2230,
+            "value": "5f7c7fae9cd6c79b58da3e20"
+          },
+          {
+            "count": 2124,
+            "value": "638f4b3c5a4a78b50d75cdcd"
+          },
+          {
+            "count": 1985,
+            "value": "651eb149add2f419788c36ef"
+          }
+        ],
+        "nb_distinct": 13,
+        "nb_missing_values": 0
+      },
+      "dataset.url": {
+        "tops": [
+          {
+            "count": 15044,
+            "value": "https://www.data.gouv.fr/datasets/fiches-dinformations-sur-les-stations"
+          },
+          {
+            "count": 10347,
+            "value": "https://www.data.gouv.fr/datasets/ruche-connectee-lycee-condorcet-saint-quentin"
+          },
+          {
+            "count": 7503,
+            "value": "https://www.data.gouv.fr/datasets/repertoire-national-des-certifications-professionnelles-et-repertoire-specifique"
+          },
+          {
+            "count": 4649,
+            "value": "https://www.data.gouv.fr/datasets/2021-01-boamp-annonces-json-1"
+          },
+          {
+            "count": 3733,
+            "value": "https://www.data.gouv.fr/datasets/donnees-essentielles-de-la-commande-publique-transmises-via-le-pes-marche-depuis-2024"
+          },
+          {
+            "count": 3153,
+            "value": "https://www.data.gouv.fr/datasets/fiches-climatologiques"
+          },
+          {
+            "count": 2401,
+            "value": "https://www.data.gouv.fr/datasets/prevair-previsions-de-la-qualite-de-lair-pour-la-france-air-quality-forecasts-for-france"
+          },
+          {
+            "count": 2230,
+            "value": "https://www.data.gouv.fr/datasets/sites-indisponibles"
+          },
+          {
+            "count": 2124,
+            "value": "https://www.data.gouv.fr/datasets/logiciels-libres-sur-le-comptoir-du-libre-org"
+          },
+          {
+            "count": 1985,
+            "value": "https://www.data.gouv.fr/datasets/donnees-essentielles-des-marches-publics-xmarches"
+          }
+        ],
+        "nb_distinct": 15,
+        "nb_missing_values": 0
+      },
+      "description": {
+        "tops": [],
+        "nb_distinct": 21,
+        "nb_missing_values": 0
+      },
+      "preview_url": {
+        "tops": [
+          {
+            "count": 33,
+            "value": "https://explore.data.gouv.fr/fr/resources/3f6d7cb8-d7fa-4dca-9302-079e942b40f1"
+          },
+          {
+            "count": 33,
+            "value": "https://explore.data.gouv.fr/fr/resources/7ecf14a4-f340-4eb3-8151-6c7d1624aff6"
+          },
+          {
+            "count": 33,
+            "value": "https://explore.data.gouv.fr/fr/resources/ac0bf2af-d456-4ab4-9517-1a5c2215d132"
+          },
+          {
+            "count": 33,
+            "value": "https://explore.data.gouv.fr/fr/resources/3f5167a3-0776-42e1-a48e-cd3b16435f0a"
+          },
+          {
+            "count": 33,
+            "value": "https://explore.data.gouv.fr/fr/resources/7aa970eb-2e82-4421-a52a-fa38602c1e63"
+          },
+          {
+            "count": 32,
+            "value": "https://explore.data.gouv.fr/fr/resources/66da1d96-78e7-4273-9279-48004f6397ea"
+          },
+          {
+            "count": 32,
+            "value": "https://explore.data.gouv.fr/fr/resources/28050caf-357c-491c-acf1-55375c02990a"
+          },
+          {
+            "count": 32,
+            "value": "https://explore.data.gouv.fr/fr/resources/67e53656-7a2f-4714-b812-a3dd7b917765"
+          },
+          {
+            "count": 32,
+            "value": "https://explore.data.gouv.fr/fr/resources/0090bcbd-d3bb-49ac-8894-73577a9c0e83"
+          },
+          {
+            "count": 32,
+            "value": "https://explore.data.gouv.fr/fr/resources/4ed5ca7e-237c-45ac-961c-1f2a804a7b6c"
+          }
+        ],
+        "nb_distinct": 29,
+        "nb_missing_values": 0
+      },
+      "schema_name": {
+        "tops": [],
+        "nb_distinct": 28,
+        "nb_missing_values": 0
+      },
+      "dataset.slug": {
+        "tops": [],
+        "nb_distinct": 15,
+        "nb_missing_values": 0
+      },
+      "checksum.type": {
+        "tops": [],
+        "nb_distinct": 26,
+        "nb_missing_values": 0
+      },
+      "dataset.title": {
+        "tops": [],
+        "nb_distinct": 14,
+        "nb_missing_values": 0
+      },
+      "checksum.value": {
+        "tops": [],
+        "nb_distinct": 27,
+        "nb_missing_values": 0
+      },
+      "schema_version": {
+        "tops": [],
+        "nb_distinct": 29,
+        "nb_missing_values": 0
+      },
+      "dataset.license": {
+        "tops": [],
+        "nb_distinct": 17,
+        "nb_missing_values": 0
+      },
+      "dataset.private": {
+        "tops": [
+          {
+            "count": 662965,
+            "value": "False"
+          }
+        ],
+        "nb_distinct": 17,
+        "nb_missing_values": 0
+      },
+      "dataset.archived": {
+        "tops": [],
+        "nb_distinct": 18,
+        "nb_missing_values": 0
+      },
+      "harvest.issued_at": {
+        "tops": [
+          {
+            "count": 2151,
+            "value": "2022-11-18T00:00:00"
+          },
+          {
+            "count": 2048,
+            "value": "2023-08-10T00:00:00"
+          },
+          {
+            "count": 1760,
+            "value": "2022-12-15T00:00:00"
+          },
+          {
+            "count": 1637,
+            "value": "2023-01-13T00:00:00"
+          },
+          {
+            "count": 1378,
+            "value": "2023-04-07T00:00:00"
+          },
+          {
+            "count": 1256,
+            "value": "2022-10-06T00:00:00"
+          },
+          {
+            "count": 1201,
+            "value": "2022-12-13T00:00:00"
+          },
+          {
+            "count": 1169,
+            "value": "2024-10-12T00:00:00"
+          },
+          {
+            "count": 1162,
+            "value": "2024-06-22T00:00:00"
+          },
+          {
+            "count": 990,
+            "value": "2025-07-04T00:00:00"
+          }
+        ],
+        "nb_distinct": 27,
+        "nb_missing_values": 0
+      },
+      "harvest.modified_at": {
+        "tops": [
+          {
+            "count": 467,
+            "value": "2019-05-09T00:00:00"
+          },
+          {
+            "count": 329,
+            "value": "2022-10-12T00:00:00"
+          },
+          {
+            "count": 187,
+            "value": "2021-02-02T00:00:00"
+          },
+          {
+            "count": 174,
+            "value": "2023-01-17T00:00:00"
+          },
+          {
+            "count": 163,
+            "value": "2026-02-20T00:00:00"
+          },
+          {
+            "count": 129,
+            "value": "2021-10-20T20:05:33.981000"
+          },
+          {
+            "count": 123,
+            "value": "2023-11-08T00:00:00"
+          },
+          {
+            "count": 120,
+            "value": "2025-09-01T05:00:02"
+          },
+          {
+            "count": 120,
+            "value": "2010-01-01T09:41:02"
+          },
+          {
+            "count": 118,
+            "value": "2019-05-23T00:00:00"
+          }
+        ],
+        "nb_distinct": 27,
+        "nb_missing_values": 0
+      },
+      "dataset.organization": {
+        "tops": [],
+        "nb_distinct": 16,
+        "nb_missing_values": 0
+      },
+      "dataset.organization_id": {
+        "tops": [
+          {
+            "count": 35484,
+            "value": "55263369c751df702faec475"
+          },
+          {
+            "count": 29070,
+            "value": "534fff8ba3a7292c64a77ed4"
+          },
+          {
+            "count": 27382,
+            "value": "5420b971a3a7297b491991e1"
+          },
+          {
+            "count": 24616,
+            "value": "5df935d8634f414e69469492"
+          },
+          {
+            "count": 20824,
+            "value": "5b8e77c08b4c4145000a595e"
+          },
+          {
+            "count": 19622,
+            "value": "5732ff7788ee382b08d1b934"
+          },
+          {
+            "count": 19102,
+            "value": "5bf7f6a3634f413588391745"
+          },
+          {
+            "count": 12727,
+            "value": "558a83dac751df039da453b9"
+          },
+          {
+            "count": 12450,
+            "value": "56eed43ec751df31e5d6e93b"
+          },
+          {
+            "count": 10856,
+            "value": "558ea37cc751df2a26a453fe"
+          }
+        ],
+        "nb_distinct": 16,
+        "nb_missing_values": 0
+      }
+    },
+    "encoding": "UTF-8",
+    "separator": ";",
+    "categorical": [
+      "dataset.license",
+      "dataset.private",
+      "filetype",
+      "type",
+      "checksum.type"
+    ],
+    "total_lines": 662965,
+    "nb_duplicates": 0,
+    "columns_fields": {
+      "id": {
+        "score": 1,
+        "format": "uuid",
+        "python_type": "string"
+      },
+      "url": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "mime": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "type": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "title": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "extras": {
+        "score": 1,
+        "format": "json",
+        "python_type": "json"
+      },
+      "format": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "filesize": {
+        "score": 1,
+        "format": "int",
+        "python_type": "int"
+      },
+      "filetype": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "modified": {
+        "score": 1,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "downloads": {
+        "score": 1,
+        "format": "int",
+        "python_type": "int"
+      },
+      "created_at": {
+        "score": 1,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "dataset.id": {
+        "score": 1,
+        "format": "mongo_object_id",
+        "python_type": "string"
+      },
+      "dataset.url": {
+        "score": 1,
+        "format": "url",
+        "python_type": "string"
+      },
+      "description": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "preview_url": {
+        "score": 1,
+        "format": "url",
+        "python_type": "string"
+      },
+      "schema_name": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.slug": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "checksum.type": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.title": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "checksum.value": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "schema_version": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.license": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.private": {
+        "score": 1,
+        "format": "booleen",
+        "python_type": "bool"
+      },
+      "dataset.archived": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "harvest.issued_at": {
+        "score": 1,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "harvest.modified_at": {
+        "score": 1,
+        "format": "datetime_naive",
+        "python_type": "datetime"
+      },
+      "dataset.organization": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.organization_id": {
+        "score": 1,
+        "format": "mongo_object_id",
+        "python_type": "string"
+      }
+    },
+    "columns_labels": {
+      "id": {
+        "score": 1,
+        "format": "mongo_object_id",
+        "python_type": "string"
+      },
+      "url": {
+        "score": 1,
+        "format": "url",
+        "python_type": "string"
+      },
+      "mime": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "type": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "title": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "extras": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "format": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "filesize": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "filetype": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "modified": {
+        "score": 1,
+        "format": "date",
+        "python_type": "date"
+      },
+      "downloads": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "created_at": {
+        "score": 0.5,
+        "format": "date",
+        "python_type": "date"
+      },
+      "dataset.id": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.url": {
+        "score": 0.5,
+        "format": "url",
+        "python_type": "string"
+      },
+      "description": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "preview_url": {
+        "score": 0.5,
+        "format": "url",
+        "python_type": "string"
+      },
+      "schema_name": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.slug": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "checksum.type": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.title": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "checksum.value": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "schema_version": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.license": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.private": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.archived": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "harvest.issued_at": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "harvest.modified_at": {
+        "score": 0.5,
+        "format": "date",
+        "python_type": "date"
+      },
+      "dataset.organization": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      },
+      "dataset.organization_id": {
+        "score": 1,
+        "format": "string",
+        "python_type": "string"
+      }
+    },
+    "header_row_idx": 0,
+    "heading_columns": 0,
+    "trailing_columns": 0
+  },
+  "deleted_at": null,
+  "dataset_id": "5d13a8b6634f41070a43dff3",
+  "indexes": null
+}
