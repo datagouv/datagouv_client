@@ -20,6 +20,8 @@ class BaseObject:
     _attributes: list[str] = []
 
     def __init__(self, id: str, _client: Client = Client()):
+        if self.__class__.__name__ == "BaseObject":
+            raise TypeError("BaseObject is an abstract class, it cannot be instanciated")
         self.id = id
         self._client = _client
         self._base_metrics_url = (
