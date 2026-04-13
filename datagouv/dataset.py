@@ -107,7 +107,7 @@ class Dataset(BaseObject, ResourceCreator):
             raise ValueError("An id has been duplicated in the sorting process, aborting")
         r = self._client.session.put(
             self.uri + "resources/",
-            json=[{"id": r.id for r in sorted_resources}],
+            json=[{"id": r.id } for r in sorted_resources],
         )
         try:
             r.raise_for_status()
