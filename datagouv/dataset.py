@@ -7,6 +7,16 @@ from .client import Client
 from .resource import Resource, ResourceCreator
 from .retry import simple_connection_retry
 
+_valid_resources_sort_attr = {
+    "created_at",
+    "filesize",
+    "format",
+    "last_modified",
+    "mime",
+    "title",
+    "url",
+}
+
 
 class Dataset(BaseObject, ResourceCreator):
     _attributes = [
@@ -97,10 +107,35 @@ class Dataset(BaseObject, ResourceCreator):
                     logging.info(f"Downloading {res.url}")
                 res.download(path=path)
 
-    def sort_resources(self, sort_function: Callable[[list[Resource]], list[Resource]]) -> None:
-        """Sort the dataset's resources using the given sorting function, that takes and returns a list of Resources"""
+    def sort_resources(
+        self,
+        by: str | None = None,
+        *,
+        sort_function: Callable[[list[Resource]], list[Resource]] | None = None,
+    ) -> None:
+        """Sort the dataset's resources using either:
+        - a valid Resource attribute and order separated with a dot, e.g. 'title.asc'
+        - a given sorting function, that takes and returns a list of Resources
+        """
         assert_auth(self._client)
-        sorted_resources = sort_function(self.resources)
+        if by is not None:
+            assert by.count(".") == 1, "`by` must look like '<sorting_key>.<order>'"
+            key, order = by.split(".")
+            assert key in _valid_resources_sort_attr, (
+                f"Valid sorting keys are: {_valid_resources_sort_attr}"
+            )
+            assert order in {"asc", "desc"}, "`order` must be either 'asc' or 'desc'"
+            sorted_resources = sorted(
+                self.resources,
+                key=lambda r: getattr(r, key),
+            )
+            if order == "desc":
+                sorted_resources = reversed(sorted_resources)
+            sorted_resources = list(sorted_resources)
+        elif sort_function is not None:
+            sorted_resources = sort_function(self.resources)
+        else:
+            raise ValueError("`by` or `sort_function` argument must be specified")
         if len(sorted_resources) != len(self.resources):
             raise ValueError("The sorted list has a different number of elements, aborting")
         if len(sorted_resources) != len(set(r.id for r in sorted_resources)):
