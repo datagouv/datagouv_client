@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import Callable
 
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
@@ -95,6 +96,23 @@ class Dataset(BaseObject, ResourceCreator):
                 if self._client.verbose:
                     logging.info(f"Downloading {res.url}")
                 res.download(path=path)
+
+    def sort_resources(self, sort_function: Callable[[list[Resource]], list[Resource]]) -> None:
+        """Sort the dataset's resources using the given sorting function, that takes and returns a list of Resources"""
+        assert_auth(self._client)
+        sorted_resources = sort_function(self.resources)
+        if len(sorted_resources) != len(self.resources):
+            raise ValueError("The sorted list has a different number of elements, aborting")
+        if len(sorted_resources) != len(set(r.id for r in sorted_resources)):
+            raise ValueError("An id has been duplicated in the sorting process, aborting")
+        r = self._client.session.put(
+            self.uri + "resources/",
+            json=[{"id": r.id for r in sorted_resources}],
+        )
+        try:
+            r.raise_for_status()
+        except Exception as e:
+            raise Exception(r.text) from e
 
 
 class DatasetCreator(Creator):
