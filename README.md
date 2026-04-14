@@ -184,7 +184,7 @@ for idx, res in enumerate(dataset.resources):
 
 
 # it is also possible to sort a dataset's resources
-# either by a specific Resource field or with a custom sorting function that takes and returns a list of Resource objects
+# either with a specific Resource field and order, or with a custom sorting function that takes and returns a list of Resource objects
 dataset.sort_resources(by="title.asc")  # the expected syntax is <field>.<order> (order being 'asc' or 'desc')
 ```
 
