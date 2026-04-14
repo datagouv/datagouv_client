@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 from typing import Callable
+import warnings
 
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client
@@ -119,6 +120,10 @@ class Dataset(BaseObject, ResourceCreator):
         """
         assert_auth(self._client)
         if by is not None:
+            if sort_function is not None:
+                warnings.warn(
+                    "Both `by` and `sort_function` arguments were provided, only `by` value will be considered"
+                )
             assert by.count(".") == 1, "`by` must look like '<sorting_key>.<order>'"
             key, order = by.split(".")
             assert key in _valid_resources_sort_attr, (
