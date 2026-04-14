@@ -1,6 +1,6 @@
 import os
 import shutil
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import httpx  # noqa
 import pytest
@@ -171,3 +171,50 @@ def test_dataset_delete(dataset_api_call, httpx_mock):
     response = dataset.delete()
 
     assert response.status_code == 204
+
+
+def custom_sort(res_list: list[Resource]):
+    keys = [{"key": r.title[::-1], "res": r} for r in res_list]
+    return [item["res"] for item in sorted(keys, key=lambda k: k["key"])]
+
+
+@pytest.mark.parametrize(
+    "kwarg, success",
+    [
+        ({"by": "title.desc"}, True),
+        ({"by": "created_at.asc"}, True),
+        ({"sort_function": custom_sort}, True),
+        ({"by": "created_at.tri"}, False),
+        ({"by": "asc"}, False),
+        ({}, False),
+        ({"sort_function": lambda r_list: r_list + [r_list[-1]]}, False),
+        ({"sort_function": lambda r_list: r_list[:-1]}, False),
+    ],
+)
+def test_sort_resources(kwarg, success, dataset_api_call):
+    client = Client(api_key="test-api-key")
+    mock_response = Mock()
+    mock_response.raise_for_status.return_value = None
+    dataset = client.dataset(DATASET_ID)
+
+    if not success:
+        with pytest.raises(Exception):
+            dataset.sort_resources(**kwarg)
+        return
+
+    if "by" in kwarg:
+        key, order = kwarg["by"].split(".")
+        expected = sorted(dataset.resources, key=lambda r: getattr(r, key))
+        if order == "desc":
+            expected = reversed(expected)
+        expected = [{"id": r.id} for r in expected]
+    else:
+        expected = [{"id": r.id} for r in kwarg["sort_function"](dataset.resources)]
+
+    with patch.object(client.session, "put") as mock_put:
+        dataset.sort_resources(**kwarg)
+        # Verify the mask was added to headers
+        mock_put.assert_called_with(
+            dataset.uri + "resources/",
+            json=expected,
+        )

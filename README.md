@@ -181,6 +181,11 @@ for idx, res in enumerate(dataset.resources):
     # delete every third resource
     if idx % 3 == 0:
         res.delete()
+
+
+# it is also possible to sort a dataset's resources
+# either with a specific Resource field and order, or with a custom sorting function that takes and returns a list of Resource objects
+dataset.sort_resources(by="title.asc")  # the expected syntax is <field>.<order> (order being 'asc' or 'desc')
 ```
 
 With an authenticated client, you are also allowed to create datasets and resources on the environment you specified:
