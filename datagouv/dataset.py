@@ -1,7 +1,7 @@
 import logging
+import warnings
 from pathlib import Path
 from typing import Callable
-import warnings
 
 from .base_object import BaseObject, Creator, assert_auth
 from .client import Client

@@ -174,10 +174,7 @@ def test_dataset_delete(dataset_api_call, httpx_mock):
 
 
 def custom_sort(res_list: list[Resource]):
-    keys = [
-        {"key": r.title[::-1], "res": r}
-        for r in res_list
-    ]
+    keys = [{"key": r.title[::-1], "res": r} for r in res_list]
     return [item["res"] for item in sorted(keys, key=lambda k: k["key"])]
 
 
@@ -207,10 +204,7 @@ def test_sort_resources(kwarg, success, dataset_api_call):
 
     if "by" in kwarg:
         key, order = kwarg["by"].split(".")
-        expected = sorted(
-            dataset.resources,
-            key=lambda r: getattr(r, key)
-        )
+        expected = sorted(dataset.resources, key=lambda r: getattr(r, key))
         if order == "desc":
             expected = reversed(expected)
         expected = [{"id": r.id} for r in expected]
