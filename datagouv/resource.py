@@ -72,8 +72,11 @@ class Resource(BaseObject):
         self.front_url = self.uri.replace("/api/1", "").replace("/resources", "/#/resources")
         if fetch or _from_response:
             self.refresh(_from_response=_from_response)
-        if fetch and self.preview_url:
-            self.tabular_api_url = f"https://tabular-api.data.gouv.fr/api/resources/{self.id}/"
+        if fetch and self._client.environment in ["www", "demo"] and self.preview_url:
+            self.tabular_api_url = (
+                f"https://tabular-api{'.preprod' if self._client.environment == 'demo' else ''}"
+                f".data.gouv.fr/api/resources/{self.id}/"
+            )
             self.profile: dict = self._client.session.get(self.tabular_api_url + "profile/").json()[
                 "profile"
             ]
