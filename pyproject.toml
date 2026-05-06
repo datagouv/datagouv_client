@@ -6,6 +6,7 @@ authors = [{ name = "Etalab", email = "opendatateam@data.gouv.fr" }]
 dependencies = [
     "httpx>=0.28.1,<1",
     "tenacity>=9.0.0,<10",
+    "typer>=0.25.0,<1",
 ]
 requires-python = ">=3.10,<3.15"
 license = "MIT"
