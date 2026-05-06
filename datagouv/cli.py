@@ -1,9 +1,8 @@
 import typer
 
 from datagouv import Client
-
-from datagouv.config import CONFIG_PATH, _delete_config, save_config
 from datagouv.commands import dataset, organization, resource, topic
+from datagouv.config import CONFIG_PATH, _delete_config, save_config
 
 app = typer.Typer()
 

@@ -26,7 +26,9 @@ def create(
 ) -> None:
     """Create a dataset. `title` and `description` are required.
     Each `--set` option is expected as `<key>=<new_value>`."""
-    assert (organization or owner) and not (organization and owner), "Either `organization` or `owner` should be specified, not both"
+    assert (organization or owner) and not (organization and owner), (
+        "Either `organization` or `owner` should be specified, not both"
+    )
     client = Client(**load_config())
     payload = {"title": title, "description": description}
     for item in set:
@@ -50,7 +52,7 @@ def update(
     for item in set:
         key, value = item.split("=", maxsplit=1)
         payload[key] = value
-    
+
     client.dataset(id, fetch=False).update(payload)
     typer.echo("Dataset updated successfully ✓")
 

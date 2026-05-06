@@ -44,7 +44,7 @@ def update(
     for item in set:
         key, value = item.split("=", maxsplit=1)
         payload[key] = value
-    
+
     client.organization(id, fetch=False).update(payload)
     typer.echo("Organization updated successfully ✓")
 

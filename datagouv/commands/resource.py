@@ -28,7 +28,9 @@ def create(
     """Create a resource. `title` is required.
     Set `file_to_upload` to create a static resource, or `url` to create a remote one.
     Each `--set` option is expected as `<key>=<new_value>`."""
-    assert (file_to_upload or url) and not (file_to_upload and url), "Either `file_to_upload` or `url` should be specified, not both"
+    assert (file_to_upload or url) and not (file_to_upload and url), (
+        "Either `file_to_upload` or `url` should be specified, not both"
+    )
     client = Client(**load_config())
     payload = {"title": title}
     for item in set:
@@ -36,7 +38,9 @@ def create(
         payload[key] = value
     if url:
         payload["url"] = url
-        r = client.dataset(dataset, fetch=False).create_remote(payload=payload, is_communautary=is_communautary)
+        r = client.dataset(dataset, fetch=False).create_remote(
+            payload=payload, is_communautary=is_communautary
+        )
     else:
         r = client.dataset(dataset, fetch=False).create_static(
             file_to_upload=file_to_upload, payload=payload, is_communautary=is_communautary
@@ -55,7 +59,7 @@ def update(
     for item in set:
         key, value = item.split("=", maxsplit=1)
         payload[key] = value
-    
+
     client.resource(id, fetch=False).update(payload)
     typer.echo("Resource updated successfully ✓")
 
