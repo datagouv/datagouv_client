@@ -1,6 +1,6 @@
 import typer
 
-from datagouv import Client, Dataset
+from datagouv import Client
 from datagouv.config import load_config
 
 app = typer.Typer()
@@ -8,8 +8,9 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Display a dataset."""    
-    dataset = Dataset(id)
+    """Display a dataset."""
+    client = Client(**load_config())
+    dataset = client.dataset(id)
     for att in dataset._attributes:
         typer.echo(f"{att}: {getattr(dataset, att)}")
         typer.echo("_" * 20)
@@ -25,17 +26,17 @@ def create(
 ) -> None:
     """Create a dataset. `title` and `description` are required.
     Each `--set` option is expected as `<key>=<new_value>`."""
-    assert (organization or owner) and not (organization and owner), "Either `organization` or `owner` should be specified"
+    assert (organization or owner) and not (organization and owner), "Either `organization` or `owner` should be specified, not both"
     client = Client(**load_config())
     payload = {"title": title, "description": description}
     for item in set:
         key, value = item.split("=", maxsplit=1)
         payload[key] = value
     if organization:
-        client.organization(organization, fetch=False).create_dataset(payload)
+        d = client.organization(organization, fetch=False).create_dataset(payload)
     else:
-        client.dataset().create(payload | {"owner": owner})
-    typer.echo("Dataset created successfully ✓")
+        d = client.dataset().create(payload | {"owner": owner})
+    typer.echo(f"Dataset created successfully ✓ id is {d.id}")
 
 
 @app.command()
@@ -52,6 +53,17 @@ def update(
     
     client.dataset(id, fetch=False).update(payload)
     typer.echo("Dataset updated successfully ✓")
+
+
+@app.command()
+def sort_resources(
+    id: str,
+    by: str,
+) -> None:
+    """Sort the resources of a dataset according to the given order, expected as `<key>.<asc/desc>`"""
+    client = Client(**load_config())
+    client.dataset(id, fetch=False).sort_resources(by=by)
+    typer.echo("Dataset's resources reordered successfully ✓")
 
 
 @app.command()

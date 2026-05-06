@@ -3,11 +3,14 @@ import typer
 from datagouv import Client
 
 from datagouv.config import CONFIG_PATH, _delete_config, save_config
-from datagouv.commands import dataset
+from datagouv.commands import dataset, organization, resource, topic
 
 app = typer.Typer()
 
 app.add_typer(dataset.app, name="dataset")
+app.add_typer(organization.app, name="organization")
+app.add_typer(resource.app, name="resource")
+app.add_typer(topic.app, name="topic")
 
 
 @app.command()
