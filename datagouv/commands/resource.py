@@ -18,14 +18,14 @@ def display(id: str) -> None:
 
 @app.command()
 def create(
-    dataset: str,
+    dataset_id: str,
     title: str,
     file_to_upload: str = typer.Option(None, help="Path of the file to upload"),
     url: str = typer.Option(None, help="URL of the file"),
     is_communautary: bool = typer.Option(False, help="Whether the resource is communautary"),
     set: list[str] = typer.Option([], "--set", help="Reusable argument to set extra keys"),
 ) -> None:
-    """Create a resource. `title` is required.
+    """Create a resource. `dataset_id` and `title` are required.
     Set `file_to_upload` to create a static resource, or `url` to create a remote one.
     Each `--set` option is expected as `<key>=<new_value>`."""
     assert (file_to_upload or url) and not (file_to_upload and url), (
@@ -38,11 +38,11 @@ def create(
         payload[key] = value
     if url:
         payload["url"] = url
-        r = client.dataset(dataset, fetch=False).create_remote(
+        r = client.dataset(dataset_id, fetch=False).create_remote(
             payload=payload, is_communautary=is_communautary
         )
     else:
-        r = client.dataset(dataset, fetch=False).create_static(
+        r = client.dataset(dataset_id, fetch=False).create_static(
             file_to_upload=file_to_upload, payload=payload, is_communautary=is_communautary
         )
     typer.echo(f"Resource created successfully ✓ id is {r.id}")

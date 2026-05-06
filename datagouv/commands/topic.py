@@ -19,21 +19,23 @@ def display(id: str) -> None:
 @app.command()
 def create(
     name: str,
-    organization: str = typer.Option(None, help="Id of the organization that will own the topic"),
-    owner: str = typer.Option(None, help="Id of the user that will own the topic"),
+    organization_id: str = typer.Option(
+        None, help="Id of the organization that will own the topic"
+    ),
+    owner_id: str = typer.Option(None, help="Id of the user that will own the topic"),
     set: list[str] = typer.Option([], "--set", help="Reusable argument to set extra keys"),
 ) -> None:
     """Create a topic. `name` and `description` are required.
     Each `--set` option is expected as `<key>=<new_value>`."""
-    assert (organization or owner) and not (organization and owner), (
-        "Either `organization` or `owner` should be specified, not both"
+    assert (organization_id or owner_id) and not (organization_id and owner_id), (
+        "Either `organization_id` or `owner_id` should be specified, not both"
     )
     client = Client(**load_config())
     payload = {"name": name}
-    if organization:
-        payload["organization"] = organization
+    if organization_id:
+        payload["organization"] = organization_id
     else:
-        payload["owner"] = owner
+        payload["owner"] = owner_id
     for item in set:
         key, value = item.split("=", maxsplit=1)
         payload[key] = value
