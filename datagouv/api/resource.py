@@ -6,9 +6,10 @@ from typing import Iterator
 
 import httpx
 
-from .base_object import BaseObject, Creator, assert_auth
+from datagouv.utils.base_object import BaseObject, Creator, assert_auth
+from datagouv.utils.retry import simple_connection_retry
+
 from .client import Client
-from .retry import simple_connection_retry
 
 OPERATORS = {
     "sort": "sort",

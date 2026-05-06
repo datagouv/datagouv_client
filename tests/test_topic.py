@@ -3,11 +3,11 @@ from unittest.mock import patch
 import pytest
 from conftest import OWNER_ID, TOPIC_ID, elements_metadata, topic_metadata
 
-from datagouv.base_object import BaseObject
-from datagouv.client import Client
-from datagouv.dataset import Dataset
-from datagouv.organization import Organization
-from datagouv.topic import Topic, TopicCreator
+from datagouv.api.client import Client
+from datagouv.api.dataset import Dataset
+from datagouv.api.organization import Organization
+from datagouv.api.topic import Topic, TopicCreator
+from datagouv.utils.base_object import BaseObject
 
 
 def test_dataset_instance(topic_api_call):

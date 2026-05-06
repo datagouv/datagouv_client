@@ -1,5 +1,5 @@
-from .client import Client  # noqa
-from .dataset import Dataset  # noqa
-from .organization import Organization  # noqa
-from .resource import Resource  # noqa
-from .topic import Topic  # noqa
+from .api.client import Client  # noqa
+from .api.dataset import Dataset  # noqa
+from .api.organization import Organization  # noqa
+from .api.resource import Resource  # noqa
+from .api.topic import Topic  # noqa

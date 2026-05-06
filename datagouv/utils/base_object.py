@@ -4,7 +4,8 @@ from typing import Iterator
 
 import httpx
 
-from .client import Client
+from datagouv.api.client import Client
+
 from .retry import simple_connection_retry
 
 

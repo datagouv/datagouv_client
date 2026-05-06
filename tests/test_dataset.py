@@ -6,10 +6,10 @@ import httpx  # noqa
 import pytest
 from conftest import DATASET_ID, OWNER_ID, dataset_metadata
 
-from datagouv.base_object import BaseObject
-from datagouv.client import Client
-from datagouv.dataset import Dataset, DatasetCreator
-from datagouv.resource import Resource, ResourceCreator
+from datagouv.api.client import Client
+from datagouv.api.dataset import Dataset, DatasetCreator
+from datagouv.api.resource import Resource, ResourceCreator
+from datagouv.utils.base_object import BaseObject
 
 
 def test_dataset_instance(dataset_api_call):

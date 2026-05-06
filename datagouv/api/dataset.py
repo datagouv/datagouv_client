@@ -3,10 +3,11 @@ import warnings
 from pathlib import Path
 from typing import Callable
 
-from .base_object import BaseObject, Creator, assert_auth
+from datagouv.utils.base_object import BaseObject, Creator, assert_auth
+from datagouv.utils.retry import simple_connection_retry
+
 from .client import Client
 from .resource import Resource, ResourceCreator
-from .retry import simple_connection_retry
 
 _valid_resources_sort_attr = {
     "created_at",
