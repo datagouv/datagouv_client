@@ -27,7 +27,8 @@ def create(
     set: list[str] = typer.Option([], "--set", help="Reusable argument to set extra keys"),
 ) -> None:
     """Create a dataset. `title` and `description` are required.
-    Each `--set` option is expected as `<key>=<new_value>`."""
+    Set `organization-id` or `owner-id` to attach the dataset to the desired entity.
+    Each `--set` option is expected as `<key>=<value>`."""
     assert (organization_id or owner_id) and not (organization_id and owner_id), (
         "Either `organization-id` or `owner-id` should be specified, and not both"
     )
@@ -64,7 +65,8 @@ def sort_resources(
     id: str,
     by: str,
 ) -> None:
-    """Sort the resources of a dataset according to the given order, expected as `<key>.<asc/desc>`"""
+    """Sort the resources of a dataset according to the given order, expected as `<key>.<asc/desc>`.
+    Example: `title.asc`"""
     client = Client(**load_config())
     client.dataset(id, fetch=False).sort_resources(by=by)
     typer.echo("Dataset's resources reordered successfully ✓")

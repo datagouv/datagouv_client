@@ -25,9 +25,9 @@ def create(
     is_communautary: bool = typer.Option(False, help="Whether the resource is communautary"),
     set: list[str] = typer.Option([], "--set", help="Reusable argument to set extra keys"),
 ) -> None:
-    """Create a resource. `dataset_id` and `title` are required.
+    """Create a resource. `dataset-id` and `title` are required.
     Set `file-to-upload` to create a static resource, or `url` to create a remote one.
-    Each `--set` option is expected as `<key>=<new_value>`."""
+    Each `--set` option is expected as `<key>=<value>`."""
     assert (file_to_upload or url) and not (file_to_upload and url), (
         "Either `file-to-upload` or `url` should be specified, and not both"
     )

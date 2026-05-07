@@ -23,7 +23,7 @@ def create(
     set: list[str] = typer.Option([], "--set", help="Reusable argument to set extra keys"),
 ) -> None:
     """Create an organization. `name` and `description` are required.
-    Each `--set` option is expected as `<key>=<new_value>`."""
+    Each `--set` option is expected as `<key>=<value>`."""
     client = Client(**load_config())
     payload = {"name": name, "description": description}
     for item in set:

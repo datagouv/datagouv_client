@@ -26,7 +26,7 @@ def create(
     set: list[str] = typer.Option([], "--set", help="Reusable argument to set extra keys"),
 ) -> None:
     """Create a topic. `name` and `description` are required.
-    Each `--set` option is expected as `<key>=<new_value>`."""
+    Each `--set` option is expected as `<key>=<value>`."""
     assert (organization_id or owner_id) and not (organization_id and owner_id), (
         "Either `organization-id` or `owner-id` should be specified, and not both"
     )
