@@ -28,7 +28,7 @@ def create(
     """Create a topic. `name` and `description` are required.
     Each `--set` option is expected as `<key>=<new_value>`."""
     assert (organization_id or owner_id) and not (organization_id and owner_id), (
-        "Either `organization_id` or `owner_id` should be specified, not both"
+        "Either `organization-id` or `owner-id` should be specified, and not both"
     )
     client = Client(**load_config())
     payload = {"name": name}

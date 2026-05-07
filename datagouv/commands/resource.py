@@ -26,10 +26,10 @@ def create(
     set: list[str] = typer.Option([], "--set", help="Reusable argument to set extra keys"),
 ) -> None:
     """Create a resource. `dataset_id` and `title` are required.
-    Set `file_to_upload` to create a static resource, or `url` to create a remote one.
+    Set `file-to-upload` to create a static resource, or `url` to create a remote one.
     Each `--set` option is expected as `<key>=<new_value>`."""
     assert (file_to_upload or url) and not (file_to_upload and url), (
-        "Either `file_to_upload` or `url` should be specified, not both"
+        "Either `file-to-upload` or `url` should be specified, and not both"
     )
     client = Client(**load_config())
     payload = {"title": title}
