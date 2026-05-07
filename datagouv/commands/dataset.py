@@ -13,7 +13,7 @@ def display(id: str) -> None:
     dataset = client.dataset(id)
     for att in dataset._attributes:
         typer.echo(f"{att}: {getattr(dataset, att)}")
-        typer.echo("_" * 20)
+        typer.echo("─" * 20)
 
 
 @app.command()

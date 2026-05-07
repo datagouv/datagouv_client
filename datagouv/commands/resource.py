@@ -13,7 +13,7 @@ def display(id: str) -> None:
     resource = client.resource(id)
     for att in resource._attributes:
         typer.echo(f"{att}: {getattr(resource, att)}")
-        typer.echo("_" * 20)
+        typer.echo("─" * 20)
 
 
 @app.command()

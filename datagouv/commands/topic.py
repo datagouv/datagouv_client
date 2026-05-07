@@ -13,7 +13,7 @@ def display(id: str) -> None:
     topic = client.topic(id)
     for att in topic._attributes:
         typer.echo(f"{att}: {getattr(topic, att)}")
-        typer.echo("_" * 20)
+        typer.echo("─" * 20)
 
 
 @app.command()

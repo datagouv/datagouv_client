@@ -13,7 +13,7 @@ def display(id: str) -> None:
     orga = client.organization(id)
     for att in orga._attributes:
         typer.echo(f"{att}: {getattr(orga, att)}")
-        typer.echo("_" * 20)
+        typer.echo("─" * 20)
 
 
 @app.command()
