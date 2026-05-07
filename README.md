@@ -254,6 +254,29 @@ dataset.update({"title": "New title"})
 print(dataset.title)  # -> "New title"   because the attributes are set from the response
 ```
 
+### 🤓 CLI
+Once you have installed `datagouv-client`, you can also do most of what's possible in python, through your CLI. First you must set up your config with:
+```bash
+datagouv setup
+```
+You will be asked the environment you want to interact with, and your API key. They will be stored in a config file, in your home directory. Then you can see all available actions with:
+```bash
+datagouv --help
+```
+The `--help` command is available for all methods. For instance you can do:
+```bash
+datagouv dataset create --title "New dataset" --description "Nice description" --organization_id "646b7187b50b2a93b1ae3d45"
+> Dataset created successfully ✓ id is 69fb46c2bdeef492539acd61
+# use the `--set` argument to update keys (can be used multiple times in one call)
+datagouv dataset update "69fb46c2bdeef492539acd61" --set title="New title" --set private=true
+> Dataset updated successfully ✓
+datagouv resource create "69fb46c2bdeef492539acd61" "First resource" --file-to-upload file.csv --set type=main
+> Resource created successfully ✓ id is 49e370df-cd09-4792-915b-95d25c2adc08
+datagouv resource delete "49e370df-cd09-4792-915b-95d25c2adc08"
+> Resource deleted successfully ✓
+```
+> NB: you can delete your config file with `datagouv delete-config`
+
 ### ⚡ Advanced features
 Many datagouv endpoints are paginated, which can make it tedious to retrieve all objects. An instance of `Client` has a method to create an iterator from any endpoint that returns paginated data:
 ```python
