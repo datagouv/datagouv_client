@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0 (2026-05-12)
+
+- Add CLI integration ([#48](https://github.com/datagouv/datagouv_client/pull/48))
+- Add `prod` alias for `www` ([#50](https://github.com/datagouv/datagouv_client/pull/50))
+- Add a method to sort a dataset's resources ([#45](https://github.com/datagouv/datagouv_client/pull/45))
+- Add ability to download resource content buffer and keep it in memory ([#42](https://github.com/datagouv/datagouv_client/pull/42))
+- Allow to retrieve data from tabular API ([#39](https://github.com/datagouv/datagouv_client/pull/39))
+- Better downloaded file name ([#41](https://github.com/datagouv/datagouv_client/pull/41))
+- Better verbose ([#40](https://github.com/datagouv/datagouv_client/pull/40))
+- Make `BaseObject` abstract ([#44](https://github.com/datagouv/datagouv_client/pull/44))
+- Only publish when commit on main ([#38](https://github.com/datagouv/datagouv_client/pull/38))
+- Only publish when tag ([#37](https://github.com/datagouv/datagouv_client/pull/37))
+- Rebuild lock ([#46](https://github.com/datagouv/datagouv_client/pull/46))
+- Update Python version requirement to include 3.14 ([#43](https://github.com/datagouv/datagouv_client/pull/43))
+- fix: tabular url on demo ([#49](https://github.com/datagouv/datagouv_client/pull/49))
+
+
 ## 0.2.3 (2026-01-15)
 
 - Change release process ([#36](https://github.com/datagouv/datagouv_client/pull/36))
