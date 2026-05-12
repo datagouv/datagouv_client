@@ -9,6 +9,7 @@ from datagouv import Client, Dataset
     "args",
     [
         ("www", None, False, False),
+        ("prod", None, False, False),
         ("www", "secret", True, False),
         ("demo", "secret", True, False),
         ("dev", "secret", True, False),
