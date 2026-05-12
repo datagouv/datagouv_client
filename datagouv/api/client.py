@@ -7,7 +7,12 @@ if TYPE_CHECKING:
 
 
 class Client:
-    _envs = ["www", "demo", "dev"]
+    _envs = {
+        "www": "www",
+        "prod": "www",
+        "demo": "demo",
+        "dev": "dev",
+    }
 
     def __init__(
         self,
@@ -20,7 +25,7 @@ class Client:
         self._env_sanity(environment)
         self.base_url = f"https://{environment}.data.gouv.fr"
         self.session = httpx.Client(**({"timeout": 15} | kwargs))
-        self.environment = environment
+        self.environment = self._envs[environment]
         self.verbose = verbose
         self._authenticated = False
         if api_key:
@@ -30,7 +35,7 @@ class Client:
     @classmethod
     def _env_sanity(cls, environment: str):
         if environment not in cls._envs:
-            raise ValueError(f"`environment` must be in {cls._envs}")
+            raise ValueError(f"`environment` must be in {list(cls._envs)}")
 
     def resource(self, id: str | None = None, **kwargs):
         from datagouv.api.resource import Resource, ResourceCreator

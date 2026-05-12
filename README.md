@@ -5,7 +5,7 @@
 [![CircleCI](https://circleci.com/gh/datagouv/datagouv_client.svg?style=svg)](https://circleci.com/gh/datagouv/datagouv_client)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Python and [CLI](#-cli) wrapper for the data.gouv.fr API that allows you to interact easily with datasets and resources across all three platforms (production `www`, `demo`, and `dev`). Install it through [PyPI](https://pypi.org/project/datagouv-client/):
+A Python and [CLI](#-cli) wrapper for the data.gouv.fr API that allows you to interact easily with datasets and resources across all three platforms (`prod`/`www`, `demo`, and `dev`). Install it through [PyPI](https://pypi.org/project/datagouv-client/):
 ```bash
 pip install datagouv-client
 ```
