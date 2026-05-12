@@ -10,10 +10,10 @@ from conftest import (
     organization_metadata,
 )
 
-from datagouv.base_object import BaseObject
-from datagouv.client import Client
-from datagouv.dataset import Dataset
-from datagouv.organization import Organization, OrganizationCreator
+from datagouv.api.client import Client
+from datagouv.api.dataset import Dataset
+from datagouv.api.organization import Organization, OrganizationCreator
+from datagouv.utils.base_object import BaseObject
 
 
 def test_organization_instance(organization_api_call):

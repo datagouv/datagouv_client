@@ -6,9 +6,9 @@ from typing import Iterator
 
 import httpx
 
-from .base_object import BaseObject, Creator, assert_auth
-from .client import Client
-from .retry import simple_connection_retry
+from datagouv.api.client import Client
+from datagouv.utils.base_object import BaseObject, Creator, assert_auth
+from datagouv.utils.retry import simple_connection_retry
 
 OPERATORS = {
     "sort": "sort",
@@ -123,7 +123,7 @@ class Resource(BaseObject):
         # between the dataset and its resources (each one creating the other)
         # it makes more sense that a dataset has its resources instantiated at init
         # so resources must have dataset as a separate method
-        from .dataset import Dataset
+        from datagouv.api.dataset import Dataset
 
         if self._dataset is None:
             dataset = Dataset(self.dataset_id, _client=self._client)

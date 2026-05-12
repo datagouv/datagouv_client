@@ -1,6 +1,6 @@
 import pytest
 
-from datagouv.base_object import BaseObject
+from datagouv.utils.base_object import BaseObject
 
 
 def test_not_instanciable():
