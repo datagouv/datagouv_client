@@ -1,11 +1,10 @@
 import logging
 from typing import Iterator
 
+from datagouv.api.client import Client
+from datagouv.api.dataset import Dataset, DatasetCreator
 from datagouv.utils.base_object import BaseObject, Creator, assert_auth
 from datagouv.utils.retry import simple_connection_retry
-
-from .client import Client
-from .dataset import Dataset, DatasetCreator
 
 
 class Organization(BaseObject):
