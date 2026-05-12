@@ -14,7 +14,7 @@ app.add_typer(topic.app, name="topic")
 
 @app.command()
 def setup(
-    environment: str = typer.Option("www", prompt=True),
+    environment: str = typer.Option("prod", prompt=True),
     api_key: str = typer.Option(..., prompt=True, hide_input=True),
 ):
     """Store configuration (environment and API key)."""
