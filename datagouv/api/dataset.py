@@ -3,11 +3,10 @@ import warnings
 from pathlib import Path
 from typing import Callable
 
+from datagouv.api.client import Client
+from datagouv.api.resource import Resource, ResourceCreator
 from datagouv.utils.base_object import BaseObject, Creator, assert_auth
 from datagouv.utils.retry import simple_connection_retry
-
-from .client import Client
-from .resource import Resource, ResourceCreator
 
 _valid_resources_sort_attr = {
     "created_at",
@@ -62,7 +61,7 @@ class Dataset(BaseObject, ResourceCreator):
         return Dataset(*args, **kwargs)
 
     def refresh(self, _from_response: dict | None = None):
-        from .organization import Organization
+        from datagouv.api.organization import Organization
 
         BaseObject.refresh(self, _from_response)
         if _from_response:

@@ -33,28 +33,28 @@ class Client:
             raise ValueError(f"`environment` must be in {cls._envs}")
 
     def resource(self, id: str | None = None, **kwargs):
-        from .resource import Resource, ResourceCreator
+        from datagouv.api.resource import Resource, ResourceCreator
 
         if id:
             return Resource(id, _client=self, **kwargs)
         return ResourceCreator(_client=self)
 
     def dataset(self, id: str | None = None, **kwargs):
-        from .dataset import Dataset, DatasetCreator
+        from datagouv.api.dataset import Dataset, DatasetCreator
 
         if id:
             return Dataset(id, _client=self, **kwargs)
         return DatasetCreator(_client=self)
 
     def topic(self, id: str | None = None, **kwargs):
-        from .topic import Topic, TopicCreator
+        from datagouv.api.topic import Topic, TopicCreator
 
         if id:
             return Topic(id, _client=self, **kwargs)
         return TopicCreator(_client=self)
 
     def organization(self, id: str | None = None, **kwargs):
-        from .organization import Organization, OrganizationCreator
+        from datagouv.api.organization import Organization, OrganizationCreator
 
         if id:
             return Organization(id, _client=self, **kwargs)

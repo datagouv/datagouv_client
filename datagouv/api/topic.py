@@ -3,11 +3,10 @@ from typing import Iterator
 
 import httpx
 
+from datagouv.api.client import Client
+from datagouv.api.dataset import Dataset
 from datagouv.utils.base_object import BaseObject, Creator, assert_auth
 from datagouv.utils.retry import simple_connection_retry
-
-from .client import Client
-from .dataset import Dataset
 
 
 class Topic(BaseObject):
@@ -44,7 +43,7 @@ class Topic(BaseObject):
         return Topic(*args, **kwargs)
 
     def refresh(self, _from_response: dict | None = None, include_elements: bool = False) -> dict:
-        from .organization import Organization
+        from datagouv.api.organization import Organization
 
         metadata = super().refresh(_from_response)
         organization = metadata["organization"]
