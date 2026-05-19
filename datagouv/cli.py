@@ -14,8 +14,17 @@ app.add_typer(topic.app, name="topic")
 
 @app.command()
 def setup(
-    environment: str = typer.Option("prod", prompt=True),
-    api_key: str = typer.Option(..., prompt=True, hide_input=True),
+    environment: str = typer.Option(
+        "prod",
+        prompt="The environment you intend to interact with",
+        help="Which environment to target (prod/www, demo or dev).",
+    ),
+    api_key: str | None = typer.Option(
+        "",
+        prompt="Your API key (or leave blank to remain anonymous)",
+        hide_input=True,
+        help="Your API key for the specified environment. You may leave it blank if you only intend to get data.",
+    ),
 ):
     """Store configuration (environment and API key)."""
     if CONFIG_PATH.exists():
