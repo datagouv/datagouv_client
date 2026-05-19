@@ -1,3 +1,4 @@
+import logging
 import json
 from pathlib import Path
 
@@ -13,7 +14,11 @@ def save_config(environment: str, api_key: str | None):
 
 def load_config() -> dict:
     if not CONFIG_PATH.exists():
-        raise RuntimeError("Please run `datagouv setup` to set up the config.")
+        logging.warning(
+            "No config has been specified, defaulting to prod environment. "
+            "Run `datagouv setup` to create a config file and get rid of this message."
+        )
+        return {}
     return json.loads(CONFIG_PATH.read_text())
 
 
