@@ -36,6 +36,7 @@ def test_client_types(args):
                 "session",
             ]
         )
+        assert client.base_url == f"https://{client._envs[env]}.data.gouv.fr"
 
 
 @pytest.mark.parametrize(
