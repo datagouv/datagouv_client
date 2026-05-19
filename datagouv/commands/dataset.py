@@ -1,8 +1,8 @@
 import typer
 
 from datagouv import Client
-from datagouv.config import load_config
 from datagouv.commands.utils import display_json
+from datagouv.config import load_config
 
 app = typer.Typer()
 
