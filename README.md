@@ -287,7 +287,7 @@ datagouv organization get "534fff81a3a7292c64a77e5c" | jq .name
 > "Institut national de la statistique et des études économiques (Insee)
 ```
 
-#### Modifiying objects
+#### Modifying objects
 If you have run the `setup` command and filled in your API key, you may interact with objects (according to your rights on the platform), for instance:
 ```bash
 datagouv dataset create --title "New dataset" --description "Nice description" --organization_id "646b7187b50b2a93b1ae3d45"
