@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 (2026-05-19)
+
+- CLI: add a `get` method for all objects ([#53](https://github.com/datagouv/datagouv_client/pull/53))
+- CLI: allow to remain anonymous when only getting data ([#52](https://github.com/datagouv/datagouv_client/pull/52))
+- CLI: fix environment in URI ([#51](https://github.com/datagouv/datagouv_client/pull/51))
+
+
 ## 0.3.0 (2026-05-12)
 
 - Add CLI integration ([#48](https://github.com/datagouv/datagouv_client/pull/48))
