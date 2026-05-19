@@ -259,7 +259,10 @@ Once you have installed `datagouv-client`, you can also do most of what's possib
 ```bash
 datagouv setup
 ```
-You will be asked the environment you want to interact with, and your API key. They will be stored in a config file, in your home directory. Then you can see all available actions with:
+You will be asked the environment you want to interact with, and your API key. They will be stored in a config file, in your home directory. If you only intend to get data, you may leave the API key blank.
+> Note: you may skip this setup step if you intend to target the production platform and fetch data.
+
+You can see all available actions with:
 ```bash
 datagouv --help
 ```
