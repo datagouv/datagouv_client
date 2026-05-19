@@ -1,5 +1,5 @@
-import logging
 import json
+import logging
 from pathlib import Path
 
 CONFIG_PATH = Path.home() / ".datagouv_config.json"
