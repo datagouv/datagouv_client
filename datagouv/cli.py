@@ -6,10 +6,10 @@ from datagouv.config import CONFIG_PATH, _delete_config, save_config
 
 app = typer.Typer()
 
-app.add_typer(dataset.app, name="dataset")
-app.add_typer(organization.app, name="organization")
-app.add_typer(resource.app, name="resource")
-app.add_typer(topic.app, name="topic")
+app.add_typer(dataset.app, name="dataset", help="Datasets-related operations.")
+app.add_typer(organization.app, name="organization", help="Organizations-related operations.")
+app.add_typer(resource.app, name="resource", help="Resources-related operations.")
+app.add_typer(topic.app, name="topic", help="Topics-related operations.")
 
 
 @app.command()

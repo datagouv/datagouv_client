@@ -266,7 +266,29 @@ You can see all available actions with:
 ```bash
 datagouv --help
 ```
-The `--help` command is available for all methods. For instance you can do:
+The `--help` command is available for all methods.
+
+#### Displaying data
+All objects have a `display` command, that shows the object's main metadata in a human-readable way, for instance:
+```bash
+datagouv organization display "534fff81a3a7292c64a77e5c"
+> badges: [{'kind': 'public-service'}, {'kind': 'certified'}]
+> ────────────────────
+> business_number_id: 12002701600563
+> ────────────────────
+> created_at: 2014-04-17T18:21:21.523000+00:00
+> ...
+```
+
+#### Getting data
+All objects also have a `get` command, that outputs all the object's metadata in JSON (directly fed from datagouv's API). You may for instance give the output to `jq` like:
+```bash
+datagouv organization get "534fff81a3a7292c64a77e5c" | jq .name
+> "Institut national de la statistique et des études économiques (Insee)
+```
+
+#### Modifying objects
+If you have run the `setup` command and filled in your API key, you may interact with objects (according to your rights on the platform), for instance:
 ```bash
 datagouv dataset create --title "New dataset" --description "Nice description" --organization_id "646b7187b50b2a93b1ae3d45"
 > Dataset created successfully ✓ id is 69fb46c2bdeef492539acd61

@@ -1,6 +1,7 @@
 import typer
 
 from datagouv import Client
+from datagouv.commands.utils import display_json
 from datagouv.config import load_config
 
 app = typer.Typer()
@@ -8,12 +9,20 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Display an organization."""
+    """Human-friendlily display an organization's attributes."""
     client = Client(**load_config())
     orga = client.organization(id)
     for att in orga._attributes:
         typer.echo(f"{att}: {getattr(orga, att)}")
         typer.echo("─" * 20)
+
+
+@app.command()
+def get(id: str) -> None:
+    """Display an organization's metadata in JSON."""
+    client = Client(**load_config())
+    organization = client.organization(id, fetch=False)
+    display_json(organization)
 
 
 @app.command()

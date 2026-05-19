@@ -1,6 +1,7 @@
 import typer
 
 from datagouv import Client
+from datagouv.commands.utils import display_json
 from datagouv.config import load_config
 
 app = typer.Typer()
@@ -8,12 +9,20 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Display a dataset."""
+    """Human-friendlily display a dataset's attributes."""
     client = Client(**load_config())
     dataset = client.dataset(id)
     for att in dataset._attributes:
         typer.echo(f"{att}: {getattr(dataset, att)}")
         typer.echo("─" * 20)
+
+
+@app.command()
+def get(id: str) -> None:
+    """Display a dataset's metadata in JSON."""
+    client = Client(**load_config())
+    dataset = client.dataset(id, fetch=False)
+    display_json(dataset)
 
 
 @app.command()

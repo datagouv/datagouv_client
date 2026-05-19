@@ -1,6 +1,7 @@
 import typer
 
 from datagouv import Client
+from datagouv.commands.utils import display_json
 from datagouv.config import load_config
 
 app = typer.Typer()
@@ -8,12 +9,20 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Display a topic."""
+    """Human-friendlily display a topic's attributes."""
     client = Client(**load_config())
     topic = client.topic(id)
     for att in topic._attributes:
         typer.echo(f"{att}: {getattr(topic, att)}")
         typer.echo("─" * 20)
+
+
+@app.command()
+def get(id: str) -> None:
+    """Display a topic's metadata in JSON."""
+    client = Client(**load_config())
+    topic = client.topic(id, fetch=False)
+    display_json(topic)
 
 
 @app.command()
