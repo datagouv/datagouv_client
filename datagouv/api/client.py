@@ -23,9 +23,9 @@ class Client:
         **kwargs,
     ):
         self._env_sanity(environment)
-        self.base_url = f"https://{environment}.data.gouv.fr"
         self.session = httpx.Client(**({"timeout": 15} | kwargs))
         self.environment = self._envs[environment]
+        self.base_url = f"https://{self.environment}.data.gouv.fr"
         self.verbose = verbose
         self._authenticated = False
         if api_key:
