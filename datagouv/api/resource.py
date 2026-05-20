@@ -77,10 +77,16 @@ class Resource(BaseObject):
                 f"https://tabular-api{'.preprod' if self._client.environment == 'demo' else ''}"
                 f".data.gouv.fr/api/resources/{self.id}/"
             )
-            self.profile: dict = self._client.session.get(self.tabular_api_url + "profile/").json()[
-                "profile"
-            ]
-            self.columns: list[str] = self.profile["header"]
+            try:
+                self.profile: dict = self._client.session.get(
+                    self.tabular_api_url + "profile/"
+                ).json()["profile"]
+                self.columns: list[str] = self.profile["header"]
+            except Exception:
+                logging.warning(
+                    "Could not reach tabular API, related attributes will not be available"
+                )
+                del self.tabular_api_url
 
     def __call__(self, *args, **kwargs):
         return Resource(*args, **kwargs)
