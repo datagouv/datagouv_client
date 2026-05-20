@@ -6,9 +6,7 @@ import httpx
 if TYPE_CHECKING:
     from datagouv import Dataset, Organization, Resource, Topic
 
-PYTHON_USER_AGENT = {
-    "User-Agent": f"datagouv-python/{version('datagouv_client')}"
-}
+PYTHON_USER_AGENT = {"User-Agent": f"datagouv-python/{version('datagouv_client')}"}
 
 
 class Client:

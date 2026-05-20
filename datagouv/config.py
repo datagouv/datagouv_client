@@ -1,12 +1,10 @@
-from importlib.metadata import version
 import json
 import logging
+from importlib.metadata import version
 from pathlib import Path
 
 CONFIG_PATH = Path.home() / ".datagouv_config.json"
-CLI_USER_AGENT = {
-    "User-Agent": f"datagouv-cli/{version('datagouv_client')}"
-}
+CLI_USER_AGENT = {"User-Agent": f"datagouv-cli/{version('datagouv_client')}"}
 
 
 def save_config(environment: str, api_key: str | None):
