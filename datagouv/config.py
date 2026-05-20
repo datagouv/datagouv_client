@@ -1,8 +1,10 @@
 import json
 import logging
+from importlib.metadata import version
 from pathlib import Path
 
 CONFIG_PATH = Path.home() / ".datagouv_config.json"
+CLI_USER_AGENT = {"User-Agent": f"datagouv-cli/{version('datagouv_client')}"}
 
 
 def save_config(environment: str, api_key: str | None):
@@ -18,8 +20,8 @@ def load_config() -> dict:
             "No config has been specified, defaulting to prod environment. "
             "Run `datagouv setup` to create a config file and get rid of this message."
         )
-        return {}
-    return json.loads(CONFIG_PATH.read_text())
+        return {"headers": CLI_USER_AGENT}
+    return json.loads(CONFIG_PATH.read_text()) | {"headers": CLI_USER_AGENT}
 
 
 def _delete_config():

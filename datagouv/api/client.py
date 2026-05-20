@@ -1,9 +1,12 @@
+from importlib.metadata import version
 from typing import TYPE_CHECKING, Iterator
 
 import httpx
 
 if TYPE_CHECKING:
     from datagouv import Dataset, Organization, Resource, Topic
+
+PYTHON_USER_AGENT = {"User-Agent": f"datagouv-python/{version('datagouv_client')}"}
 
 
 class Client:
@@ -23,7 +26,7 @@ class Client:
         **kwargs,
     ):
         self._env_sanity(environment)
-        self.session = httpx.Client(**({"timeout": 15} | kwargs))
+        self.session = httpx.Client(**({"timeout": 15, "headers": PYTHON_USER_AGENT} | kwargs))
         self.environment = self._envs[environment]
         self.base_url = f"https://{self.environment}.data.gouv.fr"
         self.verbose = verbose
