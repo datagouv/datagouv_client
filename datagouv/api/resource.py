@@ -82,9 +82,10 @@ class Resource(BaseObject):
                     self.tabular_api_url + "profile/"
                 ).json()["profile"]
                 self.columns: list[str] = self.profile["header"]
-            except Exception:
+            except Exception as e:
                 logging.warning(
-                    "Could not reach tabular API, related attributes will not be available"
+                    "Could not reach Tabular API, related attributes will not be available. "
+                    f"Error: {e}"
                 )
                 del self.tabular_api_url
 
