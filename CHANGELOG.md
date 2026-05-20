@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2 (2026-05-20)
+
+- Add user-agents for the client ([#55](https://github.com/datagouv/datagouv_client/pull/55))
+- Handle unexpected tabular API absence ([#56](https://github.com/datagouv/datagouv_client/pull/56))
+
+
 ## 0.3.1 (2026-05-19)
 
 - CLI: add a `get` method for all objects ([#53](https://github.com/datagouv/datagouv_client/pull/53))
