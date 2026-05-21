@@ -9,7 +9,7 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Human-friendlily display a resource's attributes."""
+    """Display a resource's main attributes in a human-friendly format. `id` required"""
     client = Client(**load_config())
     resource = client.resource(id)
     for att in resource._attributes:
@@ -19,7 +19,7 @@ def display(id: str) -> None:
 
 @app.command()
 def get(id: str) -> None:
-    """Display a resource's metadata in JSON."""
+    """Display all of a resource's attributes in JSON (title, description, download URL, ...). `id` required"""
     client = Client(**load_config())
     resource = client.resource(id, fetch=False)
     display_json(resource)
@@ -62,7 +62,7 @@ def update(
     id: str,
     set: list[str] = typer.Option([], "--set"),
 ) -> None:
-    """Update a resource. Each `--set` option is expected as `<key>=<new_value>`."""
+    """Update a resource. `id` required. Each `--set` option is expected as `<key>=<new_value>`."""
     client = Client(**load_config())
     payload = {}
     for item in set:
@@ -75,7 +75,7 @@ def update(
 
 @app.command()
 def download(id: str, path: str) -> None:
-    """Download a resource to a given path."""
+    """Download a resource to a given path. `id` required"""
     client = Client(**load_config())
     client.resource(id).download(path)
     typer.echo(f"Resource downloaded successfully at {path} ✓")
@@ -83,7 +83,7 @@ def download(id: str, path: str) -> None:
 
 @app.command()
 def delete(id: str) -> None:
-    """Delete a resource."""
+    """Delete a resource. `id` required"""
     client = Client(**load_config())
     client.resource(id, fetch=False).delete()
     typer.echo("Resource deleted successfully ✓")
