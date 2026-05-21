@@ -83,7 +83,7 @@ def sort_resources(
 
 @app.command()
 def delete(id: str) -> None:
-    """Delete a dataset."""
+    """Delete a dataset by `id`."""
     client = Client(**load_config())
     client.dataset(id, fetch=False).delete()
     typer.echo("Dataset deleted successfully ✓")
