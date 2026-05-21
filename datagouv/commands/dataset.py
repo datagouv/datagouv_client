@@ -9,7 +9,7 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Display a dataset's main attributes in a human-friendly format. `id` required"""
+    """Display a dataset's main attributes in a human-friendly format. `id` required."""
     client = Client(**load_config())
     dataset = client.dataset(id)
     for att in dataset._attributes:
@@ -19,7 +19,7 @@ def display(id: str) -> None:
 
 @app.command()
 def get(id: str) -> None:
-    """Display all of a dataset's attributes in JSON (title, description, resources, ...). `id` required"""
+    """Display all of a dataset's attributes in JSON (title, description, resources, ...). `id` required."""
     client = Client(**load_config())
     dataset = client.dataset(id, fetch=False)
     display_json(dataset)
