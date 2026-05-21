@@ -9,7 +9,7 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Display a dataset's main attributes in a human-friendly format. `id` required."""
+    """Display the main attributes of a dataset in a human-friendly format. `id` required."""
     client = Client(**load_config())
     dataset = client.dataset(id)
     for att in dataset._attributes:
