@@ -9,7 +9,7 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Display an organization's main attributes in a human-friendly format. `id` required"""
+    """Display an organization's main attributes in a human-friendly format. `id` required."""
     client = Client(**load_config())
     orga = client.organization(id)
     for att in orga._attributes:
@@ -19,7 +19,7 @@ def display(id: str) -> None:
 
 @app.command()
 def get(id: str) -> None:
-    """Display all of an organization's attributes in JSON. `id` required"""
+    """Display all of an organization's attributes in JSON. `id` required."""
     client = Client(**load_config())
     organization = client.organization(id, fetch=False)
     display_json(organization)
@@ -47,7 +47,7 @@ def update(
     id: str,
     set: list[str] = typer.Option([], "--set"),
 ) -> None:
-    """Update an organization. `id` required. Each `--set` option is expected as `<key>=<new_value>`."""
+    """Update an organization by `id`. Each `--set` option is expected as `<key>=<new_value>`."""
     client = Client(**load_config())
     payload = {}
     for item in set:
@@ -60,7 +60,7 @@ def update(
 
 @app.command()
 def delete(id: str) -> None:
-    """Delete an organization. `id` required"""
+    """Delete an organization by `id`."""
     client = Client(**load_config())
     client.organization(id, fetch=False).delete()
     typer.echo("Organization deleted successfully ✓")
