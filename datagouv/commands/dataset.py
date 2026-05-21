@@ -19,7 +19,7 @@ def display(id: str) -> None:
 
 @app.command()
 def get(id: str) -> None:
-    """Display all of a dataset's attributes in JSON (title, description, resources, ...). `id` required."""
+    """Display all attributes of a dataset in JSON (title, description, resources, ...). `id` required."""
     client = Client(**load_config())
     dataset = client.dataset(id, fetch=False)
     display_json(dataset)
