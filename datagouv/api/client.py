@@ -42,38 +42,55 @@ class Client:
 
     def resource(self, id: str, **kwargs) -> "Resource":
         from datagouv.api.resource import Resource
+
         return Resource(id, _client=self, **kwargs)
 
-    def create_remote_resource(self, payload: dict, dataset_id: str, is_communautary: bool = False) -> "Resource":
+    def create_remote_resource(
+        self, payload: dict, dataset_id: str, is_communautary: bool = False
+    ) -> "Resource":
         from datagouv.api.resource import ResourceCreator
-        return ResourceCreator(_client=self).create_remote(payload, dataset_id, is_communautary=is_communautary)
 
-    def create_static_resource(self, file_to_upload: str, payload: dict, dataset_id: str, is_communautary: bool = False) -> "Resource":
+        return ResourceCreator(_client=self).create_remote(
+            payload, dataset_id, is_communautary=is_communautary
+        )
+
+    def create_static_resource(
+        self, file_to_upload: str, payload: dict, dataset_id: str, is_communautary: bool = False
+    ) -> "Resource":
         from datagouv.api.resource import ResourceCreator
-        return ResourceCreator(_client=self).create_static(file_to_upload, payload, dataset_id, is_communautary=is_communautary)
+
+        return ResourceCreator(_client=self).create_static(
+            file_to_upload, payload, dataset_id, is_communautary=is_communautary
+        )
 
     def dataset(self, id: str, **kwargs) -> "Dataset":
         from datagouv.api.dataset import Dataset
+
         return Dataset(id, _client=self, **kwargs)
 
     def create_dataset(self, payload: dict) -> "Dataset":
         from datagouv.api.dataset import DatasetCreator
+
         return DatasetCreator(_client=self).create(payload=payload)
 
     def topic(self, id: str, **kwargs) -> "Topic":
         from datagouv.api.topic import Topic
+
         return Topic(id, _client=self, **kwargs)
 
     def create_topic(self, payload: dict) -> "Topic":
         from datagouv.api.topic import TopicCreator
+
         return TopicCreator(_client=self).create(payload=payload)
 
     def organization(self, id: str, **kwargs) -> "Organization":
         from datagouv.api.organization import Organization
+
         return Organization(id, _client=self, **kwargs)
 
     def create_organization(self, payload: dict) -> "Organization":
         from datagouv.api.organization import OrganizationCreator
+
         return OrganizationCreator(_client=self).create(payload=payload)
 
     def get_all_from_api_query(
