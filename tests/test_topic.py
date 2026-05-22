@@ -6,13 +6,12 @@ from conftest import OWNER_ID, TOPIC_ID, elements_metadata, topic_metadata
 from datagouv.api.client import Client
 from datagouv.api.dataset import Dataset
 from datagouv.api.organization import Organization
-from datagouv.api.topic import Topic, TopicCreator
+from datagouv.api.topic import Topic
 from datagouv.utils.base_object import BaseObject
 
 
 def test_dataset_instance(topic_api_call):
     assert isinstance(Client().topic(TOPIC_ID), Topic)
-    assert isinstance(Client().topic(), TopicCreator)
 
 
 def test_topic_attributes_and_methods(topic_api_call):
@@ -77,7 +76,7 @@ def test_topic_no_fetch():
 def test_authentification_assertion():
     client = Client()
     with pytest.raises(PermissionError):
-        client.topic().create({"name": "Test Topic"})
+        client.create_topic({"name": "Test Topic"})
 
 
 def test_topic_create(httpx_mock):
@@ -90,15 +89,14 @@ def test_topic_create(httpx_mock):
     )
 
     client = Client(api_key="test-api-key")
-    topic_creator = client.topic()
 
-    payload = {
-        "name": "Test Topic",
-        "description": "A test topic",
-        "private": False,
-    }
-
-    created_topic = topic_creator.create(payload)
+    created_topic = client.create_topic(
+        payload={
+            "name": "Test Topic",
+            "description": "A test topic",
+            "private": False,
+        }
+    )
 
     assert isinstance(created_topic, Topic)
     for attr in Topic._attributes:

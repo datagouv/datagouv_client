@@ -12,12 +12,11 @@ from conftest import (
 
 from datagouv.api.client import Client
 from datagouv.api.dataset import Dataset
-from datagouv.api.organization import Organization, OrganizationCreator
+from datagouv.api.organization import Organization
 from datagouv.utils.base_object import BaseObject
 
 
 def test_organization_instance(organization_api_call):
-    assert isinstance(Client().organization(), OrganizationCreator)
     assert isinstance(Client().organization(ORGANIZATION_ID), Organization)
 
 
@@ -48,7 +47,7 @@ def test_organization_attributes_and_methods(organization_api_call):
 def test_authentification_assertion():
     client = Client()
     with pytest.raises(PermissionError):
-        client.organization().create({"name": "Nom"})
+        client.create_organization({"name": "Nom"})
     o_from_response = Organization(
         organization_metadata["id"], _from_response=organization_metadata
     )
@@ -105,7 +104,7 @@ def test_organization_create(httpx_mock):
         "description": "A nice description",
     }
 
-    created_organization = client.organization().create(payload)
+    created_organization = client.create_organization(payload)
 
     assert isinstance(created_organization, Organization)
     for attr in Organization._attributes:
