@@ -190,7 +190,7 @@ dataset.sort_resources(by="title.asc")  # the expected syntax is <field>.<order>
 
 With an authenticated client, you are also allowed to create datasets and resources on the environment you specified:
 ```python
-dataset = client.dataset().create(
+dataset = client.create_dataset(
     {
         "title": "New dataset",
         "description": "A description is required",
@@ -216,14 +216,14 @@ You have two options to create a resource (of any type):
 - from the client itself, by specifying the id of the dataset you want to include it into (you must have the rights on the dataset):
 ```python
 # to create a static resource from a file
-resource = client.resource().create_static(
+resource = client.create_static_resource(
     file_to_upload="path/to/your/file.txt",
     payload={"title": "New static resource"},
     dataset_id="5d13a8b6634f41070a43dff3",
 )  # this creates a static resource with the values you specified, and instantiates a Resource
 
 # to create a remote resource from an url
-resource = client.resource().create_remote(
+resource = client.create_remote_resource(
     payload={"url": "http://example.com/file.txt", "title": "New remote resource"},
     dataset_id="5d13a8b6634f41070a43dff3",
 )  # this creates a remote resource with the values you specified, and instantiates a Resource
