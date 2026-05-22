@@ -1,8 +1,10 @@
+from typing import Callable
 import json
 import re
 from copy import deepcopy
 
 import pytest
+from datagouv import Dataset, Organization, Resource, Topic
 
 DATASET_ID = "0123456789abcdef01234567"
 RESOURCE_ID = "aaaaaaaa-1111-bbbb-2222-cccccccccccc"
@@ -146,3 +148,38 @@ def tabular_resource_api_calls(httpx_mock):
         json=tabular_api_profile,
     )
     yield httpx_mock
+
+
+@pytest.fixture
+def custom_object(httpx_mock) -> Callable[..., Dataset | Organization | Resource | Topic]:
+    def _custom_object(object_class: str, patch: dict) -> Dataset | Organization | Resource | Topic:
+        match object_class:
+            case "Dataset":
+                httpx_mock.add_response(
+                    url=f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/",
+                    json=dataset_metadata | patch,
+                )
+                r = Dataset(DATASET_ID)
+            case "Organization":
+                httpx_mock.add_response(
+                    url=f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/",
+                    json=organization_metadata | patch,
+                )
+                r = Organization(ORGANIZATION_ID)
+            case "Resource":
+                httpx_mock.add_response(
+                    url=f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/",
+                    json=resource_metadata_api2 | patch,
+                )
+                r = Resource(RESOURCE_ID)
+            case "Topic":
+                httpx_mock.add_response(
+                    url=f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/",
+                    json=topic_metadata | patch,
+                )
+                r = Topic(TOPIC_ID)
+            case _:
+                raise NotImplementedError
+        return r
+
+    return _custom_object

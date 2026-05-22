@@ -333,12 +333,12 @@ def test_resource_delete(static_resource_api2_call, httpx_mock):
     assert response.status_code == 204
 
 
-def test_not_tabular_resource(static_resource_api2_call):
-    res = Resource(RESOURCE_ID)
+def test_not_tabular_resource(custom_object):
+    res = custom_object("Resource", {"preview_url": None})
     for attr in ["tabular_api_url", "profile", "columns"]:
         with pytest.raises(AttributeError):
             getattr(res, attr)
-    with pytest.raises(ValueError):
+    with pytest.raises(AttributeError):
         res.rows()
 
 
