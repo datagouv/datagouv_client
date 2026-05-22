@@ -1,9 +1,10 @@
-from typing import Callable
 import json
 import re
 from copy import deepcopy
+from typing import Callable
 
 import pytest
+
 from datagouv import Dataset, Organization, Resource, Topic
 
 DATASET_ID = "0123456789abcdef01234567"

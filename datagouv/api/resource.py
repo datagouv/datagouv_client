@@ -127,13 +127,13 @@ class Resource(BaseObject):
             dataset = Dataset(self.dataset_id, _client=self._client)
             self._dataset = dataset
         return self._dataset
-    
+
     @property
     def profile(self):
         if self._profile is None:
             self._fetch_profile()
         return self._profile
-    
+
     @property
     def columns(self):
         if self._columns is None:
@@ -150,7 +150,6 @@ class Resource(BaseObject):
             raise AttributeError(
                 "Could not reach Tabular API, related attributes will not be available."
             ) from e
-
 
     def _iter_download(self, chunk_size: int = 8192, **kwargs):
         with httpx.stream("GET", self.url, **kwargs) as r:
