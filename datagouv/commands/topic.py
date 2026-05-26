@@ -9,7 +9,7 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Human-friendlily display a topic's attributes."""
+    """Display a topic's attributes in a human-friendly format. `id` required."""
     client = Client(**load_config())
     topic = client.topic(id)
     for att in topic._attributes:
@@ -19,7 +19,7 @@ def display(id: str) -> None:
 
 @app.command()
 def get(id: str) -> None:
-    """Display a topic's metadata in JSON."""
+    """Display all of a topic's attributes in JSON. `id` required."""
     client = Client(**load_config())
     topic = client.topic(id, fetch=False)
     display_json(topic)
@@ -57,7 +57,7 @@ def update(
     id: str,
     set: list[str] = typer.Option([], "--set"),
 ) -> None:
-    """Update a topic. Each `--set` option is expected as `<key>=<new_value>`."""
+    """Update a topic by `id`. Each `--set` option is expected as `<key>=<new_value>`."""
     client = Client(**load_config())
     payload = {}
     for item in set:
@@ -70,7 +70,7 @@ def update(
 
 @app.command()
 def delete(id: str) -> None:
-    """Delete a topic."""
+    """Delete a topic by `id`."""
     client = Client(**load_config())
     client.topic(id, fetch=False).delete()
     typer.echo("Topic deleted successfully ✓")

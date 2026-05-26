@@ -9,7 +9,7 @@ app = typer.Typer()
 
 @app.command()
 def display(id: str) -> None:
-    """Human-friendlily display a dataset's attributes."""
+    """Display the main attributes of a dataset in a human-friendly format. `id` required."""
     client = Client(**load_config())
     dataset = client.dataset(id)
     for att in dataset._attributes:
@@ -19,7 +19,7 @@ def display(id: str) -> None:
 
 @app.command()
 def get(id: str) -> None:
-    """Display a dataset's metadata in JSON."""
+    """Display all attributes of a dataset in JSON (title, description, resources, ...). `id` required."""
     client = Client(**load_config())
     dataset = client.dataset(id, fetch=False)
     display_json(dataset)
@@ -58,7 +58,7 @@ def update(
     id: str,
     set: list[str] = typer.Option([], "--set"),
 ) -> None:
-    """Update a dataset. Each `--set` option is expected as `<key>=<new_value>`."""
+    """Update a dataset by `id`. Each `--set` option is expected as `<key>=<new_value>`."""
     client = Client(**load_config())
     payload = {}
     for item in set:
@@ -83,7 +83,7 @@ def sort_resources(
 
 @app.command()
 def delete(id: str) -> None:
-    """Delete a dataset."""
+    """Delete a dataset by `id`."""
     client = Client(**load_config())
     client.dataset(id, fetch=False).delete()
     typer.echo("Dataset deleted successfully ✓")
