@@ -9,12 +9,11 @@ from conftest import DATASET_ID, RESOURCE_ID, resource_metadata_api1, tabular_ap
 
 from datagouv.api.client import Client
 from datagouv.api.dataset import Dataset
-from datagouv.api.resource import Resource, ResourceCreator
+from datagouv.api.resource import Resource
 from datagouv.utils.base_object import BaseObject
 
 
 def test_resource_instance(static_resource_api2_call):
-    assert isinstance(Client().resource(), ResourceCreator)
     assert isinstance(Client().resource(RESOURCE_ID), Resource)
 
 
@@ -56,9 +55,9 @@ def test_resource_attributes_and_methods(static_resource_api2_call):
 def test_authentification_assertion():
     client = Client()
     with pytest.raises(PermissionError):
-        client.resource().create_static({"path": "path"}, {"title": "Titre"}, DATASET_ID)
+        client.create_static_resource("path", {"title": "Titre"}, DATASET_ID)
     with pytest.raises(PermissionError):
-        client.resource().create_remote({"url": "url", "title": "Titre"}, DATASET_ID)
+        client.create_remote_resource({"url": "url", "title": "Titre"}, DATASET_ID)
     r_from_response = Resource(
         RESOURCE_ID, dataset_id=DATASET_ID, _from_response=resource_metadata_api1
     )
@@ -245,7 +244,7 @@ def test_download_buffer(
     "method,kwargs",
     [
         (
-            "create_static",
+            "create_static_resource",
             {
                 "payload": {"title": "New static resource"},
                 "file_to_upload": "tests/resource_metadata_api1.json",
@@ -253,7 +252,7 @@ def test_download_buffer(
             },
         ),
         (
-            "create_remote",
+            "create_remote_resource",
             {
                 "payload": {"title": "New remote resource"},
                 "dataset_id": DATASET_ID,
@@ -285,7 +284,7 @@ def test_resource_create(httpx_mock, method, kwargs):
 
     client = Client(api_key="test-api-key")
 
-    created_resource = getattr(client.resource(), method)(**kwargs)
+    created_resource = getattr(client, method)(**kwargs)
 
     assert isinstance(created_resource, Resource)
     for attr in Resource._attributes:

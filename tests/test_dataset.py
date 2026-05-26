@@ -7,13 +7,12 @@ import pytest
 from conftest import DATASET_ID, OWNER_ID, dataset_metadata
 
 from datagouv.api.client import Client
-from datagouv.api.dataset import Dataset, DatasetCreator
+from datagouv.api.dataset import Dataset
 from datagouv.api.resource import Resource, ResourceCreator
 from datagouv.utils.base_object import BaseObject
 
 
 def test_dataset_instance(dataset_api_call):
-    assert isinstance(Client().dataset(), DatasetCreator)
     assert isinstance(Client().dataset(DATASET_ID), Dataset)
 
 
@@ -43,7 +42,7 @@ def test_dataset_attributes_and_methods(dataset_api_call):
 def test_authentification_assertion():
     client = Client()
     with pytest.raises(PermissionError):
-        client.dataset().create({"title": "Titre"})
+        client.create_dataset({"title": "Titre"})
     d_from_response = Dataset(DATASET_ID, _from_response=dataset_metadata)
     with pytest.raises(PermissionError):
         d_from_response.delete()
@@ -56,11 +55,11 @@ def test_authentification_assertion():
         with pytest.raises(PermissionError):
             getattr(d_from_response, method)({})
     with pytest.raises(PermissionError):
-        d_from_response.create_static({"path": "path"}, {"title": "Titre"})
+        d_from_response.create_static("path", {"title": "Titre"})
 
     # can't create a resource from a dataset and specify a dataset_id
     with pytest.raises(ValueError):
-        d_from_response.create_static({"path": "path"}, {"title": "Titre"}, dataset_id="aaa")
+        d_from_response.create_static("path", {"title": "Titre"}, dataset_id="aaa")
     with pytest.raises(ValueError):
         d_from_response.create_remote({"title": "Titre"}, dataset_id="aaa")
 
@@ -126,7 +125,7 @@ def test_dataset_create(httpx_mock):
         "organization": "646b7187b50b2a93b1ae3d45",
     }
 
-    created_dataset = client.dataset().create(payload)
+    created_dataset = client.create_dataset(payload)
 
     assert isinstance(created_dataset, Dataset)
     for attr in Dataset._attributes:
