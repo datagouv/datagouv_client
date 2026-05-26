@@ -286,6 +286,7 @@ class ResourceCreator(Creator):
         dataset_id: str | None = None,
         is_communautary: bool = False,
     ) -> Resource:
+        """Create a resource that references a data stored somewhere else on the internet."""
         if dataset_id and self.__class__.__name__ == "Dataset":
             raise ValueError(
                 "When creating a resource from a dataset, you should't specify a dataset_id"
@@ -325,6 +326,7 @@ class ResourceCreator(Creator):
         dataset_id: str | None = None,
         is_communautary: bool = False,
     ) -> Resource:
+        """Create a resource by uploading a file on datagouv storage."""
         if dataset_id and self.__class__.__name__ == "Dataset":
             raise ValueError(
                 "When creating a resource from a dataset, you should't specify a dataset_id"

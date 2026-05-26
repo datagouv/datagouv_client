@@ -48,6 +48,7 @@ class Client:
     def create_remote_resource(
         self, payload: dict, dataset_id: str, is_communautary: bool = False
     ) -> "Resource":
+        """Create a resource that references a data stored somewhere else on the internet."""
         from datagouv.api.resource import ResourceCreator
 
         return ResourceCreator(_client=self).create_remote(
@@ -57,6 +58,7 @@ class Client:
     def create_static_resource(
         self, file_to_upload: str, payload: dict, dataset_id: str, is_communautary: bool = False
     ) -> "Resource":
+        """Create a resource by uploading a file on datagouv storage."""
         from datagouv.api.resource import ResourceCreator
 
         return ResourceCreator(_client=self).create_static(
