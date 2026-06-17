@@ -1,7 +1,7 @@
 import logging
 from typing import Iterator
 
-import httpx
+import niquests
 
 from datagouv.api.client import Client
 from datagouv.api.dataset import Dataset
@@ -82,10 +82,10 @@ class Topic(BaseObject):
     def get_monthly_traffic_metrics(self, *args, **kwargs) -> Iterator[dict]:
         raise NotImplementedError()
 
-    def delete_extras(self, *args, **kwargs) -> httpx.Response:
+    def delete_extras(self, *args, **kwargs) -> niquests.Response:
         raise NotImplementedError()
 
-    def update_extras(self, *args, **kwargs) -> httpx.Response:
+    def update_extras(self, *args, **kwargs) -> niquests.Response:
         raise NotImplementedError()
 
 

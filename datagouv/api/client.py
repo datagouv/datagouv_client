@@ -1,7 +1,7 @@
 from importlib.metadata import version
 from typing import TYPE_CHECKING, Iterator
 
-import httpx
+import niquests
 
 if TYPE_CHECKING:
     from datagouv import Dataset, Organization, Resource, Topic
@@ -26,7 +26,11 @@ class Client:
         **kwargs,
     ):
         self._env_sanity(environment)
-        self.session = httpx.Client(**({"timeout": 15, "headers": PYTHON_USER_AGENT} | kwargs))
+        self.session = niquests.Session(
+            timeout=15,
+            headers=PYTHON_USER_AGENT,
+            **kwargs,
+        )
         self.environment = self._envs[environment]
         self.base_url = f"https://{self.environment}.data.gouv.fr"
         self.verbose = verbose

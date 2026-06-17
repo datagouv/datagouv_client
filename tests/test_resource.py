@@ -3,7 +3,6 @@ from copy import deepcopy
 from io import BytesIO
 from unittest.mock import patch
 
-import httpx  # noqa
 import pytest
 from conftest import DATASET_ID, RESOURCE_ID, resource_metadata_api1, tabular_api_data
 
@@ -32,7 +31,7 @@ def test_remote_resource_instance_with_dataset_id(remote_resource_api1_call):
 def test_resource_attributes_and_methods(static_resource_api2_call):
     client = Client()
     r = client.resource(RESOURCE_ID)
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         r_from_response = Resource(
             RESOURCE_ID, dataset_id=DATASET_ID, _from_response=resource_metadata_api1
         )
@@ -85,7 +84,7 @@ def test_upload_file_into_remote(remote_resource_api2_call):
 
 def test_resource_no_fetch():
     # no fetch only if the dataset_id is given, otherwise we ping api/2
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         r = Resource(RESOURCE_ID, DATASET_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(r, a, None) is None for a in Resource._attributes)
@@ -119,23 +118,13 @@ def test_resource_download(
     custom_url,
     headers,
     expected_name,
-    httpx_mock,
+    niquests_mock,
 ):
     r = Client().resource(RESOURCE_ID, dataset_id=DATASET_ID)
     if custom_url:
         r.url = custom_url
-        httpx_mock.add_response(
-            method="HEAD",
-            url=r.url,
-            status_code=200,
-            headers=headers,
-        )
-    httpx_mock.add_response(
-        method="GET",
-        url=r.url,
-        status_code=200,
-        content=b"a,b,c\n1,2,3",
-    )
+        niquests_mock.head(r.url).respond(status_code=200, headers=headers)
+    niquests_mock.get(r.url).respond(status_code=200, content=b"a,b,c\n1,2,3")
     local_name = r.download(file_name)
     assert local_name.as_posix() == expected_name
     with open(local_name, "r") as f:
@@ -155,18 +144,17 @@ def test_resource_download(
     ],
 )
 def test_iter_download_http_behaviour(
-    httpx_mock, payload, status_code, text, chunk_size, expect_exception
+    niquests_mock, payload, status_code, text, chunk_size, expect_exception
 ):
     r = Resource("id", dataset_id="ds", fetch=False)
     r.url = "https://example.com/file.csv"
 
-    httpx_mock.add_response(
-        method="GET",
-        url=r.url,
-        status_code=status_code,
-        content=payload if payload is not None else b"",
-        text=text,
-    )
+    kwargs = {"status_code": status_code}
+    if text is not None:
+        kwargs["text"] = text
+    elif payload is not None:
+        kwargs["content"] = payload
+    niquests_mock.get(r.url).respond(**kwargs)
 
     it = r._iter_download(chunk_size=chunk_size)
 
@@ -260,24 +248,19 @@ def test_download_buffer(
         ),
     ],
 )
-def test_resource_create(httpx_mock, method, kwargs):
-    # Mock the API response for resource creation
-    httpx_mock.add_response(
-        method="POST",
-        url=(
-            f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/"
-            + ("resources/" if "remote" in method else "upload/")
-        ),
+def test_resource_create(niquests_mock, method, kwargs):
+    niquests_mock.post(
+        f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/"
+        + ("resources/" if "remote" in method else "upload/")
+    ).respond(
         json=resource_metadata_api1,
         status_code=201,
     )
     if "static" in method:
-        httpx_mock.add_response(
-            method="PUT",
-            url=(
-                f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}"
-                f"/resources/{resource_metadata_api1['id']}/"
-            ),
+        niquests_mock.put(
+            f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}"
+            f"/resources/{resource_metadata_api1['id']}/"
+        ).respond(
             json=resource_metadata_api1,
             status_code=200,
         )
@@ -291,7 +274,7 @@ def test_resource_create(httpx_mock, method, kwargs):
         assert getattr(created_resource, attr) == resource_metadata_api1[attr]
 
 
-def test_resource_update(static_resource_api2_call, httpx_mock):
+def test_resource_update(static_resource_api2_call, niquests_mock):
     updated_metadata = resource_metadata_api1.copy()
     payload = {
         "title": "Updated Resource Title",
@@ -301,10 +284,9 @@ def test_resource_update(static_resource_api2_call, httpx_mock):
     client = Client(api_key="test-api-key")
     resource = client.resource(RESOURCE_ID)
 
-    # Mock the update response
-    httpx_mock.add_response(
-        method="PUT",
-        url=f"https://www.data.gouv.fr/api/1/datasets/{resource.dataset_id}/resources/{resource.id}/",
+    niquests_mock.put(
+        f"https://www.data.gouv.fr/api/1/datasets/{resource.dataset_id}/resources/{resource.id}/"
+    ).respond(
         json=updated_metadata | payload,
         status_code=200,
     )
@@ -316,16 +298,13 @@ def test_resource_update(static_resource_api2_call, httpx_mock):
         assert getattr(resource, attr) == payload[attr]
 
 
-def test_resource_delete(static_resource_api2_call, httpx_mock):
+def test_resource_delete(static_resource_api2_call, niquests_mock):
     client = Client(api_key="test-api-key")
     resource = client.resource(RESOURCE_ID)
 
-    # Mock the delete response
-    httpx_mock.add_response(
-        method="DELETE",
-        url=f"https://www.data.gouv.fr/api/1/datasets/{resource.dataset_id}/resources/{resource.id}/",
-        status_code=204,
-    )
+    niquests_mock.delete(
+        f"https://www.data.gouv.fr/api/1/datasets/{resource.dataset_id}/resources/{resource.id}/"
+    ).respond(status_code=204)
 
     response = resource.delete()
 
@@ -348,29 +327,17 @@ def test_tabular_resource_instanciation(tabular_resource_api_calls):
     assert isinstance(res.columns, list) and all(isinstance(col, str) for col in res.columns)
 
 
-def test_tabular_resource_data(
-    tabular_resource_api_calls,
-    httpx_mock,
-):
+def test_tabular_resource_data(tabular_resource_api_calls, niquests_mock):
     res = Resource(RESOURCE_ID)
     first_page = deepcopy(tabular_api_data)
     second_page_url = f"{res.tabular_api_url}data/?page=2&page_size=20"
     first_page["links"]["next"] = second_page_url
-    httpx_mock.add_response(
-        url=res.tabular_api_url + "data/",
-        json=first_page,
-    )
-    httpx_mock.add_response(
-        url=second_page_url,
-        json=tabular_api_data,
-    )
+    niquests_mock.get(res.tabular_api_url + "data/").respond(json=first_page)
+    niquests_mock.get(second_page_url).respond(json=tabular_api_data)
     assert len(list(res.rows())) == len(first_page["data"]) + len(tabular_api_data["data"])
 
 
-def test_tabular_resource_data_with_filters(
-    tabular_resource_api_calls,
-    httpx_mock,
-):
+def test_tabular_resource_data_with_filters(tabular_resource_api_calls, niquests_mock):
     res = Resource(RESOURCE_ID)
 
     # check that a wrong column name or operator raises an error
@@ -388,15 +355,12 @@ def test_tabular_resource_data_with_filters(
         (res.columns[1], "exact", "a"),
         (res.columns[2], "isnotnull"),
     ]
-    httpx_mock.add_response(
-        url=(
-            res.tabular_api_url
-            + f"data/?"
-            + f"{res.columns[0]}__strictly_greater=6"
-            + f"&{res.columns[1]}__exact=a"
-            + f"&{res.columns[2]}__isnotnull"
-        ),
-        json=tabular_api_data,
-    )
+    niquests_mock.get(
+        res.tabular_api_url
+        + "data/?"
+        + f"{res.columns[0]}__strictly_greater=6"
+        + f"&{res.columns[1]}__exact=a"
+        + f"&{res.columns[2]}__isnotnull"
+    ).respond(json=tabular_api_data)
     # just testing that calling the method works
     assert list(res.rows(filters))
