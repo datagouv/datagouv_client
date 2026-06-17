@@ -13,9 +13,8 @@ license = "MIT"
 readme = "README.md"
 keywords = ["api", "wrapper", "datagouv"]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "httpx>=0.28.1,<1",
     "pytest-httpx>=0.35.0,<1",
     "ruff>=0.11.2",
 ]
