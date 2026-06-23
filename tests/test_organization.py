@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-import httpx  # noqa
 import pytest
 from conftest import (
     DATAGOUV_URL,
@@ -23,7 +22,7 @@ def test_organization_instance(organization_api_call):
 def test_organization_attributes_and_methods(organization_api_call):
     client = Client()
     o = client.organization(ORGANIZATION_ID)
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         o_from_response = Organization(
             organization_metadata["id"], _from_response=organization_metadata
         )
@@ -69,10 +68,9 @@ def test_authentification_assertion():
         o_from_response.create_dataset({"title": "Titre", "owner": OWNER_ID})
 
 
-def test_datasets(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/datasets/",
-        json={"data": [dataset_metadata], "next_page": None},
+def test_datasets(niquests_mock):
+    niquests_mock.get(f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/datasets/").respond(
+        json={"data": [dataset_metadata], "next_page": None}
     )
     o_from_response = Organization(ORGANIZATION_ID, _from_response=organization_metadata)
     datasets = list(o_from_response.datasets)
@@ -81,18 +79,15 @@ def test_datasets(httpx_mock):
 
 
 def test_organization_no_fetch():
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         o = Organization(ORGANIZATION_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(o, a, None) is None for a in Organization._attributes)
     assert o.uri
 
 
-def test_organization_create(httpx_mock):
-    # Mock the API response for organization creation
-    httpx_mock.add_response(
-        method="POST",
-        url="https://www.data.gouv.fr/api/1/organizations/",
+def test_organization_create(niquests_mock):
+    niquests_mock.post("https://www.data.gouv.fr/api/1/organizations/").respond(
         json=organization_metadata,
         status_code=201,
     )
@@ -111,16 +106,13 @@ def test_organization_create(httpx_mock):
         assert getattr(created_organization, attr) == organization_metadata[attr]
 
 
-def test_organization_update(organization_api_call, httpx_mock):
-    # Mock the update response
+def test_organization_update(organization_api_call, niquests_mock):
     updated_metadata = organization_metadata.copy()
     payload = {
         "name": "Updated Oragnization Name",
         "description": "Updated description",
     }
-    httpx_mock.add_response(
-        method="PUT",
-        url=f"https://www.data.gouv.fr/api/1/organizations/{ORGANIZATION_ID}/",
+    niquests_mock.put(f"https://www.data.gouv.fr/api/1/organizations/{ORGANIZATION_ID}/").respond(
         json=updated_metadata | payload,
         status_code=200,
     )
@@ -135,13 +127,10 @@ def test_organization_update(organization_api_call, httpx_mock):
         assert getattr(organization, attr) == payload[attr]
 
 
-def test_organization_delete(organization_api_call, httpx_mock):
-    # Mock the delete response
-    httpx_mock.add_response(
-        method="DELETE",
-        url=f"https://www.data.gouv.fr/api/1/organizations/{ORGANIZATION_ID}/",
-        status_code=204,
-    )
+def test_organization_delete(organization_api_call, niquests_mock):
+    niquests_mock.delete(
+        f"https://www.data.gouv.fr/api/1/organizations/{ORGANIZATION_ID}/"
+    ).respond(status_code=204)
 
     client = Client(api_key="test-api-key")
     organization = client.organization(ORGANIZATION_ID)

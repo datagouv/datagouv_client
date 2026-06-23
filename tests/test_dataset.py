@@ -2,7 +2,6 @@ import os
 import shutil
 from unittest.mock import Mock, patch
 
-import httpx  # noqa
 import pytest
 from conftest import DATASET_ID, OWNER_ID, dataset_metadata
 
@@ -19,7 +18,7 @@ def test_dataset_instance(dataset_api_call):
 def test_dataset_attributes_and_methods(dataset_api_call):
     client = Client()
     d = client.dataset(DATASET_ID)
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         d_from_response = Dataset(dataset_metadata["id"], _from_response=dataset_metadata)
         # when instanciating from a response, we don't call the API another time
         mock_func.assert_not_called()
@@ -65,7 +64,7 @@ def test_authentification_assertion():
 
 
 def test_resources():
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         d_from_response = Dataset(DATASET_ID, _from_response=dataset_metadata)
         assert len(d_from_response.resources) == len(dataset_metadata["resources"])
         assert all(isinstance(r, Resource) for r in d_from_response.resources)
@@ -74,25 +73,20 @@ def test_resources():
 
 
 def test_dataset_no_fetch():
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         d = Dataset(DATASET_ID, fetch=False)
         mock_func.assert_not_called()
     assert all(getattr(d, a, None) is None for a in Dataset._attributes)
     assert d.uri
 
 
-def test_download_dataset_resources(dataset_api_call, httpx_mock):
+def test_download_dataset_resources(dataset_api_call, niquests_mock):
     d = Dataset(DATASET_ID)
     folder = "data_test"
     os.mkdir(folder)
     for res in d.resources:
-        # only mocking the resources we download, otherwise httpx raises
         if res.type == "main":
-            httpx_mock.add_response(
-                url=res.url,
-                content=b"a,b,c\n1,2,3",
-                is_reusable=True,
-            )
+            niquests_mock.get(res.url).respond(content=b"a,b,c\n1,2,3")
     d.download_resources(folder=folder, resources_types=["main"])
     assert len(os.listdir(folder)) == len([r for r in d.resources if r.type == "main"])
     shutil.rmtree(folder)
@@ -108,11 +102,8 @@ def test_dataset_has_owner():
     assert dataset_with_owner.owner == owner
 
 
-def test_dataset_create(httpx_mock):
-    # Mock the API response for dataset creation
-    httpx_mock.add_response(
-        method="POST",
-        url="https://www.data.gouv.fr/api/1/datasets/",
+def test_dataset_create(niquests_mock):
+    niquests_mock.post("https://www.data.gouv.fr/api/1/datasets/").respond(
         json=dataset_metadata,
         status_code=201,
     )
@@ -132,16 +123,13 @@ def test_dataset_create(httpx_mock):
         assert getattr(created_dataset, attr) == dataset_metadata[attr]
 
 
-def test_dataset_update(dataset_api_call, httpx_mock):
-    # Mock the update response
+def test_dataset_update(dataset_api_call, niquests_mock):
     updated_metadata = dataset_metadata.copy()
     payload = {
         "title": "Updated Dataset Title",
         "description": "Updated description",
     }
-    httpx_mock.add_response(
-        method="PUT",
-        url=f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/",
+    niquests_mock.put(f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/").respond(
         json=updated_metadata | payload,
         status_code=200,
     )
@@ -156,11 +144,8 @@ def test_dataset_update(dataset_api_call, httpx_mock):
         assert getattr(dataset, attr) == payload[attr]
 
 
-def test_dataset_delete(dataset_api_call, httpx_mock):
-    # Mock the delete response
-    httpx_mock.add_response(
-        method="DELETE",
-        url=f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/",
+def test_dataset_delete(dataset_api_call, niquests_mock):
+    niquests_mock.delete(f"https://www.data.gouv.fr/api/1/datasets/{DATASET_ID}/").respond(
         status_code=204,
     )
 

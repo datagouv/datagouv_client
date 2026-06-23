@@ -4,7 +4,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Iterator
 
-import httpx
+import niquests
 
 from datagouv.api.client import Client
 from datagouv.utils.base_object import BaseObject, Creator, assert_auth
@@ -113,7 +113,7 @@ class Resource(BaseObject):
                     files={"file": open(file_to_upload, "rb")},
                     timeout=timeout,
                 )
-            except httpx.TimeoutException as e:
+            except niquests.Timeout as e:
                 raise TimeoutError(
                     "The upload reached the timeout, consider setting it higher like:"
                     f" update(..., timeout={timeout * 2})"
@@ -138,12 +138,12 @@ class Resource(BaseObject):
         return self._dataset
 
     def _iter_download(self, chunk_size: int = 8192, **kwargs):
-        with httpx.stream("GET", self.url, **kwargs) as r:
+        with self._client.session.get(self.url, stream=True, **kwargs) as r:
             try:
                 r.raise_for_status()
             except Exception as e:
                 raise Exception(r.text) from e
-            for chunk in r.iter_bytes(chunk_size=chunk_size):
+            for chunk in r.iter_content(chunk_size=chunk_size):
                 yield chunk
 
     def download_buffer(

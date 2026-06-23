@@ -17,7 +17,7 @@ def test_dataset_instance(topic_api_call):
 def test_topic_attributes_and_methods(topic_api_call):
     client = Client()
     topic = client.topic(TOPIC_ID)
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         topic_from_response = Topic(TOPIC_ID, _from_response=topic_metadata)
         # when instanciating from a response, we don't call the API another time
         mock_func.assert_not_called()
@@ -65,7 +65,7 @@ def test_topic_has_owner():
 
 
 def test_topic_no_fetch():
-    with patch("httpx.Client.get") as mock_func:
+    with patch("niquests.Session.get") as mock_func:
         d = Topic(TOPIC_ID, fetch=False)
         mock_func.assert_not_called()
     print([getattr(d, a, None) for a in Topic._attributes])
@@ -79,11 +79,8 @@ def test_authentification_assertion():
         client.create_topic({"name": "Test Topic"})
 
 
-def test_topic_create(httpx_mock):
-    # Mock the API response for topic creation
-    httpx_mock.add_response(
-        method="POST",
-        url="https://www.data.gouv.fr/api/2/topics/",
+def test_topic_create(niquests_mock):
+    niquests_mock.post("https://www.data.gouv.fr/api/2/topics/").respond(
         json=topic_metadata,
         status_code=201,
     )
@@ -103,14 +100,11 @@ def test_topic_create(httpx_mock):
         assert getattr(created_topic, attr) == topic_metadata[attr]
 
 
-def test_topic_update(topic_api_call, httpx_mock):
-    # Mock the update response
+def test_topic_update(topic_api_call, niquests_mock):
     updated_metadata = topic_metadata.copy()
     payload = {"name": "Updated Topic Name", "description": "Updated description"}
 
-    httpx_mock.add_response(
-        method="PUT",
-        url=f"https://www.data.gouv.fr/api/2/topics/{TOPIC_ID}/",
+    niquests_mock.put(f"https://www.data.gouv.fr/api/2/topics/{TOPIC_ID}/").respond(
         json=updated_metadata | payload,
         status_code=200,
     )
@@ -125,11 +119,8 @@ def test_topic_update(topic_api_call, httpx_mock):
         assert getattr(topic, attr) == payload[attr]
 
 
-def test_topic_delete(topic_api_call, httpx_mock):
-    # Mock the delete response
-    httpx_mock.add_response(
-        method="DELETE",
-        url=f"https://www.data.gouv.fr/api/2/topics/{TOPIC_ID}/",
+def test_topic_delete(topic_api_call, niquests_mock):
+    niquests_mock.delete(f"https://www.data.gouv.fr/api/2/topics/{TOPIC_ID}/").respond(
         status_code=204,
     )
 

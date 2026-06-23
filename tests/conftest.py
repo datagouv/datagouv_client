@@ -40,109 +40,85 @@ with open("tests/tabular_api_profile.json", "r") as f:
 
 
 @pytest.fixture
-def dataset_api_call(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/",
-        json=dataset_metadata,
-        is_reusable=True,
-    )
-    yield httpx_mock
+def dataset_api_call(niquests_mock):
+    niquests_mock.get(f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/").respond(json=dataset_metadata)
+    yield niquests_mock
 
 
 @pytest.fixture
-def dataset_catchall_api_call(httpx_mock):
-    httpx_mock.add_response(
-        url=re.compile(f"{DATAGOUV_URL}api/1/datasets/.*?/"),
-        json=dataset_metadata,
-        is_reusable=True,
+def dataset_catchall_api_call(niquests_mock):
+    niquests_mock.get(re.compile(f"{DATAGOUV_URL}api/1/datasets/.*?/")).respond(
+        json=dataset_metadata
     )
-    yield httpx_mock
+    yield niquests_mock
 
 
 @pytest.fixture
-def topic_api_call(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/",
-        json=topic_metadata,
-        is_reusable=True,
-    )
-    yield httpx_mock
+def topic_api_call(niquests_mock):
+    niquests_mock.get(f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/").respond(json=topic_metadata)
+    yield niquests_mock
 
 
 @pytest.fixture
-def elements_api_call(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/elements/",
-        json=elements_metadata,
-        is_reusable=True,
+def elements_api_call(niquests_mock):
+    niquests_mock.get(f"{DATAGOUV_URL}api/2/topics/{TOPIC_ID}/elements/").respond(
+        json=elements_metadata
     )
-    yield httpx_mock
+    yield niquests_mock
 
 
 @pytest.fixture
-def static_resource_api1_call(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/resources/{RESOURCE_ID}/",
-        json=resource_metadata_api1,
-        is_reusable=True,
-    )
-    yield httpx_mock
+def static_resource_api1_call(niquests_mock):
+    niquests_mock.get(
+        f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/resources/{RESOURCE_ID}/"
+    ).respond(json=resource_metadata_api1)
+    yield niquests_mock
 
 
 @pytest.fixture
-def remote_resource_api1_call(httpx_mock):
+def remote_resource_api1_call(niquests_mock):
     remote_metadata = deepcopy(resource_metadata_api1)
     remote_metadata["filetype"] = "remote"
     remote_metadata["url"] = "https://example.com/file.csv"
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/resources/{RESOURCE_ID}/",
-        json=remote_metadata,
-        is_reusable=True,
-    )
-    yield httpx_mock
+    niquests_mock.get(
+        f"{DATAGOUV_URL}api/1/datasets/{DATASET_ID}/resources/{RESOURCE_ID}/"
+    ).respond(json=remote_metadata)
+    yield niquests_mock
 
 
 @pytest.fixture
-def static_resource_api2_call(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/",
-        json=resource_metadata_api2,
-        is_reusable=True,
+def static_resource_api2_call(niquests_mock):
+    niquests_mock.get(f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/").respond(
+        json=resource_metadata_api2
     )
-    yield httpx_mock
+    yield niquests_mock
 
 
 @pytest.fixture
-def remote_resource_api2_call(httpx_mock):
+def remote_resource_api2_call(niquests_mock):
     remote_metadata = resource_metadata_api2
     remote_metadata["resource"]["filetype"] = "remote"
     remote_metadata["resource"]["url"] = "https://example.com/file.csv"
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/",
-        json=remote_metadata,
-        is_reusable=True,
+    niquests_mock.get(f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/").respond(
+        json=remote_metadata
     )
-    yield httpx_mock
+    yield niquests_mock
 
 
 @pytest.fixture
-def organization_api_call(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/",
-        json=organization_metadata,
-        is_reusable=True,
+def organization_api_call(niquests_mock):
+    niquests_mock.get(f"{DATAGOUV_URL}api/1/organizations/{ORGANIZATION_ID}/").respond(
+        json=organization_metadata
     )
-    yield httpx_mock
+    yield niquests_mock
 
 
 @pytest.fixture
-def tabular_resource_api_calls(httpx_mock):
-    httpx_mock.add_response(
-        url=f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/",
-        json=tabular_resource_metadata_api2,
+def tabular_resource_api_calls(niquests_mock):
+    niquests_mock.get(f"{DATAGOUV_URL}api/2/datasets/resources/{RESOURCE_ID}/").respond(
+        json=tabular_resource_metadata_api2
     )
-    httpx_mock.add_response(
-        url=f"https://tabular-api.data.gouv.fr/api/resources/{RESOURCE_ID}/profile/",
-        json=tabular_api_profile,
-    )
-    yield httpx_mock
+    niquests_mock.get(
+        f"https://tabular-api.data.gouv.fr/api/resources/{RESOURCE_ID}/profile/"
+    ).respond(json=tabular_api_profile)
+    yield niquests_mock
