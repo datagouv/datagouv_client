@@ -1,7 +1,7 @@
 from importlib.metadata import version
 from typing import TYPE_CHECKING, Iterator
 
-import httpx
+import niquests
 
 if TYPE_CHECKING:
     from datagouv import Dataset, Organization, Resource, Topic
@@ -26,7 +26,11 @@ class Client:
         **kwargs,
     ):
         self._env_sanity(environment)
-        self.session = httpx.Client(**({"timeout": 15, "headers": PYTHON_USER_AGENT} | kwargs))
+        self.session = niquests.Session(
+            timeout=15,
+            headers=PYTHON_USER_AGENT,
+            **kwargs,
+        )
         self.environment = self._envs[environment]
         self.base_url = f"https://{self.environment}.data.gouv.fr"
         self.verbose = verbose
@@ -36,37 +40,64 @@ class Client:
             self.session.headers.update({"X-API-KEY": api_key})
 
     @classmethod
-    def _env_sanity(cls, environment: str):
+    def _env_sanity(cls, environment: str) -> None:
         if environment not in cls._envs:
             raise ValueError(f"`environment` must be in {list(cls._envs)}")
 
-    def resource(self, id: str | None = None, **kwargs):
-        from datagouv.api.resource import Resource, ResourceCreator
+    def resource(self, id: str, **kwargs) -> "Resource":
+        from datagouv.api.resource import Resource
 
-        if id:
-            return Resource(id, _client=self, **kwargs)
-        return ResourceCreator(_client=self)
+        return Resource(id, _client=self, **kwargs)
 
-    def dataset(self, id: str | None = None, **kwargs):
-        from datagouv.api.dataset import Dataset, DatasetCreator
+    def create_remote_resource(
+        self, payload: dict, dataset_id: str, is_communautary: bool = False
+    ) -> "Resource":
+        """Create a resource that references a data stored somewhere else on the internet."""
+        from datagouv.api.resource import ResourceCreator
 
-        if id:
-            return Dataset(id, _client=self, **kwargs)
-        return DatasetCreator(_client=self)
+        return ResourceCreator(_client=self).create_remote(
+            payload, dataset_id, is_communautary=is_communautary
+        )
 
-    def topic(self, id: str | None = None, **kwargs):
-        from datagouv.api.topic import Topic, TopicCreator
+    def create_static_resource(
+        self, file_to_upload: str, payload: dict, dataset_id: str, is_communautary: bool = False
+    ) -> "Resource":
+        """Create a resource by uploading a file on datagouv storage."""
+        from datagouv.api.resource import ResourceCreator
 
-        if id:
-            return Topic(id, _client=self, **kwargs)
-        return TopicCreator(_client=self)
+        return ResourceCreator(_client=self).create_static(
+            file_to_upload, payload, dataset_id, is_communautary=is_communautary
+        )
 
-    def organization(self, id: str | None = None, **kwargs):
-        from datagouv.api.organization import Organization, OrganizationCreator
+    def dataset(self, id: str, **kwargs) -> "Dataset":
+        from datagouv.api.dataset import Dataset
 
-        if id:
-            return Organization(id, _client=self, **kwargs)
-        return OrganizationCreator(_client=self)
+        return Dataset(id, _client=self, **kwargs)
+
+    def create_dataset(self, payload: dict) -> "Dataset":
+        from datagouv.api.dataset import DatasetCreator
+
+        return DatasetCreator(_client=self).create(payload=payload)
+
+    def topic(self, id: str, **kwargs) -> "Topic":
+        from datagouv.api.topic import Topic
+
+        return Topic(id, _client=self, **kwargs)
+
+    def create_topic(self, payload: dict) -> "Topic":
+        from datagouv.api.topic import TopicCreator
+
+        return TopicCreator(_client=self).create(payload=payload)
+
+    def organization(self, id: str, **kwargs) -> "Organization":
+        from datagouv.api.organization import Organization
+
+        return Organization(id, _client=self, **kwargs)
+
+    def create_organization(self, payload: dict) -> "Organization":
+        from datagouv.api.organization import OrganizationCreator
+
+        return OrganizationCreator(_client=self).create(payload=payload)
 
     def get_all_from_api_query(
         self,

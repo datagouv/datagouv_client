@@ -48,7 +48,7 @@ def create(
     for item in set:
         key, value = item.split("=", maxsplit=1)
         payload[key] = value
-    t = client.topic().create(payload)
+    t = client.create_topic(payload)
     typer.echo(f"Topic created successfully ✓ id is : {t.id}")
 
 

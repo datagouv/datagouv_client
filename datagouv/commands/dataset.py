@@ -49,7 +49,7 @@ def create(
     if organization_id:
         d = client.organization(organization_id, fetch=False).create_dataset(payload)
     else:
-        d = client.dataset().create(payload | {"owner": owner_id})
+        d = client.create_dataset(payload | {"owner": owner_id})
     typer.echo(f"Dataset created successfully ✓ id is {d.id}")
 
 

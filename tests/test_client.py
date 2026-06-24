@@ -30,11 +30,19 @@ def test_client_types(args):
                 "_authenticated",
                 "_envs",
                 "base_url",
-                "dataset",
                 "get_all_from_api_query",
-                "resource",
                 "session",
             ]
+            + [
+                prefix + obj
+                for prefix in ["create_", ""]
+                for obj in [
+                    "dataset",
+                    "organization",
+                    "topic",
+                ]
+            ]
+            + ["create_remote_resource", "create_static_resource"]
         )
         assert client.base_url == f"https://{client._envs[env]}.data.gouv.fr"
 

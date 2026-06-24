@@ -2,7 +2,7 @@ import logging
 import re
 from typing import Iterator
 
-import httpx
+import niquests
 
 from datagouv.api.client import Client
 from datagouv.utils.retry import simple_connection_retry
@@ -50,7 +50,7 @@ class BaseObject:
         return metadata
 
     @simple_connection_retry
-    def update(self, payload: dict) -> httpx.Response:
+    def update(self, payload: dict) -> niquests.Response:
         assert_auth(self._client)
         if self._client.verbose:
             logging.info(f"🔁 Putting {self.uri} with {payload}")
@@ -63,7 +63,7 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def delete(self) -> httpx.Response:
+    def delete(self) -> niquests.Response:
         assert_auth(self._client)
         if self._client.verbose:
             logging.info(f"🚮 Deleting {self.uri}")
@@ -75,7 +75,7 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def update_extras(self, payload: dict) -> httpx.Response:
+    def update_extras(self, payload: dict) -> niquests.Response:
         assert_auth(self._client)
         if self._client.verbose:
             logging.info(f"🔁 Putting {self.uri} with extras {payload}")
@@ -88,7 +88,7 @@ class BaseObject:
         return r
 
     @simple_connection_retry
-    def delete_extras(self, keys: list[str]) -> httpx.Response:
+    def delete_extras(self, keys: list[str]) -> niquests.Response:
         """Convenience method"""
         assert_auth(self._client)
         if self._client.verbose:

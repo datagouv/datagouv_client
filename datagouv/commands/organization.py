@@ -38,7 +38,7 @@ def create(
     for item in set:
         key, value = item.split("=", maxsplit=1)
         payload[key] = value
-    o = client.organization().create(payload)
+    o = client.create_organization(payload)
     typer.echo(f"Organization created successfully ✓ id is {o.id}")
 
 

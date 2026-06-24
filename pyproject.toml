@@ -4,7 +4,7 @@ dynamic = ["version"]
 description = "Wrapper for the data.gouv.fr API"
 authors = [{ name = "Etalab", email = "opendatateam@data.gouv.fr" }]
 dependencies = [
-    "httpx>=0.28.1,<1",
+    "niquests>=3.19.0,<4",
     "tenacity>=9.0.0,<10",
     "typer>=0.25.0,<1",
 ]
@@ -13,10 +13,10 @@ license = "MIT"
 readme = "README.md"
 keywords = ["api", "wrapper", "datagouv"]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "httpx>=0.28.1,<1",
-    "pytest-httpx>=0.35.0,<1",
+    "niquests-mock>=0.4.0,<1",
+    "pytest>=8.0.0,<9",
     "ruff>=0.11.2",
 ]
 

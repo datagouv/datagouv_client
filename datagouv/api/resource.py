@@ -4,7 +4,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Iterator
 
-import httpx
+import niquests
 
 from datagouv.api.client import Client
 from datagouv.utils.base_object import BaseObject, Creator, assert_auth
@@ -104,7 +104,7 @@ class Resource(BaseObject):
                     files={"file": open(file_to_upload, "rb")},
                     timeout=timeout,
                 )
-            except httpx.TimeoutException as e:
+            except niquests.Timeout as e:
                 raise TimeoutError(
                     "The upload reached the timeout, consider setting it higher like:"
                     f" update(..., timeout={timeout * 2})"
@@ -152,12 +152,12 @@ class Resource(BaseObject):
             ) from e
 
     def _iter_download(self, chunk_size: int = 8192, **kwargs):
-        with httpx.stream("GET", self.url, **kwargs) as r:
+        with self._client.session.get(self.url, stream=True, **kwargs) as r:
             try:
                 r.raise_for_status()
             except Exception as e:
                 raise Exception(r.text) from e
-            for chunk in r.iter_bytes(chunk_size=chunk_size):
+            for chunk in r.iter_content(chunk_size=chunk_size):
                 yield chunk
 
     def download_buffer(
@@ -302,6 +302,7 @@ class ResourceCreator(Creator):
         dataset_id: str | None = None,
         is_communautary: bool = False,
     ) -> Resource:
+        """Create a resource that references a data stored somewhere else on the internet."""
         if dataset_id and self.__class__.__name__ == "Dataset":
             raise ValueError(
                 "When creating a resource from a dataset, you should't specify a dataset_id"
@@ -341,6 +342,7 @@ class ResourceCreator(Creator):
         dataset_id: str | None = None,
         is_communautary: bool = False,
     ) -> Resource:
+        """Create a resource by uploading a file on datagouv storage."""
         if dataset_id and self.__class__.__name__ == "Dataset":
             raise ValueError(
                 "When creating a resource from a dataset, you should't specify a dataset_id"
