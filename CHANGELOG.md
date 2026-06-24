@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 (2026-06-24)
+
+- Delay tabular API calls to when required ([#59](https://github.com/datagouv/datagouv_client/pull/59))
+- Separate object creation from object instanciation in the Client ([#58](https://github.com/datagouv/datagouv_client/pull/58))
+- chore(CI): use recommended UV_PUBLISH_TOKEN ([#64](https://github.com/datagouv/datagouv_client/pull/64))
+- chore(deps): change how dev deps are declared ([#61](https://github.com/datagouv/datagouv_client/pull/61))
+- chore(deps): replace httpx with niquests ([#63](https://github.com/datagouv/datagouv_client/pull/63))
+- docs: update dev dependency install instructions ([#65](https://github.com/datagouv/datagouv_client/pull/65))
+
+
 ## 0.3.2 (2026-05-20)
 
 - Add user-agents for the client ([#55](https://github.com/datagouv/datagouv_client/pull/55))
