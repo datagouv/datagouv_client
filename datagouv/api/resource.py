@@ -141,6 +141,8 @@ class Resource(BaseObject):
         return self._columns
 
     def _fetch_profile(self):
+        if not getattr(self, "tabular_api_url", None):
+            raise AttributeError("This resource does not have available tabular data.")
         try:
             self._profile: dict = self._client.session.get(
                 self.tabular_api_url + "profile/"
@@ -258,8 +260,6 @@ class Resource(BaseObject):
     ) -> Iterator[dict]:
         if self._profile is None:
             self._fetch_profile()
-        if not getattr(self, "tabular_api_url", None):
-            raise ValueError("This resource does not have available tabular data.")
         data_url = self.tabular_api_url + "data/"
         if not filters:
             return self._client.get_all_from_api_query(
