@@ -312,7 +312,7 @@ def test_resource_delete(static_resource_api2_call, niquests_mock):
 
 
 def test_not_tabular_resource(custom_object):
-    res = custom_object("Resource", {"preview_url": None})
+    res = custom_object("Resource", {"resource": {"preview_url": None}})
     for attr in ["tabular_api_url", "profile", "columns"]:
         with pytest.raises(AttributeError):
             getattr(res, attr)
@@ -320,15 +320,25 @@ def test_not_tabular_resource(custom_object):
         res.rows()
 
 
-def test_tabular_resource_instanciation(tabular_resource_api_calls):
-    res = Resource(RESOURCE_ID)
+def test_tabular_resource_instanciation(tabular_resource_api_calls, custom_object):
+    res = custom_object("Resource", {"resource": {"preview_url": "https://explore.data.gouv.fr/..."}})
     assert res.tabular_api_url == f"https://tabular-api.data.gouv.fr/api/resources/{res.id}/"
+    # not calling tabular on resource instanciation
+    assert all(
+        getattr(res, att) is None
+        for att in [
+            "_profile",
+            "_columns",
+        ]
+    )
+    res.profile
+    # the call has fetched all tabular API data
     assert isinstance(res.profile, dict)
-    assert isinstance(res.columns, list) and all(isinstance(col, str) for col in res.columns)
+    assert isinstance(res.columns, list)
 
 
-def test_tabular_resource_data(tabular_resource_api_calls, niquests_mock):
-    res = Resource(RESOURCE_ID)
+def test_tabular_resource_data(tabular_resource_api_calls, niquests_mock, custom_object):
+    res = custom_object("Resource", {"resource": {"preview_url": "https://explore.data.gouv.fr/..."}})
     first_page = deepcopy(tabular_api_data)
     second_page_url = f"{res.tabular_api_url}data/?page=2&page_size=20"
     first_page["links"]["next"] = second_page_url
@@ -337,8 +347,8 @@ def test_tabular_resource_data(tabular_resource_api_calls, niquests_mock):
     assert len(list(res.rows())) == len(first_page["data"]) + len(tabular_api_data["data"])
 
 
-def test_tabular_resource_data_with_filters(tabular_resource_api_calls, niquests_mock):
-    res = Resource(RESOURCE_ID)
+def test_tabular_resource_data_with_filters(tabular_resource_api_calls, niquests_mock, custom_object):
+    res = custom_object("Resource", {"resource": {"preview_url": "https://explore.data.gouv.fr/..."}})
 
     # check that a wrong column name or operator raises an error
     with pytest.raises(ValueError):
