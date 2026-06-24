@@ -327,7 +327,7 @@ Contributions and feedback are welcome! Main guidelines:
 
 Remember to format, lint, and sort imports with [Ruff](https://docs.astral.sh/ruff/) before committing (checks will remind you anyway):
 ```bash
-pip install .[dev]
+pip install --group dev .
 ruff check --fix .
 ruff format .
 ```
