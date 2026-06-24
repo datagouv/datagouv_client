@@ -140,14 +140,17 @@ class Resource(BaseObject):
             self._fetch_profile()
         return self._columns
 
-    def _fetch_profile(self):
+    def _assert_tabular(self):
         if not getattr(self, "tabular_api_url", None):
             raise AttributeError("This resource does not have available tabular data.")
+
+    def _fetch_profile(self):
+        self._assert_tabular()
         try:
             self._profile: dict = self._client.session.get(
                 self.tabular_api_url + "profile/"
             ).json()["profile"]
-            self._columns: list[str] = self.profile["header"]
+            self._columns: list[str] = self._profile["header"]
         except Exception as e:
             raise AttributeError(
                 "Could not reach Tabular API, related attributes will not be available."
@@ -258,7 +261,8 @@ class Resource(BaseObject):
     def rows(
         self, filters: list[tuple[str, str, str] | tuple[str, str]] | None = None
     ) -> Iterator[dict]:
-        if self._profile is None:
+        self._assert_tabular()
+        if filters and self._profile is None:
             self._fetch_profile()
         data_url = self.tabular_api_url + "data/"
         if not filters:
@@ -286,8 +290,8 @@ class Resource(BaseObject):
         )
 
     def _raise_bad_col_or_op(self, col: str, op: str) -> None:
-        if col not in self.columns:
-            raise ValueError(f"`{col}` is not a valid column. Available columns: {self.columns}")
+        if col not in self._columns:
+            raise ValueError(f"`{col}` is not a valid column. Available columns: {self._columns}")
         if op not in OPERATORS:
             raise ValueError(
                 f"`{op}` is not a valid operator. Available operators: {list(OPERATORS)}"
