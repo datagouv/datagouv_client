@@ -12,7 +12,7 @@ pip install datagouv-client
 
 **Requirements:** Python >= 3.10
 
-> **CLI users:** the command-line interface has moved to [`datagouv_cli`](https://github.com/datagouv/datagouv-cli). Install it via apt, Homebrew, or a release binary — see that repository for instructions.
+> **CLI users:** the command-line interface has moved to [`datagouv-cli`](https://github.com/datagouv/datagouv-cli). Install it via apt, Homebrew, or a release binary — see that repository for instructions.
 
 ## 🚀 Use
 
