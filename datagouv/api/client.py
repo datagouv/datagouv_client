@@ -27,9 +27,7 @@ class Client:
     ):
         self._env_sanity(environment)
         self.session = niquests.Session(
-            timeout=15,
-            headers=PYTHON_USER_AGENT,
-            **kwargs,
+            **({"timeout": 15, "headers": PYTHON_USER_AGENT} | kwargs)
         )
         self.environment = self._envs[environment]
         self.base_url = f"https://{self.environment}.data.gouv.fr"
