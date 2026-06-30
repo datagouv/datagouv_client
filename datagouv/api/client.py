@@ -130,7 +130,7 @@ class Client:
         def cast_elem(
             elem: dict,
             client: Client,
-            cast_as: type[Dataset] | type[Organization] | type[Resource] | type[Topic] | None,
+            cast_as: type[Dataset | Organization | Resource | Topic] | None,
         ) -> Dataset | Organization | Resource | Topic | dict:
             return (
                 elem
