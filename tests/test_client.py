@@ -1,10 +1,10 @@
 from unittest.mock import Mock, patch
 
 import pytest
+from datagouv.config import CLI_USER_AGENT
 
 from datagouv import Client, Dataset
 from datagouv.api.client import PYTHON_USER_AGENT
-from datagouv.config import CLI_USER_AGENT
 
 
 def test_client_default_user_agent():
