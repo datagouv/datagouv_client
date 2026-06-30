@@ -4,7 +4,6 @@ import pytest
 
 from datagouv import Client, Dataset
 from datagouv.api.client import PYTHON_USER_AGENT
-from datagouv.config import CLI_USER_AGENT
 
 
 def test_client_default_user_agent():
@@ -12,9 +11,10 @@ def test_client_default_user_agent():
     assert client.session.headers["User-Agent"] == PYTHON_USER_AGENT["User-Agent"]
 
 
-def test_client_cli_user_agent():
-    client = Client(headers=CLI_USER_AGENT)
-    assert client.session.headers["User-Agent"] == CLI_USER_AGENT["User-Agent"]
+def test_client_custom_user_agent():
+    custom_headers = {"User-Agent": "datagouv-cli/custom-test"}
+    client = Client(headers=custom_headers)
+    assert client.session.headers["User-Agent"] == custom_headers["User-Agent"]
 
 
 @pytest.mark.parametrize(
