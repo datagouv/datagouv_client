@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Iterator
+from typing import Iterator, Optional
 
 import niquests
 
@@ -47,14 +47,10 @@ class API(BaseObject):
     def __call__(self, *args, **kwargs):
         return API(*args, **kwargs)
 
-    def refresh(self, _from_response: dict | None = None) -> dict:
-        metadata = super().refresh(_from_response)
-        return metadata
-
     # TODO: to avoid code duplication, _update_method could be a class-level attribute
     def update(self, payload: dict) -> niquests.Response:
         assert_auth(self._client)
-        if type(payload) is not dict:
+        if not isinstance(payload, dict):
             raise TypeError(f"payload should be a dictionary and not {type(payload)}")
 
         if self._client.verbose:
@@ -65,12 +61,13 @@ class API(BaseObject):
         return r
 
     @property
-    def organization_id(self) -> str:
-        return self.organization["id"]  # type: ignore
+    def organization_id(self) -> Optional[str]:
+        if self.organization:  # type: ignore
+            return self.organization["id"]  # type: ignore
 
     @property
     def associated_datasets(self) -> Iterator[Dataset]:
-        if not re.match(r"[0-9a-z]{24}", self.id):
+        if not re.fullmatch(r"[0-9a-f]{24}", self.id):
             raise Exception(
                 f"Current API's ID is a slug : {self.id}. Please recreate the object with its ID."
             )
