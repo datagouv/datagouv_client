@@ -1,5 +1,5 @@
 [project]
-name = "datagouv_client"
+name = "datagouv-client"
 dynamic = ["version"]
 description = "Wrapper for the data.gouv.fr API"
 authors = [{ name = "Etalab", email = "opendatateam@data.gouv.fr" }]
