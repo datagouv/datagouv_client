@@ -74,7 +74,7 @@ class Client:
 
         return Dataset(id, _client=self, **kwargs)
 
-    def api(self, id: str, **kwargs) -> API:
+    def api(self, id: str, **kwargs) -> "API":
         from datagouv.api.api import API
 
         return API(id, _client=self, **kwargs)
