@@ -108,9 +108,9 @@ def test_organization_id():
 
 
 def test_associated_datasets(niquests_mock):
-    niquests_mock.get(
-        f"{DATAGOUV_URL}api/1/datasets/?dataservice={API_ID}"
-    ).respond(json={"data": [dataset_metadata], "next_page": None})
+    niquests_mock.get(f"{DATAGOUV_URL}api/1/datasets/?dataservice={API_ID}").respond(
+        json={"data": [dataset_metadata], "next_page": None}
+    )
     a = API(API_ID, _from_response=api_metadata)
     datasets = list(a.associated_datasets)
     assert len(datasets) == 1
