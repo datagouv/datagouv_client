@@ -1,0 +1,20 @@
+{
+  "id": "deadbeef1234567890abcdef",
+  "access_audiences": ["api_client"],
+  "access_type": "open",
+  "badges": [],
+  "base_api_url": "https://example.com/api/",
+  "business_documentation_url": "https://example.com/docs",
+  "created_at": "2024-01-15T10:00:00+00:00",
+  "deleted_at": null,
+  "description": "A test dataservice API",
+  "extras": {},
+  "last_modified": "2024-06-01T12:00:00+00:00",
+  "machine_documentation_url": "https://example.com/openapi.json",
+  "metrics": {"views": 42},
+  "organization": {"id": "646b7187b50b2a93b1ae3d45"},
+  "rate_limiting": null,
+  "tags": ["test", "api"],
+  "title": "Test API",
+  "url": "https://example.com/"
+}
