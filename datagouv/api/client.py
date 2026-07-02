@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Iterator
 import niquests
 
 if TYPE_CHECKING:
-    from datagouv import Dataset, Organization, Resource, Topic
+    from datagouv import API, Dataset, Organization, Resource, Topic
 
 PYTHON_USER_AGENT = {"User-Agent": f"datagouv-python/{version('datagouv_client')}"}
 
@@ -70,10 +70,20 @@ class Client:
 
         return Dataset(id, _client=self, **kwargs)
 
+    def api(self, id: str, **kwargs) -> "API":
+        from datagouv.api.api import API
+
+        return API(id, _client=self, **kwargs)
+
     def create_dataset(self, payload: dict) -> "Dataset":
         from datagouv.api.dataset import DatasetCreator
 
         return DatasetCreator(_client=self).create(payload=payload)
+
+    def create_API(self, payload: dict) -> "API":
+        from datagouv.api.api import APICreator
+
+        return APICreator(_client=self).create(payload=payload)
 
     def topic(self, id: str, **kwargs) -> "Topic":
         from datagouv.api.topic import Topic
@@ -101,8 +111,8 @@ class Client:
         next_page: str = "next_page",
         mask: str | None = None,
         _ignore_base_url: bool = False,
-        cast_as: "Dataset|Organization|Resource|Topic|None" = None,
-    ) -> Iterator["Dataset|Organization|Resource|Topic|dict"]:
+        cast_as: type["Dataset | Organization | Resource | Topic"] | None = None,
+    ) -> Iterator["Dataset | Organization | Resource | Topic | dict"]:
         """⚠️ only for paginated endpoints"""
 
         def get_link_next_page(elem: dict, separated_keys: str) -> str | None:
@@ -116,8 +126,8 @@ class Client:
         def cast_elem(
             elem: dict,
             client: Client,
-            cast_as: "Dataset|Organization|Resource|Topic|None",
-        ) -> "Dataset|Organization|Resource|Topic|dict":
+            cast_as: type["Dataset | Organization | Resource | Topic"] | None,
+        ) -> "Dataset | Organization | Resource | Topic | dict":
             return (
                 elem
                 if cast_as is None

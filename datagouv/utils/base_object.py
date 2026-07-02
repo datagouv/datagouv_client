@@ -52,6 +52,8 @@ class BaseObject:
     @simple_connection_retry
     def update(self, payload: dict) -> niquests.Response:
         assert_auth(self._client)
+        if type(payload) is not dict:
+            raise TypeError(f"payload should be a dictionary and not {type(payload)}")
         if self._client.verbose:
             logging.info(f"🔁 Putting {self.uri} with {payload}")
         r = self._client.session.put(self.uri, json=payload)
