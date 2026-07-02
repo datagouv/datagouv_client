@@ -3,6 +3,18 @@ from unittest.mock import Mock, patch
 import pytest
 
 from datagouv import Client, Dataset
+from datagouv.api.client import PYTHON_USER_AGENT
+
+
+def test_client_default_user_agent():
+    client = Client()
+    assert client.session.headers["User-Agent"] == PYTHON_USER_AGENT["User-Agent"]
+
+
+def test_client_custom_user_agent():
+    custom_headers = {"User-Agent": "datagouv-cli/custom-test"}
+    client = Client(headers=custom_headers)
+    assert client.session.headers["User-Agent"] == custom_headers["User-Agent"]
 
 
 @pytest.mark.parametrize(

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 (2026-06-30)
+
+- feat: migrate cli to datagouv-cli ([#67](https://github.com/datagouv/datagouv_client/pull/67))
+- fix(client): restore session headers merge for CLI usage ([#66](https://github.com/datagouv/datagouv_client/pull/66))
+
+
 ## 0.4.0 (2026-06-24)
 
 - Delay tabular API calls to when required ([#59](https://github.com/datagouv/datagouv_client/pull/59))

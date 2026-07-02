@@ -5,12 +5,14 @@
 [![CircleCI](https://circleci.com/gh/datagouv/datagouv_client.svg?style=svg)](https://circleci.com/gh/datagouv/datagouv_client)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Python and [CLI](#-cli) wrapper for the data.gouv.fr API that allows you to interact easily with datasets and resources across all three platforms (`prod`/`www`, `demo`, and `dev`). Install it through [PyPI](https://pypi.org/project/datagouv-client/):
+A Python wrapper for the data.gouv.fr API that allows you to interact easily with datasets and resources across all three platforms (`prod`/`www`, `demo`, and `dev`). Install it through [PyPI](https://pypi.org/project/datagouv-client/):
 ```bash
 pip install datagouv-client
 ```
 
 **Requirements:** Python >= 3.10
+
+> **CLI users:** the command-line interface has moved to [`datagouv-cli`](https://github.com/datagouv/datagouv-cli). Install it via apt, Homebrew, or a release binary — see that repository for instructions.
 
 ## 🚀 Use
 
@@ -253,54 +255,6 @@ print(dataset.title)  # -> this will fail because the attributes are not set fro
 dataset.update({"title": "New title"})
 print(dataset.title)  # -> "New title"   because the attributes are set from the response
 ```
-
-### 🤓 CLI
-Once you have installed `datagouv-client`, you can also do most of what's possible in python, through your CLI. First you must set up your config with:
-```bash
-datagouv setup
-```
-You will be asked the environment you want to interact with, and your API key. They will be stored in a config file, in your home directory. If you only intend to get data, you may leave the API key blank.
-> Note: you may skip this setup step if you intend to target the production platform and fetch data.
-
-You can see all available actions with:
-```bash
-datagouv --help
-```
-The `--help` command is available for all methods.
-
-#### Displaying data
-All objects have a `display` command, that shows the object's main metadata in a human-readable way, for instance:
-```bash
-datagouv organization display "534fff81a3a7292c64a77e5c"
-> badges: [{'kind': 'public-service'}, {'kind': 'certified'}]
-> ────────────────────
-> business_number_id: 12002701600563
-> ────────────────────
-> created_at: 2014-04-17T18:21:21.523000+00:00
-> ...
-```
-
-#### Getting data
-All objects also have a `get` command, that outputs all the object's metadata in JSON (directly fed from datagouv's API). You may for instance give the output to `jq` like:
-```bash
-datagouv organization get "534fff81a3a7292c64a77e5c" | jq .name
-> "Institut national de la statistique et des études économiques (Insee)
-```
-
-#### Modifying objects
-If you have run the `setup` command and filled in your API key, you may interact with objects (according to your rights on the platform), for instance:
-```bash
-datagouv dataset create --title "New dataset" --description "Nice description" --organization_id "646b7187b50b2a93b1ae3d45"
-> Dataset created successfully ✓ id is 69fb46c2bdeef492539acd61
-# use the `--set` argument to update keys (can be used multiple times in one call)
-datagouv dataset update "69fb46c2bdeef492539acd61" --set title="New title" --set private=true
-> Dataset updated successfully ✓
-datagouv resource create "69fb46c2bdeef492539acd61" "First resource" --file-to-upload file.csv --set type=main
-> Resource created successfully ✓ id is 49e370df-cd09-4792-915b-95d25c2adc08
-datagouv resource delete "49e370df-cd09-4792-915b-95d25c2adc08"
-> Resource deleted successfully ✓
-```
-> NB: you can delete your config file with `datagouv delete-config`
 
 ### ⚡ Advanced features
 Many datagouv endpoints are paginated, which can make it tedious to retrieve all objects. An instance of `Client` has a method to create an iterator from any endpoint that returns paginated data:
